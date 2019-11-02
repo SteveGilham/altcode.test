@@ -189,7 +189,7 @@ _Target "Lint" (fun _ ->
 _Target "Packaging" (fun _ ->
   let gendarmeDir =
     Path.getFullName "_Binaries/AltCode.Fake.DotNet.Gendarme/Release+AnyCPU"
-  let packable = Path.getFullName "./_Binaries/README.html"
+  let packable = Path.getFullName "./altcode.test/_Binaries/README.html"
 
   let gendarmeFiles =
     [ (gendarmeDir @@ "AltCode.Fake.DotNet.Gendarme.dll", Some "lib/net462", None)

@@ -221,5 +221,5 @@ a:hover {color: #ecc;}
          match q with
          | Some x -> x.Remove()
          | _ -> ())
-    let packable = Path.getFullName "./_Binaries/README.html"
+    let packable = Path.getFullName "./altcode.test/_Binaries/README.html"
     xmlform.Save packable
