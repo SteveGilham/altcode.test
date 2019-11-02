@@ -27,6 +27,9 @@ build_script:
     Write-Host "Exit code $save"
 
     if ($save -ne 0) { exit $save }
+test:
+  assemblies:
+    - '**\*.no.tests.dll'
 artifacts:
 - path: _Packagin*\*.nupkg
   name: NuGet
