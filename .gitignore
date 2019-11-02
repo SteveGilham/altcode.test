@@ -328,3 +328,5 @@ ASALocalRun/
 
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
+altcode.test/_Binaries/
+altcode.test/_Intermediate/
