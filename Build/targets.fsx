@@ -187,51 +187,41 @@ _Target "Lint" (fun _ ->
 // Packaging
 
 _Target "Packaging" (fun _ ->
-  let gendarmeDir =
-    Path.getFullName "_Binaries/AltCode.Fake.DotNet.Gendarme/Release+AnyCPU"
   let packable = Path.getFullName "./altcode.test/_Binaries/README.html"
+  let extras = [
+                (packable, Some "", None)
+                (Path.getFullName "./Build/Icon_128x.png", Some "Icon_128x.png", None)
+                ]
 
-  let gendarmeFiles =
-    [ (gendarmeDir @@ "AltCode.Fake.DotNet.Gendarme.dll", Some "lib/net462", None)
-      (packable, Some "", None) ]
-
-  let gendarmeNetcoreFiles =
-    (!!(gendarmeDir @@ "netstandard2.0/AltCode.Fake.DotNet.Gendarme.*"))
-    |> Seq.map (fun x -> (x, Some "lib/netstandard2.0", None))
-    |> Seq.toList
-
-  let publishWhat = (Path.getFullName "./_Publish.vsWhat").Length
-  let whatFiles where =
-    (!!"./_Publish.vsWhat/**/*.*")
-    |> Seq.map
-         (fun x ->
-           (x, Some(where + Path.GetDirectoryName(x).Substring(publishWhat).Replace("\\", "/")), None))
-    |> Seq.toList
-
-  [ (List.concat [ gendarmeFiles; gendarmeNetcoreFiles ], "_Packaging.Gendarme",
-     "./_Generated/altcode.fake.dotnet.gendarme.nuspec", "AltCode.Fake.DotNet.Gendarme",
-     "A helper task for running Mono.Gendarme from FAKE ( >= 5.9.3 )",
-     "Gendarme")
-    (whatFiles "tools/netcoreapp2.1/any", "_Packaging.VsWhat",
-     "./_Generated/altcode.vswhat.nuspec", "AltCode.VsWhat",
-     "A tool to list Visual Studio instances and their installed packages",
-     "VsWhat") ]
-  |> List.iter (fun (files, output, nuspec, project, description, what) ->
-       let outputPath = "./" + output
-       let workingDir = "./_Binaries/" + output
-       Directory.ensure workingDir
-       Directory.ensure outputPath
-       NuGet (fun p ->
+  [
+    "Expecto"
+    "NUnit"
+    "Xunit"
+  ]
+  |> List.iter (fun utest ->
+    let test = utest.ToLowerInvariant()
+    let nuspec = Path.getFullName ("./_Packaging/altcode.test." + test + ".nuspec")
+    let fileroot = Path.getFullName ("./_Publish/" + test + "/lib")
+    let chop = fileroot.Length
+    let files = !!(fileroot + "/**/*")
+                |> Seq.map (fun f -> (f, Some ((Path.GetDirectoryName f).Substring chop), None))
+                |> Seq.toList
+    let output = Path.getFullName ("_Packaging." + test)          
+    
+    let outputPath = "./" + output
+    let workingDir = "./altcode.test/_Binaries/" + output
+    Directory.ensure workingDir
+    Directory.ensure outputPath
+    NuGet (fun p ->
          { p with Authors = [ "Steve Gilham" ]
-                  Project = project
-                  Description = description
+                  Description = "A named-argument helper wrapper for unit tests with " + utest
                   OutputPath = outputPath
                   WorkingDir = workingDir
                   Files = files
                   Version = !Version
                   Copyright = (!Copyright).Replace("©", "(c)")
                   Publish = false
-                  ReleaseNotes = Path.getFullName ("ReleaseNotes." + what + ".md") |> File.ReadAllText
+                  ReleaseNotes = Path.getFullName ("ReleaseNotes.md") |> File.ReadAllText
                   ToolPath =
                     if Environment.isWindows then
                       ("./packages/" + (packageVersion "NuGet.CommandLine")
@@ -239,45 +229,62 @@ _Target "Packaging" (fun _ ->
                     else "/usr/bin/nuget" }) nuspec))
 
 _Target "PrepareDotNetBuild" (fun _ ->
+  let packaging = Path.getFullName "_Packaging"
+  Directory.ensure packaging
   let publish = Path.getFullName "./_Publish"
 
-  DotNet.publish (fun options ->
-    { options with OutputPath = Some(publish + ".vsWhat")
-                   Configuration = DotNet.BuildConfiguration.Release
-                   Framework = Some "netcoreapp2.1" })
-    (Path.getFullName "./AltCode.VsWhat/AltCode.VsWhat.fsproj")
+  !! ("./altcode.test/_Binaries/*/Release+AnyCPU/*.nupkg")
+  |> Seq.iter (fun f -> let name = Path.GetFileName f
+                        let unpack = Path.Combine(publish, name.Split('.').[2])
+                        System.IO.Compression.ZipFile.ExtractToDirectory(f, unpack))
 
-  [ (String.Empty, "./_Generated/altcode.fake.dotnet.gendarme.nuspec",
-     "AltCode.Fake.DotNet.Gendarme (FAKE task helper)", None,
-     Some "FAKE build Gendarme") 
-    ("DotnetTool", "./_Generated/altcode.vswhat.nuspec",
-     "AltCode.VsWhat (Visual Studio package listing tool)", Some "Build/AltCode.VsWhat_128.png",
-     Some "Visual Studio") ]
-  |> List.iter (fun (ptype, path, caption, icon, tags) ->
-       let x s = XName.Get(s, "http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd")
-       let dotnetNupkg = XDocument.Load "./Build/AltCode.Fake.nuspec"
-       let title = dotnetNupkg.Descendants(x "title") |> Seq.head
-       title.ReplaceNodes caption
-       if ptype
-          |> String.IsNullOrWhiteSpace
-          |> not
-       then
-         let tag = dotnetNupkg.Descendants(x "tags") |> Seq.head
-         let insert = XElement(x "packageTypes")
-         insert.Add(XElement(x "packageType", XAttribute(XName.Get "name", ptype)))
-         tag.AddAfterSelf insert
-       match icon with
-       | None -> ()
-       | Some logo ->
-         let tag = dotnetNupkg.Descendants(x "iconUrl") |> Seq.head
-         let text = String.Concat(tag.Nodes()).Replace("Build/AltCode.Fake_128.png", logo)
-         tag.Value <- text
-       match tags with
-       | None -> ()
-       | Some line ->
-         let tagnode = dotnetNupkg.Descendants(x "tags") |> Seq.head
-         tagnode.Value <- line
-       dotnetNupkg.Save path))
+  [ ("./_Publish/expecto/altcode.test.expecto.nuspec",
+     "AltCode.Test.Expecto (Expecto helper)",
+     false)
+    ("./_Publish/nunit/altcode.test.nunit.nuspec",
+     "AltCode.Test.NUnit (NUnit helper)",
+     true)
+    ("./_Publish/xunit/altcode.test.xunit.nuspec",
+     "AltCode.Test.Xunit (Xunit helper)",
+     true)
+      ]
+  |> List.iter (fun (path, caption, staticlink) ->
+       printfn "Processing %A" path
+       let x s = XName.Get(s, "http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd")
+       let dotnetNupkg = XDocument.Load path
+       let desc = dotnetNupkg.Descendants(x "description") |> Seq.head
+       "@description@" |> XText |> desc.ReplaceAll
+
+       [ "authors"; "owners" ]
+       |> List.iter (fun tag -> let title = dotnetNupkg.Descendants(x tag) |> Seq.head
+                                title.ReplaceNodes "Steve Gilham")
+       let id = dotnetNupkg.Descendants(x "id") |> Seq.head
+       let title = XElement(x "title", caption)
+       id.AddAfterSelf title
+       let repo = dotnetNupkg.Descendants(x "repository") |> Seq.head
+       [ 
+         ("copyright", "@copyright@")
+         ("releaseNotes", "@releaseNotes@")
+         ("icon", "Icon_128x.png")
+         ("requireLicenseAcceptance", "false")
+       ]
+       |> Seq.iter (fun (a,b) -> let node = XElement(x a, b)
+                                 repo.AddAfterSelf node)
+       let meta = dotnetNupkg.Descendants(x "metadata") |> Seq.head
+       "@files@" |> XText |> meta.AddAfterSelf
+
+       dotnetNupkg.Descendants(x "dependency")
+       |> Seq.filter (fun node -> printfn "%A -> %A" node node.Parent
+                                  let id = node.Attribute(XName.Get "id").Value
+                                  id = "altcode.test.common" ||
+                                  (staticlink && 
+                                   id = "FSharp.Core" && 
+                                   node.Parent.Attribute(XName.Get "targetFramework").Value.StartsWith(".NETFramework", StringComparison.Ordinal)))
+       |> Seq.toList
+       |> List.iter (fun n -> printfn "nix %A" n
+                              n.Remove())
+
+       dotnetNupkg.Save ((Path.Combine(packaging, Path.GetFileName path)), SaveOptions.None)  ))
 
 _Target "PrepareReadMe"
   (fun _ ->

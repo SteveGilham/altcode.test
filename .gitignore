@@ -331,3 +331,5 @@ ASALocalRun/
 altcode.test/_Binaries/
 altcode.test/_Intermediate/
 _Generated/
+_Publish/
+_Packaging/

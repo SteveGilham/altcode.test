@@ -12,6 +12,10 @@
     <OtherFlags>--keyfile:$(SolutionDir)..\Build\Infrastructure.snk --staticlink:altcode.test.common</OtherFlags>
     <OtherFlags Condition="'$(TargetFramework)' != 'netstandard2.0'">$(OtherFlags) --standalone</OtherFlags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageProjectUrl>https://github.com/SteveGilham/altcode.test</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/SteveGilham/altcode.test</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>unit-test nunit</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
