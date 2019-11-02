@@ -9,6 +9,13 @@ type Constraint<'a> =
     Actual : 'a
     Constraint : NUnit.Framework.Constraints.IResolveConstraint
   }
+  static member Create() =
+    {
+      Actual = Unchecked.defaultof<'a>
+      Constraint = null
+    }
+  member this.WithActual e = { this with Actual = e }
+  member this.WithConstraint e = { this with Constraint = e }
 
 type AltAssert =
   static member That(x: Constraint<'a>) =
