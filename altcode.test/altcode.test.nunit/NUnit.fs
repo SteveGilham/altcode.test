@@ -17,6 +17,7 @@ type Constraint<'a> =
   member this.WithActual e = { this with Actual = e }
   member this.WithConstraint e = { this with Constraint = e }
 
+[<AbstractClass; Sealed>]
 type AltAssert =
   static member That(x: Constraint<'a>) =
     Assert.That(x.Actual, x.Constraint)

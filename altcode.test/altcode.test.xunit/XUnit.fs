@@ -1,10 +1,11 @@
-﻿namespace AltCode.Test.Nunit
+﻿namespace AltCode.Test.Xunit
 
 open System
 open System.Collections.Generic
 open AltCode.Test.Common
 open Xunit
 
+[<AbstractClass; Sealed>]
 type AltAssert =
   static member Contains (x : Match<string>) =
     Assert.Contains(x.Expected, x.Actual)

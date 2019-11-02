@@ -6,6 +6,7 @@ open System.IO
 open AltCode.Test.Common
 open Expecto
 
+[<RequireQualifiedAccess>]
 module AltExpect =
   let containsAll (x : Match<IEnumerable<'a>>) message =
     Expect.containsAll x.Actual x.Expected message
