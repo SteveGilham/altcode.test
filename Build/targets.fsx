@@ -249,7 +249,6 @@ _Target "PrepareDotNetBuild" (fun _ ->
      true)
       ]
   |> List.iter (fun (path, caption, staticlink) ->
-       printfn "Processing %A" path
        let x s = XName.Get(s, "http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd")
        let dotnetNupkg = XDocument.Load path
        let desc = dotnetNupkg.Descendants(x "description") |> Seq.head
@@ -273,15 +272,13 @@ _Target "PrepareDotNetBuild" (fun _ ->
        "@files@" |> XText |> meta.AddAfterSelf
 
        dotnetNupkg.Descendants(x "dependency")
-       |> Seq.filter (fun node -> printfn "%A -> %A" node node.Parent
-                                  let id = node.Attribute(XName.Get "id").Value
+       |> Seq.filter (fun node -> let id = node.Attribute(XName.Get "id").Value
                                   id = "altcode.test.common" ||
                                   (staticlink && 
                                    id = "FSharp.Core" && 
                                    node.Parent.Attribute(XName.Get "targetFramework").Value.StartsWith(".NETFramework", StringComparison.Ordinal)))
        |> Seq.toList
-       |> List.iter (fun n -> printfn "nix %A" n
-                              n.Remove())
+       |> List.iter (fun n -> n.Remove())
 
        dotnetNupkg.Save ((Path.Combine(packaging, Path.GetFileName path)), SaveOptions.None)  ))
 
