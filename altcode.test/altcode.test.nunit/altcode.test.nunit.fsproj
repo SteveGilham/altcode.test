@@ -9,11 +9,12 @@
     <SolutionDir Condition="'$(SolutionDir)' == '$(ProjectDir)'">$(ProjectDir)../</SolutionDir>
     <OutputPath>$(SolutionDir)_Binaries/$(AssemblyName)/$(Configuration)+$(Platform)/</OutputPath>
     <IntermediateOutputPath>$(SolutionDir)_Intermediate/$(AssemblyName)/$(Configuration)+$(Platform)/</IntermediateOutputPath>
-    <OtherFlags>--keyfile:$(SolutionDir)..\Build\Infrastructure.snk</OtherFlags>
+    <OtherFlags>--keyfile:$(SolutionDir)..\Build\Infrastructure.snk --staticlink:altcode.test.common</OtherFlags>
     <OtherFlags Condition="'$(TargetFramework)' != 'netstandard2.0'">$(OtherFlags) --standalone</OtherFlags>
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\..\_Generated\AssemblyVersion.fs" Link="AssemblyVersion.fs" />
     <Compile Include="NUnit.fs" />
   </ItemGroup>
 
