@@ -11,6 +11,7 @@
     <IntermediateOutputPath>$(SolutionDir)_Intermediate/$(AssemblyName)/$(Configuration)+$(Platform)/</IntermediateOutputPath>
     <OtherFlags>--keyfile:$(SolutionDir)..\Build\Infrastructure.snk --staticlink:altcode.test.common</OtherFlags>
     <OtherFlags Condition="'$(TargetFramework)' != 'netstandard2.0'">$(OtherFlags) --standalone</OtherFlags>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
