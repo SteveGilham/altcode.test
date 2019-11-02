@@ -204,20 +204,20 @@ _Target "Packaging" (fun _ ->
     let fileroot = Path.getFullName ("./_Publish/" + test + "/lib")
     let chop = fileroot.Length
     let files = !!(fileroot + "/**/*")
-                |> Seq.map (fun f -> (f, Some ((Path.GetDirectoryName f).Substring chop), None))
+                |> Seq.map (fun f -> (f, Some ("lib" + ((Path.GetDirectoryName f).Substring chop)), None))
                 |> Seq.toList
+
     let output = Path.getFullName ("_Packaging." + test)          
     
-    let outputPath = "./" + output
-    let workingDir = "./altcode.test/_Binaries/" + output
+    let workingDir = Path.getFullName ("./altcode.test/_Binaries/" + test)
     Directory.ensure workingDir
-    Directory.ensure outputPath
+    Directory.ensure output
     NuGet (fun p ->
          { p with Authors = [ "Steve Gilham" ]
                   Description = "A named-argument helper wrapper for unit tests with " + utest
-                  OutputPath = outputPath
+                  OutputPath = output
                   WorkingDir = workingDir
-                  Files = files
+                  Files = files @ extras
                   Version = !Version
                   Copyright = (!Copyright).Replace("©", "(c)")
                   Publish = false
@@ -266,7 +266,6 @@ _Target "PrepareDotNetBuild" (fun _ ->
          ("copyright", "@copyright@")
          ("releaseNotes", "@releaseNotes@")
          ("icon", "Icon_128x.png")
-         ("requireLicenseAcceptance", "false")
        ]
        |> Seq.iter (fun (a,b) -> let node = XElement(x a, b)
                                  repo.AddAfterSelf node)
