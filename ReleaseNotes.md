@@ -2,7 +2,7 @@ Q. Never mind the fluff -- how do I get started?
 
 A. Start with the README : https://github.com/SteveGilham/altcode.test/blob/master/README.md
 
-# 1.0.x
+# 1.0.6
 * [BREAKING] `Match` -> `AssertionMatch`
 * `altcode.test.expecto` -- add `Expecto.Flip` support
 * `altcode.test.nunit` -- add `DirectoryAssert`, `FileAssert` and `StringAssert` support
