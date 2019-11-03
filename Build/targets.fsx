@@ -239,16 +239,13 @@ _Target "PrepareDotNetBuild" (fun _ ->
                         System.IO.Compression.ZipFile.ExtractToDirectory(f, unpack))
 
   [ ("./_Publish/expecto/altcode.test.expecto.nuspec",
-     "AltCode.Test.Expecto (Expecto helper)",
-     false)
+     "AltCode.Test.Expecto (Expecto helper)")
     ("./_Publish/nunit/altcode.test.nunit.nuspec",
-     "AltCode.Test.NUnit (NUnit helper)",
-     true)
+     "AltCode.Test.NUnit (NUnit helper)")
     ("./_Publish/xunit/altcode.test.xunit.nuspec",
-     "AltCode.Test.Xunit (Xunit helper)",
-     true)
+     "AltCode.Test.Xunit (Xunit helper)")
       ]
-  |> List.iter (fun (path, caption, staticlink) ->
+  |> List.iter (fun (path, caption) ->
        let x s = XName.Get(s, "http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd")
        let dotnetNupkg = XDocument.Load path
        let desc = dotnetNupkg.Descendants(x "description") |> Seq.head
@@ -273,10 +270,7 @@ _Target "PrepareDotNetBuild" (fun _ ->
 
        dotnetNupkg.Descendants(x "dependency")
        |> Seq.filter (fun node -> let id = node.Attribute(XName.Get "id").Value
-                                  id = "altcode.test.common" ||
-                                  (staticlink && 
-                                   id = "FSharp.Core" && 
-                                   node.Parent.Attribute(XName.Get "targetFramework").Value.StartsWith(".NETFramework", StringComparison.Ordinal)))
+                                  id = "altcode.test.common")
        |> Seq.toList
        |> List.iter (fun n -> n.Remove())
 
