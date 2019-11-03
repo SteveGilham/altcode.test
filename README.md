@@ -7,7 +7,7 @@ A core type
 ```
 namespace AltCode.Test.Common
 
-type Match<'a> =
+type AssertionMatch<'a> =
   {
     Actual : 'a
     Expected : 'a
@@ -24,15 +24,15 @@ providing a F# and C#-friendly API for naming arguments
 
 # For Expecto
 
-Module `AltCode.Test.Expecto.AltExpect` which provides wrappers for `Expecto.Expect` with an appropriate `Match`-typed argument in place of actual and template expectation
+Module `AltCode.Test.Expecto.AltExpect` which provides wrappers for `Expecto.Expect` and `AltCode.Test.Expecto.AltFlipExpect` for `Expecto.Flip.Expect` with an appropriate `AssertionMatch`-typed argument in place of actual and template expectation
 
 # For Xunit
 
-Module `AltCode.Test.Xunit.AltAssert` which provides wrappers for `Xunit.Assert` with an appropriate `Match`-typed argument in place of actual and template expectation
+Class `AltCode.Test.Xunit.AltAssert` which provides wrappers for `Xunit.Assert` with an appropriate `AssertionMatch`-typed argument in place of actual and template expectation
 
 # For NUnit
 
-Module `AltCode.Test.NUnit.AltAssert` which provides wrappers for `NUnit.Framework.Assert` with an appropriate `Match`-typed argument in place of actual and template expectation; also 
+Classes `AltCode.Test.NUnit.Alt*Assert` which provide wrappers for the corresponding `NUnit.Framework.*Assert` for `*` = `''`, `'Directory'`, `'File'` and `'String'`  with an appropriate `AssertionMatch`-typed argument in place of actual and template expectation; also 
 ```
 type Constraint<'a> =
   {
@@ -70,7 +70,7 @@ Then `dotnet fake run ./Build/setup.fsx` to do the rest of the set-up.
 
 ### Normal builds
 
-Running `dotnet fake run ./Build/build.fsx` performs a full build/test/package process.
+Running `dotnet fake run ./Build/build.fsx` performs a full build/package process.
 
 Use `dotnet fake run ./Build/build.fsx --target <targetname>` to run to a specific target.
 

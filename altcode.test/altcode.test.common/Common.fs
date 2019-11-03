@@ -1,6 +1,6 @@
 ﻿namespace AltCode.Test.Common
 
-type Match<'a> =
+type AssertionMatch<'a> =
   {
     Actual : 'a
     Expected : 'a
