@@ -24,15 +24,21 @@ providing a F# and C#-friendly API for naming arguments
 
 # For Expecto
 
-Module `AltCode.Test.Expecto.AltExpect` which provides wrappers for `Expecto.Expect` and `AltCode.Test.Expecto.AltFlipExpect` for `Expecto.Flip.Expect` with an appropriate `AssertionMatch`-typed argument in place of actual and template expectation
+[`AltCode.Test.Expecto` ![Nuget](https://buildstats.info/nuget/altcode.test.expecto)](http://nuget.org/packages/altcode.test.expecto)
+
+Contains module `AltCode.Test.Expecto.AltExpect` which provides wrappers for `Expecto.Expect` and `AltCode.Test.Expecto.AltFlipExpect` for `Expecto.Flip.Expect` with an appropriate `AssertionMatch`-typed argument in place of actual and template expectation
 
 # For Xunit
 
-Class `AltCode.Test.Xunit.AltAssert` which provides wrappers for `Xunit.Assert` with an appropriate `AssertionMatch`-typed argument in place of actual and template expectation
+[`AltCode.Test.Xunit` ![Nuget](https://buildstats.info/nuget/altcode.test.xunit)](http://nuget.org/packages/altcode.test.xunit)
+
+Contains class `AltCode.Test.Xunit.AltAssert` which provides wrappers for `Xunit.Assert` with an appropriate `AssertionMatch`-typed argument in place of actual and template expectation
 
 # For NUnit
 
-Classes `AltCode.Test.NUnit.Alt*Assert` which provide wrappers for the corresponding `NUnit.Framework.*Assert` for `*` = `''`, `'Directory'`, `'File'` and `'String'`  with an appropriate `AssertionMatch`-typed argument in place of actual and template expectation; also 
+[`AltCode.Test.NUnit` ![Nuget](https://buildstats.info/nuget/altcode.test.nunit)](http://nuget.org/packages/altcode.test.nunit)
+
+Contains classes `AltCode.Test.NUnit.Alt*Assert` which provide wrappers for the corresponding `NUnit.Framework.*Assert` for `*` = `''`, `'Directory'`, `'File'` and `'String'`  with an appropriate `AssertionMatch`-typed argument in place of actual and template expectation; also 
 ```
 type Constraint<'a> =
   {
