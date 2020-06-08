@@ -2,7 +2,7 @@ Q. Never mind the fluff -- how do I get started?
 
 A. Start with the README : https://github.com/SteveGilham/altcode.test/blob/master/README.md
 
-# 1.0.9
+# 1.0.11
 * support Expecto 9.x
 * support `net47` and `netstandard2.0` only
 
