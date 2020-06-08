@@ -12,6 +12,7 @@ open Fake.IO
 open Fake.IO.FileSystemOperators
 open Fake.IO.Globbing
 open Fake.IO.Globbing.Operators
+open Fake.Tools.Git
 
 open FSharpLint.Application
 open FSharpLint.Framework
@@ -63,6 +64,9 @@ let toolPackages =
 
 let packageVersion (p: string) = p.ToLowerInvariant() + "/" + (toolPackages.Item p)
 
+let commitHash = Information.getCurrentSHA1 (".")
+let infoV = Information.showName "." commitHash
+
 let _Target s f =
   Target.description s
   Target.create s f
@@ -100,6 +104,7 @@ _Target "SetVersion" (fun _ ->
                                       AssemblyInfo.FileVersion v'
                                       AssemblyInfo.Company "Steve Gilham"
                                       AssemblyInfo.Trademark ""
+                                      AssemblyInfo.InformationalVersion(infoV)
                                       AssemblyInfo.Copyright copy ]
          (Some AssemblyInfoFileConfig.Default))
   let hack = """namespace AltCover
@@ -150,18 +155,12 @@ _Target "BuildDebug" (fun _ ->
 _Target "Analysis" ignore
 
 _Target "Lint" (fun _ ->
-  let failOnIssuesFound (issuesFound: bool) =
+  let failOnIssuesFound (issuesFound : bool) =
     Assert.That(issuesFound, Is.False, "Lint issues were found")
   try
-    let settings =
-      Configuration.SettingsFileName
-      |> Path.getFullName
-      |> File.ReadAllText
-
-    let lintConfig =
-      FSharpLint.Application.ConfigurationManagement.loadConfigurationFile settings
     let options =
-      { Lint.OptionalLintParameters.Default with Configuration = Some lintConfig }
+      { Lint.OptionalLintParameters.Default with
+          Configuration = FromFile(Path.getFullName "./fsharplint.json") }
 
     !!"**/*.fsproj"
     |> Seq.collect (fun n -> !!(Path.GetDirectoryName n @@ "*.fs"))
@@ -170,14 +169,13 @@ _Target "Lint" (fun _ ->
          match Lint.lintFile options f with
          | Lint.LintResult.Failure x -> failwithf "%A" x
          | Lint.LintResult.Success w ->
-           w
-           |> Seq.filter (fun x ->
-                match x.Fix with
-                | None -> false
-                | Some fix -> fix.FromText <> "AltCover_Fake")) // special case
+             w
+             |> Seq.filter (fun x ->
+                  x.Details.SuggestedFix |> Option.isSome))
     |> Seq.concat
     |> Seq.fold (fun _ x ->
-         printfn "Info: %A\r\n Range: %A\r\n Fix: %A\r\n====" x.Info x.Range x.Fix
+         printfn "Info: %A\r\n Range: %A\r\n Fix: %A\r\n====" x.Details.Message
+           x.Details.Range x.Details.SuggestedFix
          true) false
     |> failOnIssuesFound
   with ex ->
@@ -191,6 +189,7 @@ _Target "Packaging" (fun _ ->
   let extras = [
                 (packable, Some "", None)
                 (Path.getFullName "./Build/Icon_128x.png", Some "Icon_128x.png", None)
+                (Path.getFullName "./LICENS*", Some "", None)
                 ]
 
   [
@@ -221,7 +220,9 @@ _Target "Packaging" (fun _ ->
                   Version = !Version
                   Copyright = (!Copyright).Replace("©", "(c)")
                   Publish = false
-                  ReleaseNotes = Path.getFullName ("ReleaseNotes.md") |> File.ReadAllText
+                  ReleaseNotes = "This build from https://github.com/SteveGilham/altcode.test/tree/"
+                                 + commitHash + Environment.NewLine + Environment.NewLine
+                                 + (Path.getFullName "ReleaseNotes.md" |> File.ReadAllText)
                   ToolPath =
                     if Environment.isWindows then
                       ("./packages/" + (packageVersion "NuGet.CommandLine")
@@ -259,12 +260,18 @@ _Target "PrepareDotNetBuild" (fun _ ->
        id.AddAfterSelf title
        let repo = dotnetNupkg.Descendants(x "repository") |> Seq.head
        [ 
-         ("copyright", "@copyright@")
-         ("releaseNotes", "@releaseNotes@")
-         ("icon", "Icon_128x.png")
+         ("copyright", "@copyright@", [])
+         ("releaseNotes", "@releaseNotes@", [])
+         ("icon", "Icon_128x.png", [])
+         ("iconUrl", "https://cdn.jsdelivr.net/gh/SteveGilham/altcode.test/Build/Icon_128x.png", [])
+         ("license", "LICENSE", [("type", "file")])
        ]
-       |> Seq.iter (fun (a,b) -> let node = XElement(x a, b)
-                                 repo.AddAfterSelf node)
+       |> Seq.iter (fun (a,b,l) -> let node = XElement(x a, b)
+                                   l |>
+                                   Seq.iter (fun (n,v) -> node.SetAttributeValue(XName.Get(n, ""), v))
+                                   repo.AddAfterSelf node)
+
+                                 
        let meta = dotnetNupkg.Descendants(x "metadata") |> Seq.head
        "@files@" |> XText |> meta.AddAfterSelf
 
