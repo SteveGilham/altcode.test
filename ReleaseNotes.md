@@ -2,9 +2,13 @@ Q. Never mind the fluff -- how do I get started?
 
 A. Start with the README : https://github.com/SteveGilham/altcode.test/blob/master/README.md
 
-# 1.0.x
-* `altcode.test.nunit` -- Fix classic framework support support
-* `altcode.test.xunit` -- Fix classic framework support support
+# 1.0.9
+* support Expecto 9.x
+* support `net47` and `netstandard2.0` only
+
+# 1.0.8
+* `altcode.test.nunit` -- Fix classic framework support 
+* `altcode.test.xunit` -- Fix classic framework support
 
 # 1.0.6
 * [BREAKING] `Match` -> `AssertionMatch`
