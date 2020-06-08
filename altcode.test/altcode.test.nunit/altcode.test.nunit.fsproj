@@ -33,5 +33,9 @@
   <ItemGroup>
     <PackageReference Update="FSharp.Core" Version="4.7.2" />
     <PackageReference Update="System.ValueTuple" Version="4.5.0" />
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies.net47" Version="1.0.0" Condition="'$(TargetFramework)' != 'netstandard2.0'">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 </Project>

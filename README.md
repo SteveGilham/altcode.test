@@ -63,11 +63,11 @@ and wrappers for some `NUnit.Framework.Assert.That` overloads
 
 ## Building
 
-Windows build only for Framework support; the .net core part of the artifacts are platform independent
+Uses the nuget package for platform-independent build of the Framework support; the .net core part of the artifacts are already platform independent
 
 ### Tooling
 
-It is assumed that .net core 3.0.100 is available  (`dotnet`) -- try https://www.microsoft.com/net/download  
+It is assumed that .net core 3.1.300 is available  (`dotnet`) -- try https://www.microsoft.com/net/download  
 
 ### Bootstrapping
 
