@@ -3,7 +3,10 @@ branches:
   except:
   - /develop.*/
 skip_tags: true
-image: Visual Studio 2019
+image:
+- Visual Studio 2019
+- Ubuntu
+- macOS
 clone_depth: 2
 environment:
   COVERALLS_REPO_TOKEN:
