@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net47;netstandard2.0</TargetFrameworks>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <ContinuousIntegrationBuild Condition="'$(APPVEYOR)'=='True'">true</ContinuousIntegrationBuild>
@@ -34,9 +34,5 @@
   <ItemGroup>
     <PackageReference Update="FSharp.Core" Version="5.0.0" />
     <PackageReference Update="System.ValueTuple" Version="4.5.0" />
-    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies.net47" Version="1.0.0" Condition="'$(TargetFramework)' != 'netstandard2.0'">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
   </ItemGroup>
 </Project>
