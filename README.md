@@ -59,7 +59,7 @@ and wrappers for some `NUnit.Framework.Assert.That` overloads
 
 | | | |
 | --- | --- | --- | 
-| **Build** | <sup>AppVeyor</sup> [![Build status](https://img.shields.io/appveyor/ci/SteveGilham/altcode-test/master.svg)](https://ci.appveyor.com/project/SteveGilham/altcode-test) | ![Build history](https://buildstats.info/appveyor/chart/SteveGilham/altcode-test?branch=master) 
+| **Build** | <sup>AppVeyor</sup> [![Build status](https://img.shields.io/appveyor/ci/SteveGilham/altcode-test/master.svg)](https://ci.appveyor.com/project/SteveGilham/altcode-test) | ![Build history](https://buildstats.info/appveyor/chart/SteveGilham/altcode-test?branch=master) | ![CI](https://github.com/SteveGilham/altcode.test/workflows/CI/badge.svg)
 
 ## Building
 
