@@ -48,4 +48,4 @@ jobs:
       uses: microsoft/infersharpaction@v0.2
       id: runinfersharp
       with:
-        binary-path: ' /home/runner/work/altcode.test/altcode.test/_Binaries/Debug+AnyCPU/netstandard2.0'
+        binary-path: '/home/runner/work/altcode.test/altcode.test/_Binaries/Debug+AnyCPU/netstandard2.0'
