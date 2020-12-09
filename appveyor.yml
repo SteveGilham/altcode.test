@@ -22,9 +22,9 @@ build_script:
 
     & dotnet tool restore
 
-    & dotnet fake run .\Build\setup.fsx
+    & dotnet fake run ./Build/setup.fsx
 
-    & dotnet fake run .\Build\build.fsx
+    & dotnet fake run ./Build/build.fsx
 
     $save = $LASTEXITCODE
     
@@ -33,11 +33,8 @@ build_script:
     Write-Host "Exit code $save"
 
     if ($save -ne 0) { exit $save }
-test:
-  assemblies:
-    - '**\*.no.tests.dll'
 artifacts:
-- path: _Packagin*\*.nupkg
+- path: _Packagin*/*.nupkg
   name: NuGet
 deploy:
 - provider: NuGet
