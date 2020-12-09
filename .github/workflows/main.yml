@@ -43,4 +43,9 @@ jobs:
     - name: Setup
       run: dotnet fake run ./Build/setup.fsx
     - name: Build
-      run: dotnet fake run ./Build/build.fsx  
+      run: dotnet fake run ./Build/build.fsx
+    - name: Run Infer#
+      uses: microsoft/infersharpaction@v0.2
+      id: runinfersharp
+      with:
+        binary-path: ' /home/runner/work/altcode.test/altcode.test/_Binaries/Debug+AnyCPU/netstandard2.0'

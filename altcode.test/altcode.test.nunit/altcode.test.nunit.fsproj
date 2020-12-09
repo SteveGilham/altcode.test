@@ -7,9 +7,10 @@
     <ContinuousIntegrationBuild Condition="'$(APPVEYOR)'=='True'">true</ContinuousIntegrationBuild>
     <DeterministicSourcePaths Condition="'$(APPVEYOR)'=='True'">true</DeterministicSourcePaths>
     <SolutionDir Condition="'$(SolutionDir)' == '$(ProjectDir)'">$(ProjectDir)../</SolutionDir>
-    <OutputPath>$(SolutionDir)_Binaries/$(AssemblyName)/$(Configuration)+$(Platform)/</OutputPath>
+    <OutputPath Condition=" '$(Configuration)' != 'Release'">$(SolutionDir)_Binaries/$(Configuration)+$(Platform)/</OutputPath>
+    <OutputPath Condition=" '$(Configuration)' == 'Release'">$(SolutionDir)_Binaries/$(AssemblyName)/$(Configuration)+$(Platform)/</OutputPath>
     <IntermediateOutputPath>$(SolutionDir)_Intermediate/$(AssemblyName)/$(Configuration)+$(Platform)/</IntermediateOutputPath>
-    <OtherFlags>--keyfile:$(SolutionDir)..\Build\Infrastructure.snk --staticlink:altcode.test.common</OtherFlags>
+    <OtherFlags Condition=" '$(Configuration)' == 'Release'">--keyfile:$(SolutionDir)..\Build\Infrastructure.snk --staticlink:altcode.test.common</OtherFlags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageProjectUrl>https://github.com/SteveGilham/altcode.test</PackageProjectUrl>
     <RepositoryUrl>https://github.com/SteveGilham/altcode.test</RepositoryUrl>
