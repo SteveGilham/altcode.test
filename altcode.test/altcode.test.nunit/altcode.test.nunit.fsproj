@@ -15,6 +15,7 @@
     <RepositoryUrl>https://github.com/SteveGilham/altcode.test</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>unit-test nunit</PackageTags>
+    <NoWarn>2011</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
