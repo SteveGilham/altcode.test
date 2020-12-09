@@ -67,6 +67,19 @@ let packageVersion (p: string) = p.ToLowerInvariant() + "/" + (toolPackages.Item
 let commitHash = Information.getCurrentSHA1 (".")
 let infoV = Information.showName "." commitHash
 
+let buildWithCLIArguments (o : Fake.DotNet.DotNet.BuildOptions) =
+  { o with MSBuildParams = cliArguments }
+
+let dotnetBuildRelease proj =
+  DotNet.build (fun p ->
+    { p.WithCommon dotnetOptions with Configuration = DotNet.BuildConfiguration.Release }
+    |> buildWithCLIArguments) (Path.GetFullPath proj)
+
+let dotnetBuildDebug proj =
+  DotNet.build (fun p ->
+    { p.WithCommon dotnetOptions with Configuration = DotNet.BuildConfiguration.Debug }
+    |> buildWithCLIArguments) (Path.GetFullPath proj)
+
 let _Target s f =
   Target.description s
   Target.create s f
@@ -126,14 +139,7 @@ _Target "BuildRelease" (fun _ ->
   try
     DotNet.restore (fun o -> o.WithCommon(withWorkingDirectoryVM ".")) "./altcode.test/altcode.test.sln"
     "./altcode.test/altcode.test.sln"
-    |> MSBuild.build (fun p ->
-         { p with Verbosity = Some MSBuildVerbosity.Normal
-                  ConsoleLogParameters = []
-                  DistributedLoggers = None
-                  DisableInternalBinLog = true
-                  Properties =
-                    [ "Configuration", "Release"
-                      "DebugSymbols", "True" ] })
+    |> dotnetBuildRelease
   with x ->
     printfn "%A" x
     reraise())
@@ -141,14 +147,7 @@ _Target "BuildRelease" (fun _ ->
 _Target "BuildDebug" (fun _ ->
   DotNet.restore (fun o -> o.WithCommon(withWorkingDirectoryVM ".")) "./altcode.test/altcode.test.sln"
   "./altcode.test/altcode.test.sln"
-  |> MSBuild.build (fun p ->
-       { p with Verbosity = Some MSBuildVerbosity.Normal
-                ConsoleLogParameters = []
-                DistributedLoggers = None
-                DisableInternalBinLog = true
-                Properties =
-                  [ "Configuration", "Debug"
-                    "DebugSymbols", "True" ] }))
+  |> dotnetBuildDebug)
 
 // Code Analysis
 
