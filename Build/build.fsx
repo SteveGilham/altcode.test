@@ -19,10 +19,10 @@ nuget Fake.Tools.Git >= 5.20.0
 nuget AltCode.Fake.DotNet.Gendarme >= 5.18.1.24
 nuget BlackFox.CommandLine >= 1.0.0
 nuget BlackFox.VsWhere >= 1.0.0
-nuget FSharpLint.Core >= 0.14
+nuget FSharpLint.Core >= 0.14.2
 nuget Markdown >= 2.2.1
 nuget NUnit >= 3.12.0
-nuget YamlDotNet >= 8.1.1 //"
+nuget YamlDotNet >= 8.1.2 //"
 #r "System.IO.Compression.FileSystem.dll"
 #r "System.Xml"
 #r "System.Xml.Linq"

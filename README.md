@@ -67,7 +67,7 @@ Uses the nuget package for platform-independent build of the Framework support; 
 
 ### Tooling
 
-It is assumed that .net core 3.1.300 is available  (`dotnet`) -- try https://www.microsoft.com/net/download  
+It is assumed that .net 5.0.100 or later is available  (`dotnet`) -- try https://www.microsoft.com/net/download  
 
 ### Bootstrapping
 

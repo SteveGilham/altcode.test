@@ -252,7 +252,7 @@ _Target "PrepareDotNetBuild" (fun _ ->
        let desc = dotnetNupkg.Descendants(x "description") |> Seq.head
        "@description@" |> XText |> desc.ReplaceAll
 
-       [ "authors"; "owners" ]
+       [ "authors" ]
        |> List.iter (fun tag -> let title = dotnetNupkg.Descendants(x tag) |> Seq.head
                                 title.ReplaceNodes "Steve Gilham")
        let id = dotnetNupkg.Descendants(x "id") |> Seq.head
