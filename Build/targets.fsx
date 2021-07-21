@@ -93,13 +93,11 @@ _Target "Clean" (fun _ ->
 
 _Target "SetVersion" (fun _ ->
   let appveyor = Environment.environVar "APPVEYOR_BUILD_VERSION"
-  let travis = Environment.environVar "TRAVIS_BUILD_NUMBER"
   let version = Actions.GetVersionFromYaml()
 
   let ci =
     if String.IsNullOrWhiteSpace appveyor then
-      if String.IsNullOrWhiteSpace travis then String.Empty
-      else version.Replace("{build}", travis + "-travis")
+      String.Empty
     else appveyor
 
   let (v, majmin, y) = Actions.LocalVersion ci version
