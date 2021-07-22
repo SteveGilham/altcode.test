@@ -14,8 +14,8 @@ open Fake.IO.Globbing
 open Fake.IO.Globbing.Operators
 open Fake.Tools.Git
 
-open FSharpLint.Application
-open FSharpLint.Framework
+//open FSharpLint.Application
+//open FSharpLint.Framework
 
 open NUnit.Framework
 
@@ -152,32 +152,56 @@ _Target "BuildDebug" (fun _ ->
 _Target "Analysis" ignore
 
 _Target "Lint" (fun _ ->
-  let failOnIssuesFound (issuesFound : bool) =
-    Assert.That(issuesFound, Is.False, "Lint issues were found")
-  try
-    let options =
-      { Lint.OptionalLintParameters.Default with
-          Configuration = FromFile(Path.getFullName "./fsharplint.json") }
+      let cfg = Path.getFullName "./fsharplint.json"
 
-    !!"**/*.fsproj"
-    |> Seq.collect (fun n -> !!(Path.GetDirectoryName n @@ "*.fs"))
-    |> Seq.distinct
-    |> Seq.map (fun f ->
-         match Lint.lintFile options f with
-         | Lint.LintResult.Failure x -> failwithf "%A" x
-         | Lint.LintResult.Success w ->
-             w
-             |> Seq.filter (fun x ->
-                  x.Details.SuggestedFix |> Option.isSome))
-    |> Seq.concat
-    |> Seq.fold (fun _ x ->
-         printfn "Info: %A\r\n Range: %A\r\n Fix: %A\r\n====" x.Details.Message
-           x.Details.Range x.Details.SuggestedFix
-         true) false
-    |> failOnIssuesFound
-  with ex ->
-    printfn "%A" ex
-    reraise())
+      let doLint f =
+        CreateProcess.fromRawCommand "dotnet" ["fsharplint"; "lint";  "-l"; cfg ; f]
+        |> CreateProcess.ensureExitCodeWithMessage "Lint issues were found"
+        |> Proc.run
+      let doLintAsync f = async { return (doLint f).ExitCode }
+
+      let throttle x = Async.Parallel (x, System.Environment.ProcessorCount)
+
+      let failOnIssuesFound (issuesFound: bool) =
+        Assert.That(issuesFound, Is.False, "Lint issues were found")
+
+      [ !! "./**/*.fsproj"
+        |> Seq.sortBy (Path.GetFileName)
+        !! "./Build/*.fsx" |> Seq.map Path.GetFullPath ]
+      |> Seq.concat
+      |> Seq.map doLintAsync
+      |> throttle
+      |> Async.RunSynchronously
+      |> Seq.exists (fun x -> x <> 0)
+      |> failOnIssuesFound
+      )
+
+  //let failOnIssuesFound (issuesFound : bool) =
+  //  Assert.That(issuesFound, Is.False, "Lint issues were found")
+  //try
+  //  let options =
+  //    { Lint.OptionalLintParameters.Default with
+  //        Configuration = FromFile(Path.getFullName "./fsharplint.json") }
+
+  //  !!"**/*.fsproj"
+  //  |> Seq.collect (fun n -> !!(Path.GetDirectoryName n @@ "*.fs"))
+  //  |> Seq.distinct
+  //  |> Seq.map (fun f ->
+  //       match Lint.lintFile options f with
+  //       | Lint.LintResult.Failure x -> failwithf "%A" x
+  //       | Lint.LintResult.Success w ->
+  //           w
+  //           |> Seq.filter (fun x ->
+  //                x.Details.SuggestedFix |> Option.isSome))
+  //  |> Seq.concat
+  //  |> Seq.fold (fun _ x ->
+  //       printfn "Info: %A\r\n Range: %A\r\n Fix: %A\r\n====" x.Details.Message
+  //         x.Details.Range x.Details.SuggestedFix
+  //       true) false
+  //  |> failOnIssuesFound
+  //with ex ->
+  //  printfn "%A" ex
+  //  reraise())
 
 // Packaging
 
@@ -203,8 +227,8 @@ _Target "Packaging" (fun _ ->
                 |> Seq.map (fun f -> (f, Some ("lib" + ((Path.GetDirectoryName f).Substring chop)), None))
                 |> Seq.toList
 
-    let output = Path.getFullName ("_Packaging." + test)          
-    
+    let output = Path.getFullName ("_Packaging." + test)
+
     let workingDir = Path.getFullName ("./altcode.test/_Binaries/" + test)
     Directory.ensure workingDir
     Directory.ensure output
@@ -256,7 +280,7 @@ _Target "PrepareDotNetBuild" (fun _ ->
        let title = XElement(x "title", caption)
        id.AddAfterSelf title
        let repo = dotnetNupkg.Descendants(x "repository") |> Seq.head
-       [ 
+       [
          ("copyright", "@copyright@", [])
          ("releaseNotes", "@releaseNotes@", [])
          ("icon", "Icon_128x.png", [])
@@ -268,7 +292,6 @@ _Target "PrepareDotNetBuild" (fun _ ->
                                    Seq.iter (fun (n,v) -> node.SetAttributeValue(XName.Get(n, ""), v))
                                    repo.AddAfterSelf node)
 
-                                 
        let meta = dotnetNupkg.Descendants(x "metadata") |> Seq.head
        "@files@" |> XText |> meta.AddAfterSelf
 
@@ -331,7 +354,7 @@ Target.activateFinal "ResetConsoleColours"
 
 "Analysis" ==> "All"
 
-"Deployment" 
+"Deployment"
 ==> "All"
 
 let defaultTarget() =
