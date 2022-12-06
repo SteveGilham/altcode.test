@@ -4,7 +4,8 @@ on:
   push:
     branches:
     - master
-    - develop/*
+    - release/*
+    - develop/github/*
   pull_request:
     branches:
     - master
