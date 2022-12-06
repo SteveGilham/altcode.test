@@ -1,6 +1,6 @@
 version: 1.0.{build}-pre
 branches:
-  include:
+  only:
   - /nonesuch/
 skip_tags: true
 image:
