@@ -2,6 +2,12 @@ Q. Never mind the fluff -- how do I get started?
 
 A. Start with the README : https://github.com/SteveGilham/altcode.test/blob/master/README.md
 
+# 1.0.xx
+* [BREAKING] make the `AssertionMatch` type specific to each package to avoid name clashes if multiple test suites are in use
+* [BREAKING] remove support for obsolescing NUnit `Assert.AreEqual<Nullable<double>>` methods
+* support `netstandard2.0` only (meaning ≥ `net472` compatible)
+* support Expecto ≥ 9.0.4, NUnit ≥ 3.13.3, Xunit ≥ 2.4.2
+
 # 1.0.11
 * support Expecto 9.x
 * support `net47` and `netstandard2.0` only
@@ -17,6 +23,6 @@ A. Start with the README : https://github.com/SteveGilham/altcode.test/blob/mast
 * `altcode.test.xunit` -- add `AltAssert.Same`
 
 # 1.0.4
-* [NEW PACKAGE] `altcode.test.expecto` -- named argument helper for Expecto >= 8.12.0
-* [NEW PACKAGE] `altcode.test.nunit` -- named argument helper for NUnit >= 3.12.0
-* [NEW PACKAGE] `altcode.test.xunit` -- named argument helper for Xunit >= 2.4.1
+* [NEW PACKAGE] `altcode.test.expecto` -- named argument helper for Expecto ≥ 8.12.0
+* [NEW PACKAGE] `altcode.test.nunit` -- named argument helper for NUnit ≥ 3.12.0
+* [NEW PACKAGE] `altcode.test.xunit` -- named argument helper for Xunit ≥ 2.4.1
