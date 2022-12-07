@@ -91,6 +91,52 @@ module Targets =
   let infoV =
     Information.showName "." commitHash
 
+  let ReleaseNotes =
+    let source =
+      Path.getFullName "ReleaseNotes.md"
+      |> File.ReadAllLines
+      |> Seq.map (fun s ->
+        let t =
+          System.Text.RegularExpressions.Regex.Replace(s, "^\*\s", "* •\u00A0")
+
+        let u =
+          System.Text.RegularExpressions.Regex.Replace(
+            t,
+            "^\s\s\*\s", // ◦ U+25E6 WHITE BULLET
+            "  * \u00A0\u00A0\u25E6\u00A0"
+          )
+
+        let v =
+          System.Text.RegularExpressions.Regex.Replace(
+            u,
+            "^\s\s\s+\*\s", // ⁃ U+2043 HYPHEN BULLET,
+            "    * \u00A0\u00A0\u00A0\u00A0\u2043\u00A0"
+          )
+
+        System.Text.RegularExpressions.Regex.Replace(
+          v,
+          "^#\s", // ⁋ U+204B REVERSED PILCROW SIGN
+          "# \u204B"
+        ))
+      |> (fun s -> String.Join(Environment.NewLine, s))
+
+    use w = new StringWriter()
+    // printfn "tweaked = %A" source
+    Markdig.Markdown.ToPlainText(source, w) |> ignore
+
+    let releaseNotes =
+      "This build from https://github.com/SteveGilham/altcode.test/tree/"
+      + commitHash
+      + Environment.NewLine
+      + Environment.NewLine
+      + w
+        .ToString()
+        .Replace("\u204B", Environment.NewLine)
+
+    printfn "release notes are %A characters" releaseNotes.Length
+    Assert.That(releaseNotes.Length, Is.LessThan 35000)
+    releaseNotes
+
   let buildWithCLIArguments (o: Fake.DotNet.DotNet.BuildOptions) =
     { o with MSBuildParams = cliArguments }
 
@@ -101,13 +147,7 @@ module Targets =
       [ "Copyright", Copyright //.Replace("©", "(c)
         "PackageVersion", Version
         "VersionSuffix", VersionSuffix
-        "PackageReleaseNotes", // TODO max length warning
-        "This build from https://github.com/SteveGilham/altcode.test/tree/"
-        + commitHash
-        + Environment.NewLine
-        + Environment.NewLine
-        + (Path.getFullName "ReleaseNotes.md"
-           |> File.ReadAllText) ]
+        "PackageReleaseNotes", ReleaseNotes ]
 
     let after =
       [ l; before ] |> List.concat |> Map.ofList
@@ -384,7 +424,8 @@ module Targets =
 
     "Compilation" ?=> "Packaging" |> ignore
 
-    "Compilation" ==> "Packaging" ==> "Deployment" |> ignore
+    "Compilation" ==> "Packaging" ==> "Deployment"
+    |> ignore
 
     "Clean" ==> "PrepareReadMe" ==> "Preparation"
     |> ignore

@@ -28,7 +28,7 @@
     <PackageReference Include="altcover.fake" />
     <PackageReference Include="BlackFox.CommandLine" />
     <PackageReference Include="BlackFox.VsWhere" />
-    <PackageReference Include="Markdown" />
+    <PackageReference Include="Markdig" />
     <PackageReference Include="NUnit" />
   </ItemGroup>
 

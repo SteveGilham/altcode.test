@@ -10,7 +10,6 @@ module Actions =
   open Fake.IO.FileSystemOperators
   open Fake.IO
   open Fake.IO.Globbing.Operators
-  open HeyRed.MarkdownSharp
   open NUnit.Framework
 
   let Clean () =
@@ -217,9 +216,14 @@ do ()"""
     DotNet.exec o cmd args |> (HandleResults msg)
 
   let PrepareReadMe packingCopyright =
-    let readme = Path.getFullName "README.md"
+    let readmemd = "README.md"
+    let readme = Path.getFullName readmemd
+
+    let name =
+      Path.GetFileNameWithoutExtension readmemd
+
     let document = File.ReadAllText readme
-    let markdown = Markdown()
+    let markdown = Markdig.Markdown.ToHtml(document)
 
     let docHtml =
       """<?xml version="1.0"  encoding="utf-8"?>
@@ -239,7 +243,7 @@ a:hover {color: #ecc;}
 </head>
 <body>
 """
-      + markdown.Transform document
+      + markdown
       + """
 <footer><p style="text-align: center">"""
       + packingCopyright
@@ -282,6 +286,6 @@ a:hover {color: #ecc;}
       | _ -> ())
 
     let packable =
-      Path.getFullName "./_Binaries/README.html"
+      Path.getFullName ("./_Binaries/" + name + ".html")
 
     xmlform.Save packable

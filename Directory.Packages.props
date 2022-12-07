@@ -34,7 +34,7 @@
     <PackageVersion Include="FSharp.Core" Version="6.0.0" />
     <PackageVersion Include="FsUnit" Version="5.1.0" />
     <!-- PackageVersion Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" / -->
-    <PackageVersion Include="Markdown" Version="2.2.1" />
+    <PackageVersion Include="Markdig" Version="0.30.4" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.4.0" />
     <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="1.1.1" />
     <PackageVersion Include="Microsoft.TestPlatform.ObjectModel" Version="16.0.0" />
