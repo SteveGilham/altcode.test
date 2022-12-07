@@ -3,7 +3,6 @@
 open System
 open System.Collections.Generic
 open System.IO
-open AltCode.Test.Common
 open Expecto
 
 [<RequireQualifiedAccess>]

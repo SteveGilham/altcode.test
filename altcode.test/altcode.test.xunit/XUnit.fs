@@ -2,7 +2,6 @@
 
 open System
 open System.Collections.Generic
-open AltCode.Test.Common
 open Xunit
 
 [<AbstractClass; Sealed>]

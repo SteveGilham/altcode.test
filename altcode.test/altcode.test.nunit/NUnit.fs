@@ -3,7 +3,6 @@
 open System
 open System.Collections
 open System.IO
-open AltCode.Test.Common
 open NUnit.Framework
 
 type Constraint<'a> =
