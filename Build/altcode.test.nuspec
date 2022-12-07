@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <title>altcode.test.*</title>
+    <id>@project@</id>
+    <version>@build.number@</version>
+    <authors>@authors@</authors>
+    <owners>@authors@</owners>
+    <summary>@summary@</summary>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="file">LICENSE</license>
+    <projectUrl>https://github.com/SteveGilham/altxcode.dixon</projectUrl>
+    <iconUrl>https://cdn.jsdelivr.net/gh/SteveGilham/altxcode.test/Build/Icon_128x.png</iconUrl>
+    <icon>Icon_128x.png</icon>
+    <description>Unit test API wrapper.</description>
+    <releaseNotes>@releaseNotes@</releaseNotes>
+    <readme>README.md</readme>
+    <copyright>@copyright@</copyright>
+    <tags>unit-test</tags>
+    <repository type="git" url="https://github.com/SteveGilham/altcode.test" />
+    @dependencies@
+    @references@
+  </metadata>
+  @files@
+</package>

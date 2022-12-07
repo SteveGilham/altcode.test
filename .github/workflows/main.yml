@@ -19,14 +19,15 @@ jobs:
         fetch-depth: 2
     - uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: '5.0.302'
+        dotnet-version: '7.0.100'
     - name: Tools
-      run: dotnet tool restore
+      run: dotnet run --project ./Build/Setup.fsproj
     - name: Setup
-      run: dotnet fake run ./Build/setup.fsx
+      run: dotnet run --project ./Build/Build.fsproj
     - name: Build
-#      env:
- #       COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+      env:
+#        COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+        NUGET_API_TOKEN: ${{ secrets.NUGET_API_TOKEN }}
       run: dotnet fake run ./Build/build.fsx
     - uses: actions/upload-artifact@v3
       with:
@@ -38,10 +39,10 @@ jobs:
     - uses: actions/checkout@v3
     - uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: '5.0.302'
+        dotnet-version: '7.0.100'
     - name: Tools
       run: dotnet tool restore
     - name: Setup
-      run: dotnet fake run ./Build/setup.fsx
+      run: dotnet run --project ./Build/Setup.fsproj
     - name: Build
-      run: dotnet fake run ./Build/build.fsx  
+      run: dotnet run --project ./Build/Build.fsproj

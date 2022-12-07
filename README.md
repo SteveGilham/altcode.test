@@ -59,8 +59,7 @@ and wrappers for some `NUnit.Framework.Assert.That` overloads
 
 | | | |
 | --- | --- | --- | 
-| **Build** | <sup>AppVeyor</sup> [![Build status](https://img.shields.io/appveyor/ci/SteveGilham/altcode-test/master.svg)](https://ci.appveyor.com/project/SteveGilham/altcode-test) | ![Build history](https://buildstats.info/appveyor/chart/SteveGilham/altcode-test?branch=master) 
-| |<sup>GitHub</sup> [![CI](https://github.com/SteveGilham/altcode.test/workflows/CI/badge.svg)](https://github.com/SteveGilham/altcode.test/actions?query=workflow%3ACI) | [![Build history](https://buildstats.info/github/chart/SteveGilham/altcode.test?branch=master)](https://github.com/SteveGilham/altcode.test/actions?query=workflow%3ACI)
+| **Build** | <sup>GitHub</sup> [![CI](https://github.com/SteveGilham/altcode.test/workflows/CI/badge.svg)](https://github.com/SteveGilham/altcode.test/actions?query=workflow%3ACI) | [![Build history](https://buildstats.info/github/chart/SteveGilham/altcode.test?branch=master)](https://github.com/SteveGilham/altcode.test/actions?query=workflow%3ACI)
 
 ## Building
 
@@ -81,6 +80,3 @@ Running `dotnet fake run ./Build/build.fsx` performs a full build/package proces
 
 Use `dotnet fake run ./Build/build.fsx --target <targetname>` to run to a specific target.
 
-## Thanks to
-
-* [AppVeyor](https://ci.appveyor.com/project/SteveGilham/altcode-fake) for allowing free build CI services for Open Source projects

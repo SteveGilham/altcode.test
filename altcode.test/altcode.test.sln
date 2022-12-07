@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29424.173
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33122.133
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "altcode.test.common", "altcode.test.common\altcode.test.common.fsproj", "{5B6439EC-3118-4826-B33D-450CAA1182CB}"
 EndProject
@@ -11,13 +11,10 @@ Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "altcode.test.xunit", "altco
 EndProject
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "altcode.test.expecto", "altcode.test.expecto\altcode.test.expecto.fsproj", "{5AA873A5-E32C-478D-BED2-E828BF3AD32C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "dotnet-cli", "..\Build\dotnet-cli.csproj", "{B9FF2B37-BC06-4482-AC89-6D13A5918D54}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildItems", "BuildItems", "{39F92592-15BD-4633-ACED-F4A96ED9FE11}"
 	ProjectSection(SolutionItems) = preProject
-		..\Build\actions.fsx = ..\Build\actions.fsx
-		..\appveyor.yml = ..\appveyor.yml
-		..\Build\build.fsx = ..\Build\build.fsx
+		..\Build\actions.fs = ..\Build\actions.fs
+		..\Build\build.fs = ..\Build\build.fs
 		..\.config\dotnet-tools.json = ..\.config\dotnet-tools.json
 		..\fsharplint.json = ..\fsharplint.json
 		..\global.json = ..\global.json
@@ -25,9 +22,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildItems", "BuildItems", 
 		..\README.md = ..\README.md
 		..\ReleaseNotes.md = ..\ReleaseNotes.md
 		..\Build\rules-fake.xml = ..\Build\rules-fake.xml
-		..\Build\setup.fsx = ..\Build\setup.fsx
-		..\Build\targets.fsx = ..\Build\targets.fsx
+		..\Build\setup.fs = ..\Build\setup.fs
+		..\Build\targets.fs = ..\Build\targets.fs
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NuGet", "..\Build\NuGet.csproj", "{C9383C03-09A6-4E56-AA0A-A337CA03BC93}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,14 +50,14 @@ Global
 		{5AA873A5-E32C-478D-BED2-E828BF3AD32C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5AA873A5-E32C-478D-BED2-E828BF3AD32C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5AA873A5-E32C-478D-BED2-E828BF3AD32C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B9FF2B37-BC06-4482-AC89-6D13A5918D54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B9FF2B37-BC06-4482-AC89-6D13A5918D54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9383C03-09A6-4E56-AA0A-A337CA03BC93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9383C03-09A6-4E56-AA0A-A337CA03BC93}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{B9FF2B37-BC06-4482-AC89-6D13A5918D54} = {39F92592-15BD-4633-ACED-F4A96ED9FE11}
+		{C9383C03-09A6-4E56-AA0A-A337CA03BC93} = {39F92592-15BD-4633-ACED-F4A96ED9FE11}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {21ECFD4D-3B72-43C8-AB63-768D2DF148E5}

@@ -32,18 +32,6 @@ type AltAssert =
   static member AreEqual(x: AssertionMatch<double>, delta) =
     Assert.AreEqual(x.Expected, x.Actual, delta)
 
-  static member AreEqual(x: AssertionMatch<Nullable<double>>, delta, message, args) =
-    if not x.Expected.HasValue then
-      ArgumentNullException "Expected" |> raise
-
-    Assert.AreEqual(x.Expected.Value, x.Actual, delta, message, args)
-
-  static member AreEqual(x: AssertionMatch<Nullable<double>>, delta) =
-    if not x.Expected.HasValue then
-      ArgumentNullException "Expected" |> raise
-
-    Assert.AreEqual(x.Expected.Value, x.Actual, delta)
-
   static member AreEqual(x: AssertionMatch<'a>, message, args) =
     Assert.AreEqual(x.Expected, x.Actual, message, args)
 
