@@ -7,7 +7,7 @@
     <RepositoryUrl>https://github.com/SteveGilham/altcode.test</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>unit-test nunit</PackageTags>
-    <Description>AltCode.Test.NUnit (NUnit helper)</Description>
+    <Description>A named-argument helper wrapper for unit tests with NUnit</Description>
     <Authors>Steve Gilham</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>

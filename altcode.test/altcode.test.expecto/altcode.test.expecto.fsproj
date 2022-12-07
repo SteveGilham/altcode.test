@@ -7,7 +7,7 @@
     <RepositoryUrl>https://github.com/SteveGilham/altcode.test</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>unit-test expecto</PackageTags>
-    <Description>AltCode.Test.Expecto (Expecto helper)</Description>
+    <Description>A named-argument helper wrapper for unit tests with Expecto</Description>
     <Authors>Steve Gilham</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>

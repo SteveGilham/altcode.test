@@ -98,10 +98,10 @@ module Targets =
     let before = o.Environment |> Map.toList
 
     let l =
-      [ "Copyright", Copyright
+      [ "Copyright", Copyright //.Replace("©", "(c)
         "PackageVersion", Version
         "VersionSuffix", VersionSuffix
-        "PackageReleaseNotes",
+        "PackageReleaseNotes", // TODO max length warning
         "This build from https://github.com/SteveGilham/altcode.test/tree/"
         + commitHash
         + Environment.NewLine
@@ -295,111 +295,17 @@ module Targets =
 
   let Packaging =
     (fun _ ->
-      let packable =
-        Path.getFullName "./_Binaries/README.html"
-
-      let extras =
-        [ (packable, Some "", None)
-          (Path.getFullName "./Build/Icon_128x.png", Some "Icon_128x.png", None)
-          (Path.getFullName "./LICENS*", Some "", None) ]
-
-      [ "Expecto"; "NUnit"; "Xunit" ]
-      |> List.iter (fun utest ->
-        let test = utest.ToLowerInvariant()
-
-        let nuspec =
-          Path.getFullName (
-            "./_Intermediate/altcode.test."
-            + test
-            + "/Release/Release/altcode.test."
-            + test
-            + ".1.0.0.nuspec"
-          )
-
-        let fileroot =
-          Path.getFullName ("./_Publish/" + test + "/lib")
-
-        let chop = fileroot.Length
-
-        let files =
-          !!(fileroot + "/**/*")
-          |> Seq.map (fun f ->
-            (f, Some("lib" + ((Path.GetDirectoryName f).Substring chop)), None))
-          |> Seq.toList
-
+      [ "expecto"; "nunit"; "xunit" ]
+      |> List.iter (fun test ->
         let output =
           Path.getFullName ("_Packaging." + test)
 
-        let workingDir =
-          Path.getFullName ("./altcode.test/_Binaries/" + test)
-
-        Directory.ensure workingDir
         Directory.ensure output
 
-        NuGet
-          (fun p ->
-            { p with
-                Authors = [ "Steve Gilham" ]
-                Description =
-                  "A named-argument helper wrapper for unit tests with "
-                  + utest
-                OutputPath = output
-                WorkingDir = workingDir
-                Files = files @ extras
-                Version = Version
-                Copyright = (Copyright).Replace("©", "(c)")
-                Publish = false
-                ReleaseNotes =
-                  "This build from https://github.com/SteveGilham/altcode.test/tree/"
-                  + commitHash
-                  + Environment.NewLine
-                  + Environment.NewLine
-                  + (Path.getFullName "ReleaseNotes.md"
-                     |> File.ReadAllText)
-                ToolPath =
-                  if Environment.isWindows then
-                    ("./packages/"
-                     + (packageVersion "NuGet.CommandLine")
-                     + "/tools/NuGet.exe")
-                    |> Path.getFullName
-                  else
-                    "/usr/bin/nuget" })
-          nuspec))
-
-  let PrepareDotNetBuild =
-    (fun _ ->
-      let packaging =
-        Path.getFullName "_Packaging"
-
-      Directory.ensure packaging
-      let publish = Path.getFullName "./_Publish"
-
-      !!("./altcode.test/_Binaries/*/Release+AnyCPU/*.nupkg")
-      |> Seq.iter (fun f ->
-        let name = Path.GetFileName f
-
-        let unpack =
-          Path.Combine(publish, name.Split('.').[2])
-
-        System.IO.Compression.ZipFile.ExtractToDirectory(f, unpack)
-
-      // let dotnetNupkg = XDocument.Load path
-
-      // dotnetNupkg.Descendants()
-      // |> Seq.filter (fun x ->
-      //   x.Name.LocalName = "dependency"
-      //   && x.Attributes()
-      //      |> Seq.exists (fun node ->
-      //        node.Name.LocalName = "id"
-      //        && node.Value = "altcode.test.common"))
-      // |> Seq.toList
-      // |> List.iter (fun n -> n.Remove())
-
-      // dotnetNupkg.Save(
-      //   (Path.Combine(packaging, Path.GetFileName path)),
-      //   SaveOptions.None
-      // )))
-      ))
+        !!("./_Binaries/altcode.test."
+           + test
+           + "/Release+AnyCPU/*.nupkg")
+        |> Seq.iter (fun f -> Shell.copyFile output f)))
 
   let PrepareReadMe =
     (fun _ ->
@@ -459,7 +365,6 @@ module Targets =
     _Target "Analysis" ignore
     _Target "Lint" Lint
     _Target "Packaging" Packaging
-    _Target "PrepareDotNetBuild" PrepareDotNetBuild
     _Target "PrepareReadMe" PrepareReadMe
     _Target "Deployment" ignore
     _Target "All" All
@@ -479,10 +384,7 @@ module Targets =
 
     "Compilation" ?=> "Packaging" |> ignore
 
-    "Compilation"
-    ==> "PrepareDotNetBuild"
-    ==> "Packaging"
-    |> ignore
+    "Compilation" ==> "Packaging" ==> "Deployment" |> ignore
 
     "Clean" ==> "PrepareReadMe" ==> "Preparation"
     |> ignore
