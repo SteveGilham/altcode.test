@@ -345,82 +345,30 @@ module Targets =
         let unpack =
           Path.Combine(publish, name.Split('.').[2])
 
-        System.IO.Compression.ZipFile.ExtractToDirectory(f, unpack))
+        System.IO.Compression.ZipFile.ExtractToDirectory(f, unpack)
 
-      [ ("./_Intermediate/altcode.test.expecto/Release/Release/altcode.test.expecto.1.0.0.nuspec",
-         "AltCode.Test.Expecto (Expecto helper)")
-        ("./_Intermediate/altcode.test.nunit/Release/Release/altcode.test.nunit.1.0.0.nuspec",
-         "AltCode.Test.NUnit (NUnit helper)")
-        ("./_Intermediate/altcode.test.xunit/Release/Release/altcode.test.xunit.1.0.0.nuspec",
-         "AltCode.Test.Xunit (Xunit helper)") ]
-      |> List.iter (fun (path, caption) ->
-        printfn "%s" caption
+        // let dotnetNupkg = XDocument.Load path
 
-        let x s =
-          XName.Get(s, "http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd")
+        // dotnetNupkg.Descendants()
+        // |> Seq.filter (fun x ->
+        //   x.Name.LocalName = "dependency"
+        //   && x.Attributes()
+        //      |> Seq.exists (fun node ->
+        //        node.Name.LocalName = "id"
+        //        && node.Value = "altcode.test.common"))
+        // |> Seq.toList
+        // |> List.iter (fun n -> n.Remove())
 
-        let dotnetNupkg = XDocument.Load path
-
-        let desc =
-          dotnetNupkg.Descendants()
-          |> Seq.filter (fun x -> x.Name.LocalName = "description")
-          |> Seq.head
-
-        "@description@" |> XText |> desc.ReplaceAll
-
-        [ "authors" ]
-        |> List.iter (fun tag ->
-          let title =
-            dotnetNupkg.Descendants(x tag) |> Seq.head
-
-          title.ReplaceNodes "Steve Gilham")
-
-        let id =
-          dotnetNupkg.Descendants(x "id") |> Seq.head
-
-        let title = XElement(x "title", caption)
-        id.AddAfterSelf title
-
-        let repo =
-          dotnetNupkg.Descendants(x "repository")
-          |> Seq.head
-
-        [ ("copyright", "@copyright@", [])
-          ("releaseNotes", "@releaseNotes@", [])
-          ("icon", "Icon_128x.png", [])
-          ("iconUrl",
-           "https://cdn.jsdelivr.net/gh/SteveGilham/altcode.test/Build/Icon_128x.png",
-           [])
-          ("license", "LICENSE", [ ("type", "file") ]) ]
-        |> Seq.iter (fun (a, b, l) ->
-          let node = XElement(x a, b)
-
-          l
-          |> Seq.iter (fun (n, v) -> node.SetAttributeValue(XName.Get(n, ""), v))
-
-          repo.AddAfterSelf node)
-
-        let meta =
-          dotnetNupkg.Descendants(x "metadata") |> Seq.head
-
-        "@files@" |> XText |> meta.AddAfterSelf
-
-        dotnetNupkg.Descendants(x "dependency")
-        |> Seq.filter (fun node ->
-          let id =
-            node.Attribute(XName.Get "id").Value
-
-          id = "altcode.test.common")
-        |> Seq.toList
-        |> List.iter (fun n -> n.Remove())
-
-        dotnetNupkg.Save(
-          (Path.Combine(packaging, Path.GetFileName path)),
-          SaveOptions.None
-        )))
+        // dotnetNupkg.Save(
+        //   (Path.Combine(packaging, Path.GetFileName path)),
+        //   SaveOptions.None
+        // )))
+      ))
 
   let PrepareReadMe =
     (fun _ ->
+      Directory.ensure "./_Binaries"
+
       Actions.PrepareReadMe(
         (Copyright.Value)
           .Replace("©", "&#xa9;")
@@ -500,10 +448,8 @@ module Targets =
     ==> "Packaging"
     |> ignore
 
-    "Compilation"
-    ==> "PrepareReadMe"
-    ==> "Packaging"
-    ==> "Deployment"
+    "Clean" ==> "PrepareReadMe"
+    ==> "Preparation"
     |> ignore
 
     "Analysis" ==> "All" |> ignore

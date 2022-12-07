@@ -226,7 +226,7 @@ do ()"""
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>AltCover README</title>
+<title>AltCode.Test README</title>
 <style>
 body, html {
 color: #000; background-color: #eee;
