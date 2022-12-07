@@ -177,10 +177,13 @@ module Targets =
             AssemblyInfo.Copyright copy ]
           (Some AssemblyInfoFileConfig.Default))
 
-      let common = File.ReadAllText ("./altcode.test/altcode.test.common/Common.fs")
-      ["Expecto"; "Nunit"; "Xunit"]
-      |> List.iter (fun k -> let text = common.Replace("Common", k)
-                             File.WriteAllText("./_Generated/Common." + k + ".fs", text))
+      let common =
+        File.ReadAllText("./altcode.test/altcode.test.common/Common.fs")
+
+      [ "Expecto"; "Nunit"; "Xunit" ]
+      |> List.iter (fun k ->
+        let text = common.Replace("Common", k)
+        File.WriteAllText("./_Generated/Common." + k + ".fs", text))
 
       let hack =
         """namespace AltCover
@@ -352,22 +355,22 @@ module Targets =
 
         System.IO.Compression.ZipFile.ExtractToDirectory(f, unpack)
 
-        // let dotnetNupkg = XDocument.Load path
+      // let dotnetNupkg = XDocument.Load path
 
-        // dotnetNupkg.Descendants()
-        // |> Seq.filter (fun x ->
-        //   x.Name.LocalName = "dependency"
-        //   && x.Attributes()
-        //      |> Seq.exists (fun node ->
-        //        node.Name.LocalName = "id"
-        //        && node.Value = "altcode.test.common"))
-        // |> Seq.toList
-        // |> List.iter (fun n -> n.Remove())
+      // dotnetNupkg.Descendants()
+      // |> Seq.filter (fun x ->
+      //   x.Name.LocalName = "dependency"
+      //   && x.Attributes()
+      //      |> Seq.exists (fun node ->
+      //        node.Name.LocalName = "id"
+      //        && node.Value = "altcode.test.common"))
+      // |> Seq.toList
+      // |> List.iter (fun n -> n.Remove())
 
-        // dotnetNupkg.Save(
-        //   (Path.Combine(packaging, Path.GetFileName path)),
-        //   SaveOptions.None
-        // )))
+      // dotnetNupkg.Save(
+      //   (Path.Combine(packaging, Path.GetFileName path)),
+      //   SaveOptions.None
+      // )))
       ))
 
   let PrepareReadMe =
@@ -453,8 +456,7 @@ module Targets =
     ==> "Packaging"
     |> ignore
 
-    "Clean" ==> "PrepareReadMe"
-    ==> "Preparation"
+    "Clean" ==> "PrepareReadMe" ==> "Preparation"
     |> ignore
 
     "Analysis" ==> "All" |> ignore
