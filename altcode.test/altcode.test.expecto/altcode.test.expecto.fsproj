@@ -9,8 +9,6 @@
     <PackageTags>unit-test expecto</PackageTags>
     <Description>AltCode.Test.Expecto (Expecto helper)</Description>
     <Authors>Steve Gilham</Authors>
-    <Copyright>@copyright@</Copyright>
-    <PackageReleaseNotes>@releaseNotes@</PackageReleaseNotes>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <!-- PackageLicenseFile>LICENSE</PackageLicenseFile -->

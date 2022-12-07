@@ -16,8 +16,10 @@ module Targets =
 
   open NUnit.Framework
 
-  let Copyright = ref String.Empty
-  let Version = ref String.Empty
+  let mutable Copyright = String.Empty
+  let mutable Version = String.Empty
+  let mutable VersionBase = String.Empty
+  let mutable VersionSuffix = String.Empty
 
   let currentBranch =
     "."
@@ -92,19 +94,41 @@ module Targets =
   let buildWithCLIArguments (o: Fake.DotNet.DotNet.BuildOptions) =
     { o with MSBuildParams = cliArguments }
 
+  let withEnvironment (o: Fake.DotNet.DotNet.BuildOptions) =
+    let before = o.Environment |> Map.toList
+
+    let l =
+      [ "Copyright", Copyright
+        "PackageVersion", Version
+        "VersionSuffix", VersionSuffix
+        "PackageReleaseNotes",
+        "This build from https://github.com/SteveGilham/altcode.test/tree/"
+        + commitHash
+        + Environment.NewLine
+        + Environment.NewLine
+        + (Path.getFullName "ReleaseNotes.md"
+           |> File.ReadAllText) ]
+
+    let after =
+      [ l; before ] |> List.concat |> Map.ofList
+
+    o.WithEnvironment after
+
   let dotnetBuildRelease proj =
     DotNet.build
       (fun p ->
         { p.WithCommon dotnetOptions with
             Configuration = DotNet.BuildConfiguration.Release }
-        |> buildWithCLIArguments)
+        |> buildWithCLIArguments
+        |> withEnvironment)
       (Path.GetFullPath proj)
 
   let dotnetBuildDebug proj =
     DotNet.build
       (fun p ->
         { p.WithCommon dotnetOptions with Configuration = DotNet.BuildConfiguration.Debug }
-        |> buildWithCLIArguments)
+        |> buildWithCLIArguments
+        |> withEnvironment)
       (Path.GetFullPath proj)
 
   let _Target s f =
@@ -153,15 +177,19 @@ module Targets =
         else
           "-pre"
 
-      Version.Value <- v + trailer
+      VersionBase <- v
+      VersionSuffix <- trailer
+      Version <- v + trailer
+      printfn "Version %A" Version
 
       let copy =
         sprintf "© 2019-%d by Steve Gilham <SteveGilham@users.noreply.github.com>" y
 
-      Copyright.Value <- "Copyright " + copy
+      Copyright <- "Copyright " + copy
+      printfn "Copyright %A" Copyright
       Directory.ensure "./_Generated"
-      Actions.InternalsVisibleTo(Version.Value)
-      let v' = Version.Value
+      Actions.InternalsVisibleTo(Version)
+      let v' = Version
 
       [ "./_Generated/AssemblyVersion.fs"
         "./_Generated/AssemblyVersion.cs" ]
@@ -318,8 +346,8 @@ module Targets =
                 OutputPath = output
                 WorkingDir = workingDir
                 Files = files @ extras
-                Version = Version.Value
-                Copyright = (Copyright.Value).Replace("©", "(c)")
+                Version = Version
+                Copyright = (Copyright).Replace("©", "(c)")
                 Publish = false
                 ReleaseNotes =
                   "This build from https://github.com/SteveGilham/altcode.test/tree/"
@@ -378,7 +406,7 @@ module Targets =
       Directory.ensure "./_Binaries"
 
       Actions.PrepareReadMe(
-        (Copyright.Value)
+        (Copyright)
           .Replace("©", "&#xa9;")
           .Replace("<", "&lt;")
           .Replace(">", "&gt;")

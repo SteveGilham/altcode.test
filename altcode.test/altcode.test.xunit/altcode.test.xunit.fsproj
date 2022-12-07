@@ -9,8 +9,6 @@
     <PackageTags>unit-test xunit</PackageTags>
     <Description>AltCode.Test.Xunit (Xunit helper)</Description>
     <Authors>Steve Gilham</Authors>
-    <Copyright>@copyright@</Copyright>
-    <PackageReleaseNotes>@releaseNotes@</PackageReleaseNotes>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <!-- PackageLicenseFile>LICENSE</PackageLicenseFile -->
