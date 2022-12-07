@@ -272,7 +272,13 @@ module Targets =
         let test = utest.ToLowerInvariant()
 
         let nuspec =
-          Path.getFullName ("./_Intermediate/altcode.test." + test + "/Release/Release/altcode.test." + test + ".nuspec")
+          Path.getFullName (
+            "./_Intermediate/altcode.test."
+            + test
+            + "/Release/Release/altcode.test."
+            + test
+            + ".1.0.0.nuspec"
+          )
 
         let fileroot =
           Path.getFullName ("./_Publish/" + test + "/lib")
@@ -341,18 +347,23 @@ module Targets =
 
         System.IO.Compression.ZipFile.ExtractToDirectory(f, unpack))
 
-      [ ("./_Publish/expecto/altcode.test.expecto.nuspec",
+      [ ("./_Intermediate/altcode.test.expecto/Release/Release/altcode.test.expecto.1.0.0.nuspec",
          "AltCode.Test.Expecto (Expecto helper)")
-        ("./_Publish/nunit/altcode.test.nunit.nuspec", "AltCode.Test.NUnit (NUnit helper)")
-        ("./_Publish/xunit/altcode.test.xunit.nuspec", "AltCode.Test.Xunit (Xunit helper)") ]
+        ("./_Intermediate/altcode.test.nunit/Release/Release/altcode.test.nunit.1.0.0.nuspec",
+         "AltCode.Test.NUnit (NUnit helper)")
+        ("./_Intermediate/altcode.test.xunit/Release/Release/altcode.test.xunit.1.0.0.nuspec",
+         "AltCode.Test.Xunit (Xunit helper)") ]
       |> List.iter (fun (path, caption) ->
+        printfn "%s" caption
+
         let x s =
-          XName.Get(s, "http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd")
+          XName.Get(s, "http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd")
 
         let dotnetNupkg = XDocument.Load path
 
         let desc =
-          dotnetNupkg.Descendants(x "description")
+          dotnetNupkg.Descendants()
+          |> Seq.filter (fun x -> x.Name.LocalName = "description")
           |> Seq.head
 
         "@description@" |> XText |> desc.ReplaceAll
