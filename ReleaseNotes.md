@@ -4,9 +4,28 @@ A. Start with the README : https://github.com/SteveGilham/altcode.test/blob/mast
 
 # 1.0.xx
 * [BREAKING] make the `AssertionMatch` type specific to each package to avoid name clashes if multiple test suites are in use
+* [BREAKING] remove support for obsolescing Expecto `Expect.floatEqual`
 * [BREAKING] remove support for obsolescing NUnit `Assert.AreEqual<Nullable<double>>` methods
 * support `netstandard2.0` only (meaning ≥ `net472` compatible)
 * support Expecto ≥ 9.0.4, NUnit ≥ 3.13.3, Xunit ≥ 2.4.2
+* new for `Expecto.Expect`
+  * equalWithDiffPrinter
+  * isFasterThan 
+  * isFasterThanSub 
+  * isGreaterThan
+  * isGreaterThanOrEqual
+  * isLessThan
+  * isLessThanOrEqual
+
+  where for comparisons, `Actual` is what's being tested and `Expected` is the benchmark value
+* new for `Expecto.Flip.Expect`
+  * isFasterThan 
+  * isFasterThanSub 
+  * isGreaterThan
+  * isGreaterThanOrEqual
+  * isLessThan
+  * isLessThanOrEqual
+* new for `Expecto.CSharp.Function`, type `AltCSharpExpect` for the type-homogenous versions of `IsFasterThan`
 
 # 1.0.11
 * support Expecto 9.x

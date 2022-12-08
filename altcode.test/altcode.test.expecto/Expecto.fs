@@ -2,6 +2,7 @@
 
 open System
 open System.Collections.Generic
+open System.Runtime.InteropServices
 open System.IO
 open Expecto
 
@@ -13,6 +14,9 @@ module AltExpect =
   let equal (x: AssertionMatch<'a>) message =
     Expect.equal x.Actual x.Expected message
 
+  let equalWithDiffPrinter diffPrinter (x: AssertionMatch<'a>) message =
+    Expect.equalWithDiffPrinter diffPrinter x.Actual x.Expected message
+
   let floatClose accuracy (x: AssertionMatch<double>) message =
     Expect.floatClose accuracy x.Actual x.Expected message
 
@@ -21,6 +25,24 @@ module AltExpect =
 
   let floatLessThanOrClose accuracy (x: AssertionMatch<double>) message =
     Expect.floatLessThanOrClose accuracy x.Actual x.Expected message
+
+  let isFasterThan (x: AssertionMatch<unit -> 'a>) message =
+    Expect.isFasterThan x.Actual x.Expected message
+
+  let isFasterThanSub (x: AssertionMatch<Performance.Measurer<_, _> -> 'a>) message =
+    Expect.isFasterThanSub x.Actual x.Expected message
+
+  let isGreaterThan (x: AssertionMatch<'a>) message =
+    Expect.isGreaterThan x.Actual x.Expected message
+
+  let isGreaterThanOrEqual (x: AssertionMatch<'a>) message =
+    Expect.isGreaterThanOrEqual x.Actual x.Expected message
+
+  let isLessThan (x: AssertionMatch<'a>) message =
+    Expect.isLessThan x.Actual x.Expected message
+
+  let isLessThanOrEqual (x: AssertionMatch<'a>) message =
+    Expect.isLessThanOrEqual x.Actual x.Expected message
 
   let isMatch (x: AssertionMatch<string>) message =
     Expect.isMatch x.Actual x.Expected message
@@ -55,15 +77,6 @@ module AltExpect =
   let stringStarts (x: AssertionMatch<IEnumerable<char>>) message =
     Expect.stringStarts x.Actual x.Expected message
 
-  [<Obsolete("Please use the more general AltExpect.floatClose")>]
-  let floatEqual (x: AssertionMatch<double>) epsilon message =
-    let epsilon2 =
-      match epsilon with
-      | Some d -> d
-      | None -> 0.001
-
-    Expect.floatClose { absolute = epsilon2; relative = 0.0 } x.Actual x.Expected message
-
 [<RequireQualifiedAccess>]
 module AltFlipExpect =
   let equal message (x: AssertionMatch<'a>) =
@@ -77,6 +90,24 @@ module AltFlipExpect =
 
   let floatLessThanOrClose message accuracy (x: AssertionMatch<double>) =
     Expecto.Flip.Expect.floatLessThanOrClose message accuracy x.Expected x.Actual
+
+  let isFasterThan message (x: AssertionMatch<unit -> 'a>) =
+    Expecto.Flip.Expect.isFasterThan message x.Actual x.Expected
+
+  let isFasterThanSub message (x: AssertionMatch<Performance.Measurer<_, _> -> 'a>) =
+    Expecto.Flip.Expect.isFasterThanSub message x.Actual x.Expected
+
+  let isGreaterThan message (x: AssertionMatch<'a>) =
+    Expecto.Flip.Expect.isGreaterThan message (x.Actual, x.Expected)
+
+  let isGreaterThanOrEqual message (x: AssertionMatch<'a>) =
+    Expecto.Flip.Expect.isGreaterThanOrEqual message (x.Actual, x.Expected)
+
+  let isLessThan message (x: AssertionMatch<'a>) =
+    Expecto.Flip.Expect.isLessThan message (x.Actual, x.Expected)
+
+  let isLessThanOrEqual message (x: AssertionMatch<'a>) =
+    Expecto.Flip.Expect.isLessThanOrEqual message (x.Actual, x.Expected)
 
   let isMatch message (x: AssertionMatch<string>) =
     Expecto.Flip.Expect.isMatch message x.Expected x.Actual
@@ -110,5 +141,43 @@ module AltFlipExpect =
 
   let stringStarts message (x: AssertionMatch<IEnumerable<char>>) =
     Expecto.Flip.Expect.stringStarts message x.Expected x.Actual
+
+[<RequireQualifiedAccess>]
+type AltCSharpExpect() =
+
+  static member IsFasterThan
+    (
+      (x: AssertionMatch<Func<'a>>),
+      message: string,
+      [<Out>] result: string byref
+    ) =
+    Expecto.CSharp.Function.IsFasterThan(x.Actual, x.Expected, message, &result)
+
+  static member IsFasterThan
+    (
+      (x: AssertionMatch<Action * Func<'a>>),
+      message: string,
+      [<Out>] result: string byref
+    ) =
+    Expecto.CSharp.Function.IsFasterThan(
+      fst x.Actual,
+      snd x.Actual,
+      fst x.Expected,
+      snd x.Expected,
+      message,
+      &result
+    )
+
+  static member IsFasterThan
+    (
+      (x: AssertionMatch<Action * Func<'a> * Action>),
+      message: string,
+      [<Out>] result: string byref
+    ) =
+    let (a1, b1, c1) = x.Actual
+    let (a2, b2, c2) = x.Expected
+
+    Expecto.CSharp.Function.IsFasterThan(a1, b1, c1, a2, b2, c2, message, &result)
+
 
 //
