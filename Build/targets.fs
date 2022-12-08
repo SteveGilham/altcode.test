@@ -120,7 +120,8 @@ module Targets =
         ))
       |> (fun s -> String.Join(Environment.NewLine, s))
 
-    use w = new StringWriter()
+    use w = // fsharplint:disable-next-line  RedundantNewKeyword
+      new StringWriter()
     // printfn "tweaked = %A" source
     Markdig.Markdown.ToPlainText(source, w) |> ignore
 
