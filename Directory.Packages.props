@@ -15,21 +15,21 @@
     <PackageVersion Include="Expecto" Version="9.0.4" />
     <PackageVersion Include="Expecto.FsCheck" Version="9.0.4" />
     <PackageVersion Include="Expecto.TestResults" Version="8.13.2" />
-    <PackageVersion Include="FAKE.Core.Environment" Version="5.23.0" />
-    <PackageVersion Include="FAKE.Core.Process" Version="5.23.0" />
-    <PackageVersion Include="FAKE.Core.Target" Version="5.23.0" />
-    <PackageVersion Include="FAKE.Core.Trace" Version="5.23.0" />
-    <PackageVersion Include="FAKE.DotNet.AssemblyInfoFile" Version="5.23.0" />
-    <PackageVersion Include="FAKE.DotNet.Cli" Version="5.23.0" />
-    <PackageVersion Include="FAKE.DotNet.FxCop" Version="5.23.0" />
-    <PackageVersion Include="FAKE.DotNet.MSBuild" Version="5.23.0" />
-    <PackageVersion Include="FAKE.DotNet.Nuget" Version="5.23.0" />
-    <PackageVersion Include="FAKE.DotNet.Testing.NUnit" Version="5.23.0" />
-    <PackageVersion Include="FAKE.DotNet.Testing.OpenCover" Version="5.23.0" />
-    <PackageVersion Include="FAKE.DotNet.Testing.XUnit2" Version="5.23.0" />
-    <PackageVersion Include="FAKE.IO.FileSystem" Version="5.23.0" />
-    <PackageVersion Include="FAKE.Tools.Git" Version="5.23.0" />
-    <PackageVersion Include="FAKE.Testing.ReportGenerator" Version="5.23.0" />
+    <PackageVersion Include="FAKE.Core.Environment" Version="5.23.1" />
+    <PackageVersion Include="FAKE.Core.Process" Version="5.23.1" />
+    <PackageVersion Include="FAKE.Core.Target" Version="5.23.1" />
+    <PackageVersion Include="FAKE.Core.Trace" Version="5.23.1" />
+    <PackageVersion Include="FAKE.DotNet.AssemblyInfoFile" Version="5.23.1" />
+    <PackageVersion Include="FAKE.DotNet.Cli" Version="5.23.1" />
+    <PackageVersion Include="FAKE.DotNet.FxCop" Version="5.23.1" />
+    <PackageVersion Include="FAKE.DotNet.MSBuild" Version="5.23.1" />
+    <PackageVersion Include="FAKE.DotNet.Nuget" Version="5.23.1" />
+    <PackageVersion Include="FAKE.DotNet.Testing.NUnit" Version="5.23.1" />
+    <PackageVersion Include="FAKE.DotNet.Testing.OpenCover" Version="5.23.1" />
+    <PackageVersion Include="FAKE.DotNet.Testing.XUnit2" Version="5.23.1" />
+    <PackageVersion Include="FAKE.IO.FileSystem" Version="5.23.1" />
+    <PackageVersion Include="FAKE.Tools.Git" Version="5.23.1" />
+    <PackageVersion Include="FAKE.Testing.ReportGenerator" Version="5.23.1" />
     <PackageVersion Include="FsCheck" Version="2.16.5" />
     <PackageVersion Include="FSharp.Core" Version="6.0.0" />
     <PackageVersion Include="FsUnit" Version="5.1.0" />

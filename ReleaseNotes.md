@@ -8,7 +8,7 @@ A. Start with the README : https://github.com/SteveGilham/altcode.test/blob/mast
 * [BREAKING] remove support for obsolescing NUnit `Assert.AreEqual<Nullable<double>>` methods
 * [BREAKING] rename `AltCode.Test.Xunit.AltAssert.DoesNotAssertionMatch` & `AssterionMatches` to `AltCode.Test.Xunit.AltAssert.DoesNotMatch` and `Matches` to line up with the methods being shadowed in `Xunit.Assert`
 * support `netstandard2.0` only (meaning ≥ `net472` compatible)
-* support Expecto ≥ 9.0.4, NUnit ≥ 3.13.3, Xunit ≥ 2.4.2
+* support Expecto ≥ 9.0.4, NUnit ≥ 3.13.3, Xunit ≥ 2.4.2,  FSharp.Core ≥ 6.0.0
 * new for `Expecto.Expect`
   * equalWithDiffPrinter
   * isFasterThan 
