@@ -18,7 +18,7 @@ type AltAssert =
   static member DoesNotContain(x: AssertionMatch<string>, comparison) =
     Assert.DoesNotContain(x.Expected, x.Actual, comparison)
 
-  static member DoesNotAssertionMatch(x: AssertionMatch<string>) =
+  static member DoesNotMatch(x: AssertionMatch<string>) =
     Assert.DoesNotMatch(x.Expected, x.Actual)
 
   static member EndsWith(x: AssertionMatch<string>) =
@@ -64,8 +64,7 @@ type AltAssert =
       ignoreWhiteSpaceDifferences
     )
 
-  static member AssertionMatches(x: AssertionMatch<string>) =
-    Assert.Matches(x.Expected, x.Actual)
+  static member Matches(x: AssertionMatch<string>) = Assert.Matches(x.Expected, x.Actual)
 
   static member NotEqual(x: AssertionMatch<IEnumerable<'a>>) =
     Assert.NotEqual<'a>(x.Expected, x.Actual)

@@ -53,6 +53,28 @@ type AltAssert =
   static member AreNotSame(x: AssertionMatch<'a>) =
     Assert.AreNotSame(x.Expected, x.Actual)
 
+  static member Greater(x: AssertionMatch<'a>, message, args) =
+    Assert.Greater(x.Expected, x.Actual, message, args)
+
+  static member Greater(x: AssertionMatch<'a>) = Assert.Greater(x.Expected, x.Actual)
+
+  static member GreaterOrEqual(x: AssertionMatch<'a>, message, args) =
+    Assert.GreaterOrEqual(x.Expected, x.Actual, message, args)
+
+  static member GreaterOrEqual(x: AssertionMatch<'a>) =
+    Assert.GreaterOrEqual(x.Expected, x.Actual)
+
+  static member Less(x: AssertionMatch<'a>, message, args) =
+    Assert.Less(x.Expected, x.Actual, message, args)
+
+  static member Less(x: AssertionMatch<'a>) = Assert.Less(x.Expected, x.Actual)
+
+  static member LessOrEqual(x: AssertionMatch<'a>, message, args) =
+    Assert.LessOrEqual(x.Expected, x.Actual, message, args)
+
+  static member LessOrEqual(x: AssertionMatch<'a>) =
+    Assert.LessOrEqual(x.Expected, x.Actual)
+
 [<AbstractClass; Sealed>]
 type AltCollectionAssert =
   static member AreEqual<'a when 'a :> IEnumerable>(x: AssertionMatch<'a>) =
