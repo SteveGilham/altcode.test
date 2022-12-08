@@ -223,7 +223,9 @@ do ()"""
       Path.GetFileNameWithoutExtension readmemd
 
     let document = File.ReadAllText readme
-    let markdown = Markdig.Markdown.ToHtml(document)
+
+    let markdown =
+      Markdig.Markdown.ToHtml(document)
 
     let docHtml =
       """<?xml version="1.0"  encoding="utf-8"?>
