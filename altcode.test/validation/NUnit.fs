@@ -1,6 +1,7 @@
 namespace AltCode.Validation
 
 open System
+open System.IO
 
 module NUnit =
 
@@ -175,6 +176,7 @@ module NUnit =
   [<Test>]
   let AreSameShouldPass () =
     let x = B 5
+
     let match1 =
       { AssertionMatch.Create() with
           Actual = x
@@ -259,7 +261,7 @@ module NUnit =
           Actual = 5.0
           Expected = 4.0 }
 
-    AltAssert.Greater (match2, "bang {0} {2}", 1, 2., 3, 4)
+    AltAssert.Greater(match2, "bang {0} {2}", 1, 2., 3, 4)
 
   [<Test>]
   let GreaterShouldFail () =
@@ -276,7 +278,8 @@ module NUnit =
           Actual = 5.0
           Expected = 6.0 }
 
-    Assert.Throws<AssertionException>(fun _ -> AltAssert.Greater (match2, "bang {0} {2}", 1, 2., 3, 4))
+    Assert.Throws<AssertionException>(fun _ ->
+      AltAssert.Greater(match2, "bang {0} {2}", 1, 2., 3, 4))
     |> ignore
 
   [<Test>]
@@ -293,7 +296,7 @@ module NUnit =
           Actual = 5.0
           Expected = 4.0 }
 
-    AltAssert.GreaterOrEqual (match2, "bang {0} {2}", 1, 2., 3, 4)
+    AltAssert.GreaterOrEqual(match2, "bang {0} {2}", 1, 2., 3, 4)
 
   [<Test>]
   let GreaterOrEqualShouldFail () =
@@ -310,7 +313,8 @@ module NUnit =
           Actual = 5.0
           Expected = 6.0 }
 
-    Assert.Throws<AssertionException>(fun _ -> AltAssert.GreaterOrEqual (match2, "bang {0} {2}", 1, 2., 3, 4))
+    Assert.Throws<AssertionException>(fun _ ->
+      AltAssert.GreaterOrEqual(match2, "bang {0} {2}", 1, 2., 3, 4))
     |> ignore
 
   [<Test>]
@@ -327,7 +331,7 @@ module NUnit =
           Actual = 5.0
           Expected = 6.0 }
 
-    AltAssert.Less (match2, "bang {0} {2}", 1, 2., 3, 4)
+    AltAssert.Less(match2, "bang {0} {2}", 1, 2., 3, 4)
 
   [<Test>]
   let LessShouldFail () =
@@ -344,7 +348,8 @@ module NUnit =
           Actual = 5.0
           Expected = 4.0 }
 
-    Assert.Throws<AssertionException>(fun _ -> AltAssert.Less (match2, "bang {0} {2}", 1, 2., 3, 4))
+    Assert.Throws<AssertionException>(fun _ ->
+      AltAssert.Less(match2, "bang {0} {2}", 1, 2., 3, 4))
     |> ignore
 
   [<Test>]
@@ -361,7 +366,7 @@ module NUnit =
           Actual = 5.0
           Expected = 6.0 }
 
-    AltAssert.LessOrEqual (match2, "bang {0} {2}", 1, 2., 3, 4)
+    AltAssert.LessOrEqual(match2, "bang {0} {2}", 1, 2., 3, 4)
 
   [<Test>]
   let LessOrEqualShouldFail () =
@@ -378,5 +383,76 @@ module NUnit =
           Actual = 5.0
           Expected = 4.0 }
 
-    Assert.Throws<AssertionException>(fun _ -> AltAssert.LessOrEqual (match2, "bang {0} {2}", 1, 2., 3, 4))
-    |> ignore        
+    Assert.Throws<AssertionException>(fun _ ->
+      AltAssert.LessOrEqual(match2, "bang {0} {2}", 1, 2., 3, 4))
+    |> ignore
+
+  [<Test>]
+  let DirectoryAssertsShouldPass () =
+    let d1 = DirectoryInfo "."
+    let d2 = DirectoryInfo ".."
+
+    let match1 =
+      (AssertionMatch.Create().WithActual d1)
+        .WithExpected d1
+
+    AltDirectoryAssert.AreEqual match1
+
+    let match2 =
+      { AssertionMatch.Create() with
+          Actual = d2
+          Expected = d2 }
+
+    AltDirectoryAssert.AreEqual(match2, "bang {0} {2}", 1, 2., 3, 4)
+
+    let match3 =
+      { AssertionMatch.Create() with
+          Actual = d1
+          Expected = d2 }
+
+    AltDirectoryAssert.AreNotEqual match3
+
+    let match4 =
+      { AssertionMatch.Create() with
+          Actual = d2
+          Expected = d1 }
+
+    AltDirectoryAssert.AreNotEqual(match4, "bang {0} {2}", 1, 2., 3, 4)
+
+  [<Test>]
+  let DirectoryAssertsShouldFail () =
+    let d1 = DirectoryInfo "."
+    let d2 = DirectoryInfo ".."
+
+    let match1 =
+      (AssertionMatch.Create().WithActual d1)
+        .WithExpected d2
+
+    Assert.Throws<AssertionException>(fun _ -> AltDirectoryAssert.AreEqual match1)
+    |> ignore
+
+    let match2 =
+      { AssertionMatch.Create() with
+          Actual = d2
+          Expected = d1 }
+
+    Assert.Throws<AssertionException>(fun _ ->
+      AltDirectoryAssert.AreEqual(match2, "bang {0} {2}", 1, 2., 3, 4))
+    |> ignore
+
+    let match3 =
+      { AssertionMatch.Create() with
+          Actual = d1
+          Expected = d1 }
+
+    Assert.Throws<AssertionException>(fun _ -> AltDirectoryAssert.AreNotEqual match3)
+    |> ignore
+
+    let match4 =
+      { AssertionMatch.Create() with
+          Actual = d2
+          Expected = d2 }
+
+    Assert.Throws<AssertionException>(fun _ ->
+      AltDirectoryAssert.AreNotEqual(match4, "bang {0} {2}", 1, 2., 3, 4))
+    |> ignore
