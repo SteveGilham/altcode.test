@@ -79,6 +79,9 @@ module AltExpect =
 
 [<RequireQualifiedAccess>]
 module AltFlipExpect =
+  let containsAll message (x: AssertionMatch<#IEnumerable<'a>>) =
+    Expecto.Flip.Expect.containsAll message x.Expected x.Actual
+
   let equal message (x: AssertionMatch<'a>) =
     Expecto.Flip.Expect.equal message x.Expected x.Actual
 
