@@ -175,7 +175,6 @@ module NUnit =
   [<Test>]
   let AreSameShouldPass () =
     let x = B 5
-
     let match1 =
       { AssertionMatch.Create() with
           Actual = x
@@ -246,7 +245,6 @@ module NUnit =
       AltAssert.AreNotSame(match3, "bang {0} {2}", 1, 2., 3, 4))
     |> ignore
 
-
   [<Test>]
   let GreaterShouldPass () =
     let match1 =
@@ -261,7 +259,7 @@ module NUnit =
           Actual = 5.0
           Expected = 4.0 }
 
-    AltAssert.Greater match2
+    AltAssert.Greater (match2, "bang {0} {2}", 1, 2., 3, 4)
 
   [<Test>]
   let GreaterShouldFail () =
@@ -278,5 +276,107 @@ module NUnit =
           Actual = 5.0
           Expected = 6.0 }
 
-    Assert.Throws<AssertionException>(fun _ -> AltAssert.Greater match2)
+    Assert.Throws<AssertionException>(fun _ -> AltAssert.Greater (match2, "bang {0} {2}", 1, 2., 3, 4))
     |> ignore
+
+  [<Test>]
+  let GreaterOrEqualShouldPass () =
+    let match1 =
+      { AssertionMatch.Create() with
+          Actual = 5
+          Expected = 4 }
+
+    AltAssert.GreaterOrEqual match1
+
+    let match2 =
+      { AssertionMatch.Create() with
+          Actual = 5.0
+          Expected = 4.0 }
+
+    AltAssert.GreaterOrEqual (match2, "bang {0} {2}", 1, 2., 3, 4)
+
+  [<Test>]
+  let GreaterOrEqualShouldFail () =
+    let match1 =
+      { AssertionMatch.Create() with
+          Actual = 5
+          Expected = 6 }
+
+    Assert.Throws<AssertionException>(fun _ -> AltAssert.GreaterOrEqual match1)
+    |> ignore
+
+    let match2 =
+      { AssertionMatch.Create() with
+          Actual = 5.0
+          Expected = 6.0 }
+
+    Assert.Throws<AssertionException>(fun _ -> AltAssert.GreaterOrEqual (match2, "bang {0} {2}", 1, 2., 3, 4))
+    |> ignore
+
+  [<Test>]
+  let LessShouldPass () =
+    let match1 =
+      { AssertionMatch.Create() with
+          Actual = 5
+          Expected = 6 }
+
+    AltAssert.Less match1
+
+    let match2 =
+      { AssertionMatch.Create() with
+          Actual = 5.0
+          Expected = 6.0 }
+
+    AltAssert.Less (match2, "bang {0} {2}", 1, 2., 3, 4)
+
+  [<Test>]
+  let LessShouldFail () =
+    let match1 =
+      { AssertionMatch.Create() with
+          Actual = 5
+          Expected = 4 }
+
+    Assert.Throws<AssertionException>(fun _ -> AltAssert.Less match1)
+    |> ignore
+
+    let match2 =
+      { AssertionMatch.Create() with
+          Actual = 5.0
+          Expected = 4.0 }
+
+    Assert.Throws<AssertionException>(fun _ -> AltAssert.Less (match2, "bang {0} {2}", 1, 2., 3, 4))
+    |> ignore
+
+  [<Test>]
+  let LessOrEqualShouldPass () =
+    let match1 =
+      { AssertionMatch.Create() with
+          Actual = 5
+          Expected = 6 }
+
+    AltAssert.LessOrEqual match1
+
+    let match2 =
+      { AssertionMatch.Create() with
+          Actual = 5.0
+          Expected = 6.0 }
+
+    AltAssert.LessOrEqual (match2, "bang {0} {2}", 1, 2., 3, 4)
+
+  [<Test>]
+  let LessOrEqualShouldFail () =
+    let match1 =
+      { AssertionMatch.Create() with
+          Actual = 5
+          Expected = 4 }
+
+    Assert.Throws<AssertionException>(fun _ -> AltAssert.LessOrEqual match1)
+    |> ignore
+
+    let match2 =
+      { AssertionMatch.Create() with
+          Actual = 5.0
+          Expected = 4.0 }
+
+    Assert.Throws<AssertionException>(fun _ -> AltAssert.LessOrEqual (match2, "bang {0} {2}", 1, 2., 3, 4))
+    |> ignore        
