@@ -7,6 +7,11 @@ module NUnit =
   open NUnit.Framework
   open AltCode.Test.Nunit
 
+  type Example =
+    | A
+    | B of int
+    | C of string
+
   [<Test>]
   let ThatShouldPass () =
     let match1 =
@@ -130,6 +135,77 @@ module NUnit =
 
     Assert.Throws<AssertionException>(fun _ ->
       AltAssert.AreEqual(match4, 0.1, "bang {0} {2}", 1, 2., 3, 4))
+    |> ignore
+
+  [<Test>]
+  let AreNotEqualShouldPass () =
+    let match1 =
+      { AssertionMatch.Create() with
+          Actual = 5
+          Expected = 6 }
+
+    AltAssert.AreNotEqual match1
+
+    let match3 =
+      { AssertionMatch.Create() with
+          Actual = 5
+          Expected = 6 }
+
+    AltAssert.AreNotEqual(match3, "bang {0} {2}", 1, 2., 3, 4)
+
+  [<Test>]
+  let AreNotEqualShouldFail () =
+    let match1 =
+      { AssertionMatch.Create() with
+          Actual = 5
+          Expected = 5 }
+
+    Assert.Throws<AssertionException>(fun _ -> AltAssert.AreNotEqual match1)
+    |> ignore
+
+    let match3 =
+      { AssertionMatch.Create() with
+          Actual = 5
+          Expected = 5 }
+
+    Assert.Throws<AssertionException>(fun _ ->
+      AltAssert.AreNotEqual(match3, "bang {0} {2}", 1, 2., 3, 4))
+    |> ignore
+
+  [<Test>]
+  let AreSameShouldPass () =
+    let x = B 5
+    let match1 =
+      { AssertionMatch.Create() with
+          Actual = x
+          Expected = x }
+
+    AltAssert.AreSame match1
+
+    let match3 =
+      { AssertionMatch.Create() with
+          Actual = A
+          Expected = A }
+
+    AltAssert.AreSame(match3, "bang {0} {2}", 1, 2., 3, 4)
+
+  [<Test>]
+  let AreSameShouldFail () =
+    let match1 =
+      { AssertionMatch.Create() with
+          Actual = B 5
+          Expected = B 5 }
+
+    Assert.Throws<AssertionException>(fun _ -> AltAssert.AreSame match1)
+    |> ignore
+
+    let match3 =
+      { AssertionMatch.Create() with
+          Actual = A
+          Expected = C "6" }
+
+    Assert.Throws<AssertionException>(fun _ ->
+      AltAssert.AreSame(match3, "bang {0} {2}", 1, 2., 3, 4))
     |> ignore
 
   [<Test>]
