@@ -175,6 +175,7 @@ module NUnit =
   [<Test>]
   let AreSameShouldPass () =
     let x = B 5
+
     let match1 =
       { AssertionMatch.Create() with
           Actual = x
@@ -207,6 +208,44 @@ module NUnit =
     Assert.Throws<AssertionException>(fun _ ->
       AltAssert.AreSame(match3, "bang {0} {2}", 1, 2., 3, 4))
     |> ignore
+
+  [<Test>]
+  let AreNotSameShouldPass () =
+    let match1 =
+      { AssertionMatch.Create() with
+          Actual = B 5
+          Expected = B 5 }
+
+    AltAssert.AreNotSame match1
+
+    let match3 =
+      { AssertionMatch.Create() with
+          Actual = A
+          Expected = C "6" }
+
+    AltAssert.AreNotSame(match3, "bang {0} {2}", 1, 2., 3, 4)
+
+  [<Test>]
+  let AreNotSameShouldFail () =
+    let x = B 5
+
+    let match1 =
+      { AssertionMatch.Create() with
+          Actual = x
+          Expected = x }
+
+    Assert.Throws<AssertionException>(fun _ -> AltAssert.AreNotSame match1)
+    |> ignore
+
+    let match3 =
+      { AssertionMatch.Create() with
+          Actual = A
+          Expected = A }
+
+    Assert.Throws<AssertionException>(fun _ ->
+      AltAssert.AreNotSame(match3, "bang {0} {2}", 1, 2., 3, 4))
+    |> ignore
+
 
   [<Test>]
   let GreaterShouldPass () =
