@@ -300,6 +300,18 @@ module Targets =
       "./altcode.test/altcode.test.sln"
       |> dotnetBuildDebug)
 
+
+  let Validation =
+    (fun _ ->
+      DotNet.test
+        (fun p ->
+          { p.WithCommon dotnetOptions with
+              MSBuildParams = cliArguments
+              Configuration = DotNet.BuildConfiguration.Debug
+              Framework = Some "net7.0"
+              NoBuild = true })
+        "./altcode.test/validation")
+
   // Code Analysis
 
   //_Target "Analysis" ignore
@@ -401,6 +413,7 @@ module Targets =
     _Target "Clean" Clean
     _Target "SetVersion" SetVersion
     _Target "Compilation" ignore
+    _Target "Validation" Validation
     _Target "BuildRelease" BuildRelease
     _Target "BuildDebug" BuildDebug
     _Target "Analysis" ignore
@@ -422,6 +435,7 @@ module Targets =
     "BuildRelease" ==> "Lint" ==> "Analysis" |> ignore
 
     "Compilation" ==> "Analysis" |> ignore
+    "Compilation" ==> "Validation" ==> "All" |> ignore
 
     "Compilation" ?=> "Packaging" |> ignore
 
