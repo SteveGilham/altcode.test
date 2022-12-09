@@ -25,51 +25,77 @@ type AltAssert =
   static member That(x: Constraint<'a>, getExceptionMessage) =
     Assert.That(x.Actual, x.Constraint, getExceptionMessage)
 
-  static member AreEqual(x: AssertionMatch<double>, delta, message, args) =
+  static member AreEqual
+    (
+      x: AssertionMatch<double>,
+      delta,
+      message,
+      [<ParamArray>] args: Object[]
+    ) =
     Assert.AreEqual(x.Expected, x.Actual, delta, message, args)
 
   static member AreEqual(x: AssertionMatch<double>, delta) =
     Assert.AreEqual(x.Expected, x.Actual, delta)
 
-  static member AreEqual(x: AssertionMatch<'a>, message, args) =
+  static member AreEqual(x: AssertionMatch<'a>, message, [<ParamArray>] args: Object[]) =
     Assert.AreEqual(x.Expected, x.Actual, message, args)
 
   static member AreEqual(x: AssertionMatch<'a>) = Assert.AreEqual(x.Expected, x.Actual)
 
-  static member AreNotEqual(x: AssertionMatch<'a>, message, args) =
+  static member AreNotEqual
+    (
+      x: AssertionMatch<'a>,
+      message,
+      [<ParamArray>] args: Object[]
+    ) =
     Assert.AreNotEqual(x.Expected, x.Actual, message, args)
 
   static member AreNotEqual(x: AssertionMatch<'a>) =
     Assert.AreNotEqual(x.Expected, x.Actual)
 
-  static member AreSame(x: AssertionMatch<'a>, message, args) =
+  static member AreSame(x: AssertionMatch<'a>, message, [<ParamArray>] args: Object[]) =
     Assert.AreSame(x.Expected, x.Actual, message, args)
 
   static member AreSame(x: AssertionMatch<'a>) = Assert.AreSame(x.Expected, x.Actual)
 
-  static member AreNotSame(x: AssertionMatch<'a>, message, args) =
+  static member AreNotSame
+    (
+      x: AssertionMatch<'a>,
+      message,
+      [<ParamArray>] args: Object[]
+    ) =
     Assert.AreNotSame(x.Expected, x.Actual, message, args)
 
   static member AreNotSame(x: AssertionMatch<'a>) =
     Assert.AreNotSame(x.Expected, x.Actual)
 
-  static member Greater(x: AssertionMatch<'a>, message, args) =
+  static member Greater(x: AssertionMatch<'a>, message, [<ParamArray>] args: Object[]) =
     Assert.Greater(x.Actual, x.Expected, message, args)
 
   static member Greater(x: AssertionMatch<'a>) = Assert.Greater(x.Actual, x.Expected)
 
-  static member GreaterOrEqual(x: AssertionMatch<'a>, message, args) =
+  static member GreaterOrEqual
+    (
+      x: AssertionMatch<'a>,
+      message,
+      [<ParamArray>] args: Object[]
+    ) =
     Assert.GreaterOrEqual(x.Actual, x.Expected, message, args)
 
   static member GreaterOrEqual(x: AssertionMatch<'a>) =
     Assert.GreaterOrEqual(x.Actual, x.Expected)
 
-  static member Less(x: AssertionMatch<'a>, message, args) =
+  static member Less(x: AssertionMatch<'a>, message, [<ParamArray>] args: Object[]) =
     Assert.Less(x.Actual, x.Expected, message, args)
 
   static member Less(x: AssertionMatch<'a>) = Assert.Less(x.Actual, x.Expected)
 
-  static member LessOrEqual(x: AssertionMatch<'a>, message, args) =
+  static member LessOrEqual
+    (
+      x: AssertionMatch<'a>,
+      message,
+      [<ParamArray>] args: Object[]
+    ) =
     Assert.LessOrEqual(x.Actual, x.Expected, message, args)
 
   static member LessOrEqual(x: AssertionMatch<'a>) =

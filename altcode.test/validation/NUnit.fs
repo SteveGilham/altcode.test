@@ -67,6 +67,72 @@ module NUnit =
     AltAssert.That matchx
 
   [<Test>]
+  let AreEqualShouldPass () =
+    let match1 =
+      { AssertionMatch.Create() with
+          Actual = 5
+          Expected = 5 }
+
+    AltAssert.AreEqual match1
+
+    let match2 =
+      { AssertionMatch.Create() with
+          Actual = 5.0
+          Expected = 5.0 }
+
+    AltAssert.AreEqual(match2, 0.1)
+
+    let match3 =
+      { AssertionMatch.Create() with
+          Actual = 5
+          Expected = 5 }
+
+    AltAssert.AreEqual(match3, "bang {0} {2}", 1, 2., 3, 4)
+
+    let match4 =
+      { AssertionMatch.Create() with
+          Actual = 5.0
+          Expected = 5.0 }
+
+    AltAssert.AreEqual(match4, 0.1, "bang {0} {2}", 1, 2., 3, 4)
+
+  [<Test>]
+  let AreEqualShouldFail () =
+    let match1 =
+      { AssertionMatch.Create() with
+          Actual = 5
+          Expected = 6 }
+
+    Assert.Throws<AssertionException>(fun _ -> AltAssert.AreEqual match1)
+    |> ignore
+
+    let match2 =
+      { AssertionMatch.Create() with
+          Actual = 5.0
+          Expected = 6.0 }
+
+    Assert.Throws<AssertionException>(fun _ -> AltAssert.AreEqual(match2, 0.1))
+    |> ignore
+
+    let match3 =
+      { AssertionMatch.Create() with
+          Actual = 5
+          Expected = 6 }
+
+    Assert.Throws<AssertionException>(fun _ ->
+      AltAssert.AreEqual(match3, "bang {0} {2}", 1, 2., 3, 4))
+    |> ignore
+
+    let match4 =
+      { AssertionMatch.Create() with
+          Actual = 5.0
+          Expected = 6.0 }
+
+    Assert.Throws<AssertionException>(fun _ ->
+      AltAssert.AreEqual(match4, 0.1, "bang {0} {2}", 1, 2., 3, 4))
+    |> ignore
+
+  [<Test>]
   let GreaterShouldPass () =
     let match1 =
       { AssertionMatch.Create() with
