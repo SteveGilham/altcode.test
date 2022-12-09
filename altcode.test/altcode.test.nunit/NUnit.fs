@@ -54,26 +54,26 @@ type AltAssert =
     Assert.AreNotSame(x.Expected, x.Actual)
 
   static member Greater(x: AssertionMatch<'a>, message, args) =
-    Assert.Greater(x.Expected, x.Actual, message, args)
+    Assert.Greater(x.Actual, x.Expected, message, args)
 
-  static member Greater(x: AssertionMatch<'a>) = Assert.Greater(x.Expected, x.Actual)
+  static member Greater(x: AssertionMatch<'a>) = Assert.Greater(x.Actual, x.Expected)
 
   static member GreaterOrEqual(x: AssertionMatch<'a>, message, args) =
-    Assert.GreaterOrEqual(x.Expected, x.Actual, message, args)
+    Assert.GreaterOrEqual(x.Actual, x.Expected, message, args)
 
   static member GreaterOrEqual(x: AssertionMatch<'a>) =
-    Assert.GreaterOrEqual(x.Expected, x.Actual)
+    Assert.GreaterOrEqual(x.Actual, x.Expected)
 
   static member Less(x: AssertionMatch<'a>, message, args) =
-    Assert.Less(x.Expected, x.Actual, message, args)
+    Assert.Less(x.Actual, x.Expected, message, args)
 
-  static member Less(x: AssertionMatch<'a>) = Assert.Less(x.Expected, x.Actual)
+  static member Less(x: AssertionMatch<'a>) = Assert.Less(x.Actual, x.Expected)
 
   static member LessOrEqual(x: AssertionMatch<'a>, message, args) =
-    Assert.LessOrEqual(x.Expected, x.Actual, message, args)
+    Assert.LessOrEqual(x.Actual, x.Expected, message, args)
 
   static member LessOrEqual(x: AssertionMatch<'a>) =
-    Assert.LessOrEqual(x.Expected, x.Actual)
+    Assert.LessOrEqual(x.Actual, x.Expected)
 
 [<AbstractClass; Sealed>]
 type AltCollectionAssert =
