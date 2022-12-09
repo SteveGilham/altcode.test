@@ -220,13 +220,23 @@ type AltDirectoryAssert =
   static member AreEqual(x: AssertionMatch<DirectoryInfo>) =
     DirectoryAssert.AreEqual(x.Expected, x.Actual)
 
-  static member AreEqual(x: AssertionMatch<DirectoryInfo>, message, [<ParamArray>] args: Object[]) =
+  static member AreEqual
+    (
+      x: AssertionMatch<DirectoryInfo>,
+      message,
+      [<ParamArray>] args: Object[]
+    ) =
     DirectoryAssert.AreEqual(x.Expected, x.Actual, message, args)
 
   static member AreNotEqual(x: AssertionMatch<DirectoryInfo>) =
     DirectoryAssert.AreNotEqual(x.Expected, x.Actual)
 
-  static member AreNotEqual(x: AssertionMatch<DirectoryInfo>, message, [<ParamArray>] args: Object[]) =
+  static member AreNotEqual
+    (
+      x: AssertionMatch<DirectoryInfo>,
+      message,
+      [<ParamArray>] args: Object[]
+    ) =
     DirectoryAssert.AreNotEqual(x.Expected, x.Actual, message, args)
 
 [<AbstractClass; Sealed>]
@@ -234,37 +244,67 @@ type AltFileAssert =
   static member AreEqual(x: AssertionMatch<FileInfo>) =
     FileAssert.AreEqual(x.Expected, x.Actual)
 
-  static member AreEqual(x: AssertionMatch<FileInfo>, message, [<ParamArray>] args: Object[]) =
+  static member AreEqual
+    (
+      x: AssertionMatch<FileInfo>,
+      message,
+      [<ParamArray>] args: Object[]
+    ) =
     FileAssert.AreEqual(x.Expected, x.Actual, message, args)
 
   static member AreEqual(x: AssertionMatch<Stream>) =
     FileAssert.AreEqual(x.Expected, x.Actual)
 
-  static member AreEqual(x: AssertionMatch<Stream>, message, [<ParamArray>] args: Object[]) =
+  static member AreEqual
+    (
+      x: AssertionMatch<Stream>,
+      message,
+      [<ParamArray>] args: Object[]
+    ) =
     FileAssert.AreEqual(x.Expected, x.Actual, message, args)
 
   static member AreEqual(x: AssertionMatch<String>) =
     FileAssert.AreEqual(x.Expected, x.Actual)
 
-  static member AreEqual(x: AssertionMatch<String>, message, [<ParamArray>] args: Object[]) =
+  static member AreEqual
+    (
+      x: AssertionMatch<String>,
+      message,
+      [<ParamArray>] args: Object[]
+    ) =
     FileAssert.AreEqual(x.Expected, x.Actual, message, args)
 
   static member AreNotEqual(x: AssertionMatch<FileInfo>) =
     FileAssert.AreNotEqual(x.Expected, x.Actual)
 
-  static member AreNotEqual(x: AssertionMatch<FileInfo>, message, [<ParamArray>] args: Object[]) =
+  static member AreNotEqual
+    (
+      x: AssertionMatch<FileInfo>,
+      message,
+      [<ParamArray>] args: Object[]
+    ) =
     FileAssert.AreNotEqual(x.Expected, x.Actual, message, args)
 
   static member AreNotEqual(x: AssertionMatch<Stream>) =
     FileAssert.AreNotEqual(x.Expected, x.Actual)
 
-  static member AreNotEqual(x: AssertionMatch<Stream>, message, [<ParamArray>] args: Object[]) =
+  static member AreNotEqual
+    (
+      x: AssertionMatch<Stream>,
+      message,
+      [<ParamArray>] args: Object[]
+    ) =
     FileAssert.AreNotEqual(x.Expected, x.Actual, message, args)
 
   static member AreNotEqual(x: AssertionMatch<String>) =
     FileAssert.AreNotEqual(x.Expected, x.Actual)
 
-  static member AreNotEqual(x: AssertionMatch<String>, message, [<ParamArray>] args: Object[]) =
+  static member AreNotEqual
+    (
+      x: AssertionMatch<String>,
+      message,
+      [<ParamArray>] args: Object[]
+    ) =
     FileAssert.AreNotEqual(x.Expected, x.Actual, message, args)
 
 [<AbstractClass; Sealed>]
@@ -272,61 +312,111 @@ type AltStringAssert =
   static member AreEqualIgnoringCase(x: AssertionMatch<String>) =
     StringAssert.AreEqualIgnoringCase(x.Expected, x.Actual)
 
-  static member AreEqualIgnoringCase(x: AssertionMatch<String>, message, [<ParamArray>] args: Object[]) =
+  static member AreEqualIgnoringCase
+    (
+      x: AssertionMatch<String>,
+      message,
+      [<ParamArray>] args: Object[]
+    ) =
     StringAssert.AreEqualIgnoringCase(x.Expected, x.Actual, message, args)
 
   static member AreNotEqualIgnoringCase(x: AssertionMatch<String>) =
     StringAssert.AreNotEqualIgnoringCase(x.Expected, x.Actual)
 
-  static member AreNotEqualIgnoringCase(x: AssertionMatch<String>, message, [<ParamArray>] args: Object[]) =
+  static member AreNotEqualIgnoringCase
+    (
+      x: AssertionMatch<String>,
+      message,
+      [<ParamArray>] args: Object[]
+    ) =
     StringAssert.AreNotEqualIgnoringCase(x.Expected, x.Actual, message, args)
 
   static member Contains(x: AssertionMatch<String>) =
     StringAssert.Contains(x.Expected, x.Actual)
 
-  static member Contains(x: AssertionMatch<String>, message, [<ParamArray>] args: Object[]) =
+  static member Contains
+    (
+      x: AssertionMatch<String>,
+      message,
+      [<ParamArray>] args: Object[]
+    ) =
     StringAssert.Contains(x.Expected, x.Actual, message, args)
 
   static member DoesNotContain(x: AssertionMatch<String>) =
     StringAssert.DoesNotContain(x.Expected, x.Actual)
 
-  static member DoesNotContain(x: AssertionMatch<String>, message, [<ParamArray>] args: Object[]) =
+  static member DoesNotContain
+    (
+      x: AssertionMatch<String>,
+      message,
+      [<ParamArray>] args: Object[]
+    ) =
     StringAssert.DoesNotContain(x.Expected, x.Actual, message, args)
 
   static member DoesNotEndWith(x: AssertionMatch<String>) =
     StringAssert.DoesNotEndWith(x.Expected, x.Actual)
 
-  static member DoesNotEndWith(x: AssertionMatch<String>, message, [<ParamArray>] args: Object[]) =
+  static member DoesNotEndWith
+    (
+      x: AssertionMatch<String>,
+      message,
+      [<ParamArray>] args: Object[]
+    ) =
     StringAssert.DoesNotEndWith(x.Expected, x.Actual, message, args)
 
   static member DoesNotMatch(x: AssertionMatch<String>) =
     StringAssert.DoesNotMatch(x.Expected, x.Actual)
 
-  static member DoesNotMatch(x: AssertionMatch<String>, message, [<ParamArray>] args: Object[]) =
+  static member DoesNotMatch
+    (
+      x: AssertionMatch<String>,
+      message,
+      [<ParamArray>] args: Object[]
+    ) =
     StringAssert.DoesNotMatch(x.Expected, x.Actual, message, args)
 
   static member DoesNotStartWith(x: AssertionMatch<String>) =
     StringAssert.DoesNotStartWith(x.Expected, x.Actual)
 
-  static member DoesNotStartWith(x: AssertionMatch<String>, message, [<ParamArray>] args: Object[]) =
+  static member DoesNotStartWith
+    (
+      x: AssertionMatch<String>,
+      message,
+      [<ParamArray>] args: Object[]
+    ) =
     StringAssert.DoesNotStartWith(x.Expected, x.Actual, message, args)
 
   static member EndsWith(x: AssertionMatch<String>) =
     StringAssert.EndsWith(x.Expected, x.Actual)
 
-  static member EndsWith(x: AssertionMatch<String>, message, [<ParamArray>] args: Object[]) =
+  static member EndsWith
+    (
+      x: AssertionMatch<String>,
+      message,
+      [<ParamArray>] args: Object[]
+    ) =
     StringAssert.EndsWith(x.Expected, x.Actual, message, args)
 
   static member IsMatch(x: AssertionMatch<String>) =
     StringAssert.IsMatch(x.Expected, x.Actual)
 
-  static member IsMatch(x: AssertionMatch<String>, message, [<ParamArray>] args: Object[]) =
+  static member IsMatch
+    (
+      x: AssertionMatch<String>,
+      message,
+      [<ParamArray>] args: Object[]
+    ) =
     StringAssert.IsMatch(x.Expected, x.Actual, message, args)
 
   static member StartsWith(x: AssertionMatch<String>) =
     StringAssert.StartsWith(x.Expected, x.Actual)
 
-  static member StartsWith(x: AssertionMatch<String>, message, [<ParamArray>] args: Object[]) =
+  static member StartsWith
+    (
+      x: AssertionMatch<String>,
+      message,
+      [<ParamArray>] args: Object[]
+    ) =
     StringAssert.StartsWith(x.Expected, x.Actual, message, args)
 
 //
