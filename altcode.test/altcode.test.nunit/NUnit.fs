@@ -19,7 +19,7 @@ type Constraint<'a> =
 type AltAssert =
   static member That(x: Constraint<'a>) = Assert.That(x.Actual, x.Constraint)
 
-  static member That(x: Constraint<'a>, message, args) =
+  static member That(x: Constraint<'a>, message, [<ParamArray>] args: Object[]) =
     Assert.That(x.Actual, x.Constraint, message, args)
 
   static member That(x: Constraint<'a>, getExceptionMessage) =
