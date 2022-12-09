@@ -282,7 +282,7 @@ module Targets =
       let github =
         Environment.environVar "GITHUB_RUN_NUMBER"
 
-      let version = "1.0.{build}"
+      let version = "2.0.{build}" // <+++++++++++++++++
 
       let ci =
         if String.IsNullOrWhiteSpace github then
