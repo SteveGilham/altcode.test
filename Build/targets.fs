@@ -60,7 +60,7 @@ module Targets =
 
   let AltCoverFilter (p: Primitive.PrepareOptions) =
     { p with
-        //MethodFilter = "WaitForExitCustom" :: (p.MethodFilter |> Seq.toList)
+        AttributeFilter = "EntryPoint" :: (p.AttributeFilter |> Seq.toList)
         AssemblyExcludeFilter =
           @"NUnit3\."
           :: (@"\.Tests"
