@@ -27,10 +27,10 @@ type AltAssert =
   static member EndsWith(x: AssertionMatch<string>, comparison) =
     Assert.EndsWith(x.Expected, x.Actual, comparison)
 
-  static member Equal(x: AssertionMatch<IEnumerable<'a>>) =
+  static member Equal(x: AssertionMatch<#IEnumerable<'a>>) =
     Assert.Equal<'a>(x.Expected, x.Actual)
 
-  static member Equal(x: AssertionMatch<IEnumerable<'a>>, comparer) =
+  static member Equal(x: AssertionMatch<#IEnumerable<'a>>, comparer) =
     Assert.Equal<'a>(x.Expected, x.Actual, comparer)
 
   static member Equal<'a>(x: AssertionMatch<'a>) = Assert.Equal<'a>(x.Expected, x.Actual)
@@ -66,10 +66,10 @@ type AltAssert =
 
   static member Matches(x: AssertionMatch<string>) = Assert.Matches(x.Expected, x.Actual)
 
-  static member NotEqual(x: AssertionMatch<IEnumerable<'a>>) =
+  static member NotEqual(x: AssertionMatch<#IEnumerable<'a>>) =
     Assert.NotEqual<'a>(x.Expected, x.Actual)
 
-  static member NotEqual(x: AssertionMatch<IEnumerable<'a>>, comparer) =
+  static member NotEqual(x: AssertionMatch<#IEnumerable<'a>>, comparer) =
     Assert.NotEqual<'a>(x.Expected, x.Actual, comparer)
 
   static member NotEqual(x: AssertionMatch<double>, precision) =

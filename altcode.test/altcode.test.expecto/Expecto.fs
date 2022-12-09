@@ -8,7 +8,7 @@ open Expecto
 
 [<RequireQualifiedAccess>]
 module AltExpect =
-  let containsAll (x: AssertionMatch<IEnumerable<'a>>) message =
+  let containsAll (x: AssertionMatch<#IEnumerable<'a>>) message =
     Expect.containsAll x.Actual x.Expected message
 
   let equal (x: AssertionMatch<'a>) message =
@@ -56,13 +56,13 @@ module AltExpect =
   let notEqual (x: AssertionMatch<'a>) message =
     Expect.notEqual x.Actual x.Expected message
 
-  let sequenceContainsOrder (x: AssertionMatch<IEnumerable<'a>>) message =
+  let sequenceContainsOrder (x: AssertionMatch<#IEnumerable<'a>>) message =
     Expect.sequenceContainsOrder x.Actual x.Expected message
 
-  let sequenceEqual (x: AssertionMatch<IEnumerable<'a>>) message =
+  let sequenceEqual (x: AssertionMatch<#IEnumerable<'a>>) message =
     Expect.sequenceEqual x.Actual x.Expected message
 
-  let sequenceStarts (x: AssertionMatch<IEnumerable<'a>>) message =
+  let sequenceStarts (x: AssertionMatch<#IEnumerable<'a>>) message =
     Expect.sequenceStarts x.Actual x.Expected message
 
   let streamsEqual (x: AssertionMatch<Stream>) message =
@@ -74,7 +74,7 @@ module AltExpect =
   let stringEnds (x: AssertionMatch<string>) message =
     Expect.stringEnds x.Actual x.Expected message
 
-  let stringStarts (x: AssertionMatch<IEnumerable<char>>) message =
+  let stringStarts (x: AssertionMatch<#IEnumerable<char>>) message =
     Expect.stringStarts x.Actual x.Expected message
 
 [<RequireQualifiedAccess>]
@@ -121,13 +121,13 @@ module AltFlipExpect =
   let notEqual message (x: AssertionMatch<'a>) =
     Expecto.Flip.Expect.notEqual message x.Expected x.Actual
 
-  let sequenceContainsOrder message (x: AssertionMatch<IEnumerable<'a>>) =
+  let sequenceContainsOrder message (x: AssertionMatch<#IEnumerable<'a>>) =
     Expecto.Flip.Expect.sequenceContainsOrder message x.Expected x.Actual
 
-  let sequenceEqual message (x: AssertionMatch<IEnumerable<'a>>) =
+  let sequenceEqual message (x: AssertionMatch<#IEnumerable<'a>>) =
     Expecto.Flip.Expect.sequenceEqual message x.Expected x.Actual
 
-  let sequenceStarts message (x: AssertionMatch<IEnumerable<'a>>) =
+  let sequenceStarts message (x: AssertionMatch<#IEnumerable<'a>>) =
     Expecto.Flip.Expect.sequenceStarts message x.Expected x.Actual
 
   let streamsEqual message (x: AssertionMatch<Stream>) =
@@ -139,7 +139,7 @@ module AltFlipExpect =
   let stringEnds message (x: AssertionMatch<string>) =
     Expecto.Flip.Expect.stringEnds message x.Expected x.Actual
 
-  let stringStarts message (x: AssertionMatch<IEnumerable<char>>) =
+  let stringStarts message (x: AssertionMatch<#IEnumerable<char>>) =
     Expecto.Flip.Expect.stringStarts message x.Expected x.Actual
 
 [<RequireQualifiedAccess>]
