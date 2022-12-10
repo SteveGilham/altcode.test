@@ -1,5 +1,5 @@
 # altcode.test
-Named argument overloads for unit test frameworks
+Named argument overloads for unit test frameworks to disambiguate between which argument of type `'a` is `expected` and which `actual` as there's no consistent ordering.
 
 ## What's in the box?
 
