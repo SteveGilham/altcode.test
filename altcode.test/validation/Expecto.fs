@@ -256,3 +256,70 @@ module Expecto =
     Assert.Throws<Expecto.FailedException>(fun _ ->
       AltFlipExpect.isFasterThanSub "flipmatch2" match2)
     |> ignore
+
+  [<Test>]
+  let isGreaterThanOrEqualShouldPass () =
+    let match1 =
+      (AssertionMatch.Create().WithActual 5)
+        .WithExpected 3
+
+    AltExpect.isGreaterThanOrEqual match1 "match1"
+    AltFlipExpect.isGreaterThanOrEqual "flipmatch1" match1
+    AltExpect.isGreaterThan match1 "match1"
+    AltFlipExpect.isGreaterThan "flipmatch1" match1
+
+  [<Test>]
+  let isGreaterThanOrEqualShouldFail () =
+    let match1 =
+      { AssertionMatch.Create() with
+          Actual = -5
+          Expected = 3 }
+
+    Assert.Throws<Expecto.AssertException>(fun _ ->
+      AltExpect.isGreaterThanOrEqual match1 "match1")
+    |> ignore
+
+    Assert.Throws<Expecto.AssertException>(fun _ ->
+      AltFlipExpect.isGreaterThanOrEqual "flipmatch1" match1)
+    |> ignore
+
+    Assert.Throws<Expecto.AssertException>(fun _ ->
+      AltExpect.isGreaterThan match1 "match1")
+    |> ignore
+
+    Assert.Throws<Expecto.AssertException>(fun _ ->
+      AltFlipExpect.isGreaterThan "flipmatch1" match1)
+    |> ignore
+
+  [<Test>]
+  let isLessThanOrEqualShouldPass () =
+    let match1 =
+      (AssertionMatch.Create().WithActual -5)
+        .WithExpected 3
+
+    AltExpect.isLessThanOrEqual match1 "match1"
+    AltFlipExpect.isLessThanOrEqual "flipmatch1" match1
+    AltExpect.isLessThan match1 "match1"
+    AltFlipExpect.isLessThan "flipmatch1" match1
+
+  [<Test>]
+  let isLessThanOrEqualShouldFail () =
+    let match1 =
+      { AssertionMatch.Create() with
+          Actual = 5
+          Expected = 3 }
+
+    Assert.Throws<Expecto.AssertException>(fun _ ->
+      AltExpect.isLessThanOrEqual match1 "match1")
+    |> ignore
+
+    Assert.Throws<Expecto.AssertException>(fun _ ->
+      AltFlipExpect.isLessThanOrEqual "flipmatch1" match1)
+    |> ignore
+
+    Assert.Throws<Expecto.AssertException>(fun _ -> AltExpect.isLessThan match1 "match1")
+    |> ignore
+
+    Assert.Throws<Expecto.AssertException>(fun _ ->
+      AltFlipExpect.isLessThan "flipmatch1" match1)
+    |> ignore
