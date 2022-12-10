@@ -85,6 +85,9 @@ module AltFlipExpect =
   let equal message (x: AssertionMatch<'a>) =
     Expecto.Flip.Expect.equal message x.Expected x.Actual
 
+  let equalWithDiffPrinter diffPrinter message (x: AssertionMatch<'a>) =
+    Expect.equalWithDiffPrinter diffPrinter x.Actual x.Expected message
+
   let floatClose message accuracy (x: AssertionMatch<double>) =
     Expecto.Flip.Expect.floatClose message accuracy x.Expected x.Actual
 

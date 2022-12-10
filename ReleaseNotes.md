@@ -22,6 +22,7 @@ A. Start with the README : https://github.com/SteveGilham/altcode.test/blob/mast
   where for comparisons, `Actual` is what's being tested and `Expected` is the benchmark value
 * new for `Expecto.Flip.Expect`
   * containsAll
+  * equalWithDiffPrinter diffPrinter message  (x: AssertionMatch<'a>)
   * isFasterThan 
   * isFasterThanSub 
   * isGreaterThan
