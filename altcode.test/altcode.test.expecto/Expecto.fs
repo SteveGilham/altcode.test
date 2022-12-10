@@ -98,10 +98,10 @@ module AltFlipExpect =
     Expecto.Flip.Expect.floatLessThanOrClose message accuracy x.Expected x.Actual
 
   let isFasterThan message (x: AssertionMatch<unit -> 'a>) =
-    Expecto.Flip.Expect.isFasterThan message x.Actual x.Expected
+    Expecto.Flip.Expect.isFasterThan message x.Expected x.Actual
 
   let isFasterThanSub message (x: AssertionMatch<Performance.Measurer<_, _> -> 'a>) =
-    Expecto.Flip.Expect.isFasterThanSub message x.Actual x.Expected
+    Expecto.Flip.Expect.isFasterThanSub message x.Expected x.Actual
 
   let isGreaterThan message (x: AssertionMatch<'a>) =
     Expecto.Flip.Expect.isGreaterThan message (x.Actual, x.Expected)

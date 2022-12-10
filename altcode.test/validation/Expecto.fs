@@ -106,7 +106,6 @@ module Expecto =
     AltExpect.equalWithDiffPrinter diffPrinter match1 "match1"
     AltFlipExpect.equalWithDiffPrinter diffPrinter "flipmatch1" match1
 
-
   [<Test>]
   let equalShouldFail () =
     let match1 =
@@ -203,4 +202,57 @@ module Expecto =
 
     Assert.Throws<Expecto.AssertException>(fun _ ->
       AltFlipExpect.floatLessThanOrClose "flipmatch1" accuracy match1)
+    |> ignore
+
+  let fast () = accuracy
+
+  let slow () =
+    System.Threading.Thread.Sleep(100)
+    accuracy
+
+  let makeMeasurer f = (fun measurer -> measurer f ())
+
+  [<Test>]
+  let isFasterThanShouldPass () =
+    let match1 =
+      (AssertionMatch.Create().WithActual fast)
+        .WithExpected slow
+
+    AltExpect.isFasterThan match1 "match1"
+    AltFlipExpect.isFasterThan "flipmatch1" match1
+
+    let match2 =
+      { AssertionMatch.Create() with
+          Actual = makeMeasurer fast
+          Expected = makeMeasurer slow }
+
+    AltExpect.isFasterThanSub match2 "match2"
+    AltFlipExpect.isFasterThanSub "flipmatch2" match2
+
+  [<Test>]
+  let isFasterThanShouldFail () =
+    let match1 =
+      { AssertionMatch.Create() with
+          Actual = slow
+          Expected = fast }
+
+    Assert.Throws<Expecto.FailedException>(fun _ -> AltExpect.isFasterThan match1 "match1")
+    |> ignore
+
+    Assert.Throws<Expecto.FailedException>(fun _ ->
+      AltFlipExpect.isFasterThan "flipmatch1" match1)
+    |> ignore
+
+
+    let match2 =
+      { AssertionMatch.Create() with
+          Actual = makeMeasurer slow
+          Expected = makeMeasurer fast }
+
+    Assert.Throws<Expecto.FailedException>(fun _ ->
+      AltExpect.isFasterThanSub match2 "match2")
+    |> ignore
+
+    Assert.Throws<Expecto.FailedException>(fun _ ->
+      AltFlipExpect.isFasterThanSub "flipmatch2" match2)
     |> ignore
