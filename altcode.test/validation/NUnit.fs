@@ -456,3 +456,119 @@ module NUnit =
     Assert.Throws<AssertionException>(fun _ ->
       AltDirectoryAssert.AreNotEqual(match4, "bang {0} {2}", 1, 2., 3, 4))
     |> ignore
+
+  [<Test>]
+  let StringContainsShouldPass () =
+    let match1 =
+      (AssertionMatch.Create().WithActual "Hello")
+        .WithExpected "e"
+
+    AltStringAssert.Contains match1
+    AltStringAssert.Contains(match1, "bang {0} {2}", 1, 2., 3, 4)
+
+    let match2 =
+      (AssertionMatch.Create().WithActual "Hello")
+        .WithExpected "?"
+
+    AltStringAssert.DoesNotContain match2
+    AltStringAssert.DoesNotContain(match2, "bang {0} {2}", 1, 2., 3, 4)
+
+  [<Test>]
+  let StringContainsShouldFail () =
+    let match1 =
+      { AssertionMatch.Create() with
+          Actual = "Hello"
+          Expected = "?" }
+
+    Assert.Throws<AssertionException>(fun _ -> AltStringAssert.Contains match1)
+    |> ignore
+
+    Assert.Throws<AssertionException>(fun _ ->
+      AltStringAssert.Contains(match1, "bang {0} {2}", 1, 2., 3, 4))
+    |> ignore
+
+    let match2 =
+      { AssertionMatch.Create() with
+          Actual = "Hello"
+          Expected = "e" }
+
+    Assert.Throws<AssertionException>(fun _ -> AltStringAssert.DoesNotContain match2)
+    |> ignore
+
+    Assert.Throws<AssertionException>(fun _ ->
+      AltStringAssert.DoesNotContain(match2, "bang {0} {2}", 1, 2., 3, 4))
+    |> ignore
+
+  [<Test>]
+  let DoesNotMatchShouldPass () =
+    let match1 =
+      (AssertionMatch.Create().WithActual "Hello")
+        .WithExpected "x"
+
+    AltStringAssert.DoesNotMatch match1
+    AltStringAssert.DoesNotMatch(match1, "bang {0} {2}", 1, 2., 3, 4)
+
+  [<Test>]
+  let DoesNotMatchShouldFail () =
+    let match1 =
+      { AssertionMatch.Create() with
+          Actual = "Hello"
+          Expected = "l" }
+
+    Assert.Throws<AssertionException>(fun _ -> AltStringAssert.DoesNotMatch match1)
+    |> ignore
+
+    Assert.Throws<AssertionException>(fun _ ->
+      AltStringAssert.DoesNotMatch(match1, "bang {0} {2}", 1, 2., 3, 4))
+    |> ignore
+
+  [<Test>]
+  let StringEndsWithShouldPass () =
+    let match1 =
+      (AssertionMatch.Create().WithActual "Hello")
+        .WithExpected "o"
+
+    AltStringAssert.EndsWith match1
+    AltStringAssert.EndsWith(match1, "bang {0} {2}", 1, 2., 3, 4)
+
+  [<Test>]
+  let StringEndsWithShouldFail () =
+    let match1 =
+      { AssertionMatch.Create() with
+          Actual = "Hello"
+          Expected = "H" }
+
+    Assert.Throws<AssertionException>(fun _ -> AltStringAssert.EndsWith match1)
+    |> ignore
+
+    Assert.Throws<AssertionException>(fun _ ->
+      AltStringAssert.EndsWith(match1, "bang {0} {2}", 1, 2., 3, 4))
+    |> ignore
+
+  [<Test>]
+  let AreEqualIgnoringCaseStringsShouldPass () =
+    let item = "DateTime.UtcNow"
+
+    let match1 =
+      (AssertionMatch.Create().WithActual item)
+        .WithExpected(item.ToUpperInvariant())
+
+    AltStringAssert.AreEqualIgnoringCase match1
+    AltStringAssert.AreEqualIgnoringCase(match1, "bang {0} {2}", 1, 2., 3, 4)
+
+  [<Test>]
+  let AreEqualIgnoringCaseStringsShouldFail () =
+    let item = "DateTime.UtcNow"
+    let later = "item + TimeSpan(1, 0, 0, 0)"
+
+    let match1 =
+      { AssertionMatch.Create() with
+          Actual = item
+          Expected = later }
+
+    Assert.Throws<AssertionException>(fun _ -> AltStringAssert.AreEqualIgnoringCase match1)
+    |> ignore
+
+    Assert.Throws<AssertionException>(fun _ ->
+      AltStringAssert.AreEqualIgnoringCase(match1, "bang {0} {2}", 1, 2., 3, 4))
+    |> ignore
