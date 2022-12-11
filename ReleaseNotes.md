@@ -10,6 +10,7 @@ A. Start with the README : https://github.com/SteveGilham/altcode.test/blob/mast
 * [BREAKING] in NUnit methods with `...,message, args)` correctly declare args as a `params object[]` making the methods take variable numbers of arguments
 * support `netstandard2.0` only (meaning ≥ `net472` compatible)
 * various fixes to `Expecto.Flip.Expect` support
+* various fixes to `Xunit.Assert`, including respecting optional arguments
 * support Expecto ≥ 9.0.4, NUnit ≥ 3.13.3, Xunit ≥ 2.4.2,  FSharp.Core ≥ 6.0.0
 * new for `Expecto.Expect`
   * equalWithDiffPrinter
@@ -37,9 +38,10 @@ A. Start with the README : https://github.com/SteveGilham/altcode.test/blob/mast
   * Less
   * LessOrEqual
 * new for `Xunit.Assert`
-  * equal of double with MidpointRounding option
-  * equal of double with tolerance option
-  * equal of single ditto
+  * Equal of double with MidpointRounding option
+  * Equal of double with tolerance option
+  * Equal of single ditto
+  * Equivalent
 
 # 1.0.11
 * support Expecto 9.x

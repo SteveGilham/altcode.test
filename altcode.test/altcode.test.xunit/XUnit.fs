@@ -61,17 +61,20 @@ type AltAssert =
   static member Equal
     (
       x: AssertionMatch<string>,
-      ignoreCase,
-      ignoreLineEndingDifferences,
-      ignoreWhiteSpaceDifferences
-    ) = // TODO
+      ?ignoreCase,
+      ?ignoreLineEndingDifferences,
+      ?ignoreWhiteSpaceDifferences
+    ) =
     Assert.Equal(
       x.Expected,
       x.Actual,
-      ignoreCase,
-      ignoreLineEndingDifferences,
-      ignoreWhiteSpaceDifferences
+      defaultArg ignoreCase false,
+      defaultArg ignoreLineEndingDifferences false,
+      defaultArg ignoreWhiteSpaceDifferences false
     )
+
+  static member Equivalent(x: AssertionMatch<Object>, ?strict) =
+    Assert.Equivalent(x.Expected, x.Actual, defaultArg strict false)
 
   static member Matches(x: AssertionMatch<string>) = Assert.Matches(x.Expected, x.Actual)
 

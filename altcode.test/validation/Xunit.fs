@@ -143,6 +143,13 @@ module Xunit =
     AltAssert.Equal<Example> match1
     AltAssert.Equal<Example>(match1, exrefcomp)
 
+    let match2 =
+      { AssertionMatch.Create() with
+          Actual = item.GetHashCode()
+          Expected = exrefcomp.GetHashCode(item) }
+
+    AltAssert.Equal match2
+
   [<Test>]
   let EqualItemsShouldFail () =
     let match1 =
@@ -211,4 +218,93 @@ module Xunit =
           Expected = 6.0f }
 
     Assert.Throws<Xunit.Sdk.EqualException>(fun _ -> AltAssert.Equal(match3, 0.1f))
+    |> ignore
+
+  [<Test>]
+  let EqualDTsShouldPass () =
+    let item = DateTime.UtcNow
+
+    let match1 =
+      (AssertionMatch.Create().WithActual item)
+        .WithExpected item
+
+    AltAssert.Equal(match1, TimeSpan(1, 0, 0))
+
+  [<Test>]
+  let EqualDTsShouldFail () =
+    let item = DateTime.UtcNow
+    let later = item + TimeSpan(1, 0, 0, 0)
+
+    let match1 =
+      { AssertionMatch.Create() with
+          Actual = item
+          Expected = later }
+
+    Assert.Throws<Xunit.Sdk.EqualException>(fun _ ->
+      AltAssert.Equal(match1, TimeSpan(1, 0, 0)))
+    |> ignore
+
+  [<Test>]
+  let EqualStringsShouldPass () =
+    let item = "DateTime.UtcNow"
+
+    let match1 =
+      (AssertionMatch.Create().WithActual item)
+        .WithExpected item
+
+    AltAssert.Equal match1
+    AltAssert.Equal(match1, false, false, false)
+
+  [<Test>]
+  let EqualStringsShouldFail () =
+    let item = "DateTime.UtcNow"
+    let later = "item + TimeSpan(1, 0, 0, 0)"
+
+    let match1 =
+      { AssertionMatch.Create() with
+          Actual = item
+          Expected = later }
+
+    Assert.Throws<Xunit.Sdk.EqualException>(fun _ -> AltAssert.Equal match1)
+    |> ignore
+
+    Assert.Throws<Xunit.Sdk.EqualException>(fun _ ->
+      AltAssert.Equal(match1, false, false, false))
+    |> ignore
+
+  [<Test>]
+  let EquivalentShouldPass () =
+    let match1 =
+      (AssertionMatch<Object>.Create().WithActual(B 1))
+        .WithExpected(B 1)
+
+    AltAssert.Equivalent(match1, true)
+
+  [<Test>]
+  let EquivalentShouldFail () =
+    let match1 =
+      { AssertionMatch<Object>.Create () with
+          Actual = A
+          Expected = C "ulater" }
+
+    Assert.Throws<Xunit.Sdk.EquivalentException>(fun _ ->
+      AltAssert.Equivalent(match1, false))
+    |> ignore
+
+  [<Test>]
+  let MatchesShouldPass () =
+    let match1 =
+      (AssertionMatch.Create().WithActual "Hello")
+        .WithExpected "l"
+
+    AltAssert.Matches match1
+
+  [<Test>]
+  let MatchesShouldFail () =
+    let match1 =
+      { AssertionMatch.Create() with
+          Actual = "Hello"
+          Expected = "x" }
+
+    Assert.Throws<Xunit.Sdk.MatchesException>(fun _ -> AltAssert.Matches match1)
     |> ignore
