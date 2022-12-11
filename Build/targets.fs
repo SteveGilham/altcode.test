@@ -362,10 +362,6 @@ module Targets =
   let BuildRelease =
     (fun _ ->
       try
-        DotNet.restore
-          (fun o -> o.WithCommon(withWorkingDirectoryVM "."))
-          "./altcode.test/altcode.test.sln"
-
         "./altcode.test/altcode.test.sln"
         |> dotnetBuildRelease
       with x ->
@@ -374,10 +370,6 @@ module Targets =
 
   let BuildDebug =
     (fun _ ->
-      DotNet.restore
-        (fun o -> o.WithCommon(withWorkingDirectoryVM "."))
-        "./altcode.test/altcode.test.sln"
-
       "./altcode.test/altcode.test.sln"
       |> dotnetBuildDebug)
 
