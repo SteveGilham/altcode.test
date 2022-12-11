@@ -101,10 +101,10 @@ type AltAssert =
   static member NotStrictEqual(x: AssertionMatch<'a>) =
     Assert.NotStrictEqual(x.Expected, x.Actual)
 
-  static member ProperSubset(x: AssertionMatch<ISet<'a>>) =
+  static member ProperSubset(x: AssertionMatch<#ISet<'a>>) =
     Assert.ProperSubset(x.Expected, x.Actual)
 
-  static member ProperSuperset(x: AssertionMatch<ISet<'a>>) =
+  static member ProperSuperset(x: AssertionMatch<#ISet<'a>>) =
     Assert.ProperSuperset(x.Expected, x.Actual)
 
   static member Same(x: AssertionMatch<'a>) = Assert.Same(x.Expected, x.Actual)
@@ -118,7 +118,7 @@ type AltAssert =
   static member StrictEqual(x: AssertionMatch<'a>) =
     Assert.StrictEqual(x.Expected, x.Actual)
 
-  static member Subset(x: AssertionMatch<ISet<'a>>) = Assert.Subset(x.Expected, x.Actual)
+  static member Subset(x: AssertionMatch<#ISet<'a>>) = Assert.Subset(x.Expected, x.Actual)
 
-  static member Superset(x: AssertionMatch<ISet<'a>>) =
+  static member Superset(x: AssertionMatch<#ISet<'a>>) =
     Assert.Superset(x.Expected, x.Actual)

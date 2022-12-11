@@ -432,3 +432,109 @@ module Xunit =
 
     Assert.Throws<Xunit.Sdk.NotEqualException>(fun _ -> AltAssert.NotStrictEqual match1)
     |> ignore
+
+  [<Test>]
+  let SetsShouldPass () =
+    let match1 =
+      { AssertionMatch.Create() with
+          Actual = HashSet [ 1 ]
+          Expected = HashSet [ 1; 2 ] }
+
+    AltAssert.ProperSubset match1
+    AltAssert.Subset match1
+
+    let match2 =
+      { AssertionMatch.Create() with
+          Actual = HashSet [ 1; 2 ]
+          Expected = HashSet [ 1 ] }
+
+    AltAssert.ProperSuperset match2
+    AltAssert.Superset match2
+
+  [<Test>]
+  let SetsShouldFail () =
+    let match1 =
+      { AssertionMatch.Create() with
+          Actual = HashSet [ 1; 2 ]
+          Expected = HashSet [ 1 ] }
+
+    Assert.Throws<Xunit.Sdk.ProperSubsetException>(fun _ -> AltAssert.ProperSubset match1)
+    |> ignore
+
+    Assert.Throws<Xunit.Sdk.SubsetException>(fun _ -> AltAssert.Subset match1)
+    |> ignore
+
+    let match2 =
+      { AssertionMatch.Create() with
+          Actual = HashSet [ 1 ]
+          Expected = HashSet [ 1; 2 ] }
+
+    Assert.Throws<Xunit.Sdk.ProperSupersetException>(fun _ ->
+      AltAssert.ProperSuperset match2)
+    |> ignore
+
+    Assert.Throws<Xunit.Sdk.SupersetException>(fun _ -> AltAssert.Superset match2)
+    |> ignore
+
+  [<Test>]
+  let SameItemsShouldPass () =
+    let item = B 1
+
+    let match1 =
+      (AssertionMatch.Create().WithActual item)
+        .WithExpected item
+
+    AltAssert.Same match1
+
+  [<Test>]
+  let SameItemsShouldFail () =
+    let match1 =
+      { AssertionMatch.Create() with
+          Actual = B 1
+          Expected = B 1 }
+
+    Assert.Throws<Xunit.Sdk.SameException>(fun _ -> AltAssert.Same match1)
+    |> ignore
+
+  [<Test>]
+  let StrictEqualItemsShouldPass () =
+    let item = B 1
+
+    let match1 =
+      (AssertionMatch.Create().WithActual item)
+        .WithExpected item
+
+    AltAssert.StrictEqual match1
+
+  [<Test>]
+  let StrictEqualItemsShouldFail () =
+    let match1 =
+      { AssertionMatch.Create() with
+          Actual = B 1
+          Expected = A }
+
+    Assert.Throws<Xunit.Sdk.EqualException>(fun _ -> AltAssert.StrictEqual match1)
+    |> ignore
+
+  [<Test>]
+  let StringStartsWithShouldPass () =
+    let match1 =
+      (AssertionMatch.Create().WithActual "Hello")
+        .WithExpected "H"
+
+    AltAssert.StartsWith match1
+    AltAssert.StartsWith(match1, StringComparison.Ordinal)
+
+  [<Test>]
+  let StringStartsWithShouldFail () =
+    let match1 =
+      { AssertionMatch.Create() with
+          Actual = "Hello"
+          Expected = "e" }
+
+    Assert.Throws<Xunit.Sdk.StartsWithException>(fun _ -> AltAssert.StartsWith match1)
+    |> ignore
+
+    Assert.Throws<Xunit.Sdk.StartsWithException>(fun _ ->
+      AltAssert.StartsWith(match1, StringComparison.Ordinal))
+    |> ignore
