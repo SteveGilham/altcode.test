@@ -42,6 +42,7 @@ A. Start with the README : https://github.com/SteveGilham/altcode.test/blob/mast
   * Equal of double with tolerance option
   * Equal of single ditto
   * Equivalent
+  * NotEqual object overloads
 
 # 1.0.11
 * support Expecto 9.x

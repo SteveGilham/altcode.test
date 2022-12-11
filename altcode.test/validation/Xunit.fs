@@ -308,3 +308,127 @@ module Xunit =
 
     Assert.Throws<Xunit.Sdk.MatchesException>(fun _ -> AltAssert.Matches match1)
     |> ignore
+
+  [<Test>]
+  let NotEqualEnumerablesShouldPass () =
+    let match1 =
+      (AssertionMatch
+        .Create()
+        .WithActual [ "Hello"; "World" ])
+        .WithExpected [ "hello"; "world" ]
+
+    // How better to say this??
+    AltAssert.NotEqual<String list, String> match1
+    AltAssert.NotEqual<String list, String>(match1, strcomp)
+
+  [<Test>]
+  let NotEqualEnumerablesShouldFail () =
+    let match1 =
+      { AssertionMatch.Create() with
+          Actual = [ "Hello"; "World" ]
+          Expected = [ "Hello"; "World" ] }
+
+    Assert.Throws<Xunit.Sdk.NotEqualException>(fun _ ->
+      AltAssert.NotEqual<String list, String> match1)
+    |> ignore
+
+    Assert.Throws<Xunit.Sdk.NotEqualException>(fun _ ->
+      AltAssert.NotEqual<String list, String>(match1, strcomp))
+    |> ignore
+
+  [<Test>]
+  let NotEqualItemsShouldPass () =
+    let match1 =
+      { AssertionMatch.Create() with
+          Actual = A
+          Expected = C "hello" }
+
+    AltAssert.NotEqual<Example> match1
+    AltAssert.NotEqual<Example>(match1, exrefcomp)
+
+  [<Test>]
+  let NotEqualItemsShouldFail () =
+    let item = B 1
+
+    let match1 =
+      (AssertionMatch.Create().WithActual item)
+        .WithExpected item
+
+    Assert.Throws<Xunit.Sdk.NotEqualException>(fun _ -> AltAssert.NotEqual<Example> match1)
+    |> ignore
+
+    Assert.Throws<Xunit.Sdk.NotEqualException>(fun _ ->
+      AltAssert.NotEqual<Example>(match1, exrefcomp))
+    |> ignore
+
+  [<Test>]
+  let NotEqualScalarsShouldPass () =
+    let match1 =
+      (AssertionMatch.Create().WithActual 5.0)
+        .WithExpected 6.0
+
+    AltAssert.NotEqual(match1, 2)
+
+    let match2 =
+      (AssertionMatch.Create().WithActual 5.0M)
+        .WithExpected 6.0M
+
+    AltAssert.NotEqual(match2, 2)
+
+  [<Test>]
+  let NotEqualScalarsShouldFail () =
+    let match1 =
+      { AssertionMatch.Create() with
+          Actual = 5.0
+          Expected = 5.0 }
+
+    Assert.Throws<Xunit.Sdk.NotEqualException>(fun _ -> AltAssert.NotEqual(match1, 2))
+    |> ignore
+
+    let match2 =
+      { AssertionMatch.Create() with
+          Actual = 5.0M
+          Expected = 5.0M }
+
+    Assert.Throws<Xunit.Sdk.NotEqualException>(fun _ -> AltAssert.NotEqual(match2, 2))
+    |> ignore
+
+  [<Test>]
+  let NotSameItemsShouldPass () =
+    let match1 =
+      { AssertionMatch.Create() with
+          Actual = B 1
+          Expected = B 1 }
+
+    AltAssert.NotSame match1
+
+  [<Test>]
+  let NotSameItemsShouldFail () =
+    let item = B 1
+
+    let match1 =
+      (AssertionMatch.Create().WithActual item)
+        .WithExpected item
+
+    Assert.Throws<Xunit.Sdk.NotSameException>(fun _ -> AltAssert.NotSame match1)
+    |> ignore
+
+  [<Test>]
+  let NotStrictEqualItemsShouldPass () =
+    let match1 =
+      { AssertionMatch.Create() with
+          Actual = B 1
+          Expected = A }
+
+    AltAssert.NotStrictEqual match1
+
+  [<Test>]
+  let NotStrictEqualItemsShouldFail () =
+    let item = B 1
+
+    let match1 =
+      (AssertionMatch.Create().WithActual item)
+        .WithExpected item
+
+    Assert.Throws<Xunit.Sdk.NotEqualException>(fun _ -> AltAssert.NotStrictEqual match1)
+    |> ignore
