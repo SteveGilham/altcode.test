@@ -508,6 +508,13 @@ module NUnit =
     AltStringAssert.DoesNotMatch match1
     AltStringAssert.DoesNotMatch(match1, "bang {0} {2}", 1, 2., 3, 4)
 
+    Assert.Throws<AssertionException>(fun _ -> AltStringAssert.IsMatch match1)
+    |> ignore
+
+    Assert.Throws<AssertionException>(fun _ ->
+      AltStringAssert.IsMatch(match1, "bang {0} {2}", 1, 2., 3, 4))
+    |> ignore
+
   [<Test>]
   let DoesNotMatchShouldFail () =
     let match1 =
@@ -522,6 +529,9 @@ module NUnit =
       AltStringAssert.DoesNotMatch(match1, "bang {0} {2}", 1, 2., 3, 4))
     |> ignore
 
+    AltStringAssert.IsMatch match1
+    AltStringAssert.IsMatch(match1, "bang {0} {2}", 1, 2., 3, 4)
+
   [<Test>]
   let StringEndsWithShouldPass () =
     let match1 =
@@ -530,6 +540,13 @@ module NUnit =
 
     AltStringAssert.EndsWith match1
     AltStringAssert.EndsWith(match1, "bang {0} {2}", 1, 2., 3, 4)
+    Assert.Throws<AssertionException>(fun _ -> AltStringAssert.DoesNotEndWith match1)
+    |> ignore
+
+    Assert.Throws<AssertionException>(fun _ ->
+      AltStringAssert.DoesNotEndWith(match1, "bang {0} {2}", 1, 2., 3, 4))
+    |> ignore
+
 
   [<Test>]
   let StringEndsWithShouldFail () =
@@ -545,6 +562,44 @@ module NUnit =
       AltStringAssert.EndsWith(match1, "bang {0} {2}", 1, 2., 3, 4))
     |> ignore
 
+    AltStringAssert.DoesNotEndWith match1
+    AltStringAssert.DoesNotEndWith(match1, "bang {0} {2}", 1, 2., 3, 4)
+
+  [<Test>]
+  let StringStartsWithShouldPass () =
+    let match1 =
+      (AssertionMatch.Create().WithActual "Hello")
+        .WithExpected "H"
+
+    AltStringAssert.StartsWith match1
+    AltStringAssert.StartsWith(match1, "bang {0} {2}", 1, 2., 3, 4)
+    Assert.Throws<AssertionException>(fun _ -> AltStringAssert.DoesNotStartWith match1)
+    |> ignore
+
+    Assert.Throws<AssertionException>(fun _ ->
+      AltStringAssert.DoesNotStartWith(match1, "bang {0} {2}", 1, 2., 3, 4))
+    |> ignore
+
+
+  [<Test>]
+  let StringStartsWithShouldFail () =
+    let match1 =
+      { AssertionMatch.Create() with
+          Actual = "Hello"
+          Expected = "o" }
+
+    Assert.Throws<AssertionException>(fun _ -> AltStringAssert.StartsWith match1)
+    |> ignore
+
+    Assert.Throws<AssertionException>(fun _ ->
+      AltStringAssert.StartsWith(match1, "bang {0} {2}", 1, 2., 3, 4))
+    |> ignore
+
+    AltStringAssert.DoesNotStartWith match1
+    AltStringAssert.DoesNotStartWith(match1, "bang {0} {2}", 1, 2., 3, 4)
+
+
+
   [<Test>]
   let AreEqualIgnoringCaseStringsShouldPass () =
     let item = "DateTime.UtcNow"
@@ -555,6 +610,13 @@ module NUnit =
 
     AltStringAssert.AreEqualIgnoringCase match1
     AltStringAssert.AreEqualIgnoringCase(match1, "bang {0} {2}", 1, 2., 3, 4)
+
+    Assert.Throws<AssertionException>(fun _ -> AltStringAssert.AreNotEqualIgnoringCase match1)
+    |> ignore
+
+    Assert.Throws<AssertionException>(fun _ ->
+      AltStringAssert.AreNotEqualIgnoringCase(match1, "bang {0} {2}", 1, 2., 3, 4))
+    |> ignore
 
   [<Test>]
   let AreEqualIgnoringCaseStringsShouldFail () =
@@ -572,3 +634,7 @@ module NUnit =
     Assert.Throws<AssertionException>(fun _ ->
       AltStringAssert.AreEqualIgnoringCase(match1, "bang {0} {2}", 1, 2., 3, 4))
     |> ignore
+
+    AltStringAssert.AreNotEqualIgnoringCase match1
+    AltStringAssert.AreNotEqualIgnoringCase(match1, "bang {0} {2}", 1, 2., 3, 4)
+
