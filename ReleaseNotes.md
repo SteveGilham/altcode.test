@@ -36,6 +36,10 @@ A. Start with the README : https://github.com/SteveGilham/altcode.test/blob/mast
   * GreaterOrEqual
   * Less
   * LessOrEqual
+* new for `Xunit.Assert`
+  * equal of double with MidpointRounding option
+  * equal of double with tolerance option
+  * equal of single ditto
 
 # 1.0.11
 * support Expecto 9.x

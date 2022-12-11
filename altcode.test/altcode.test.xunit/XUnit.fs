@@ -41,6 +41,15 @@ type AltAssert =
   static member Equal(x: AssertionMatch<double>, (precision: int)) =
     Assert.Equal(x.Expected, x.Actual, precision)
 
+  static member Equal(x: AssertionMatch<double>, (precision: int), rounding) =
+    Assert.Equal(x.Expected, x.Actual, precision, rounding)
+
+  static member Equal(x: AssertionMatch<double>, (tolerance: double)) =
+    Assert.Equal(x.Expected, x.Actual, tolerance)
+
+  static member Equal(x: AssertionMatch<single>, (tolerance: single)) =
+    Assert.Equal(x.Expected, x.Actual, tolerance)
+
   static member Equal(x: AssertionMatch<decimal>, precision) =
     Assert.Equal(x.Expected, x.Actual, precision)
 
