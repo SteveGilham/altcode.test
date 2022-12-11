@@ -540,6 +540,7 @@ module NUnit =
 
     AltStringAssert.EndsWith match1
     AltStringAssert.EndsWith(match1, "bang {0} {2}", 1, 2., 3, 4)
+
     Assert.Throws<AssertionException>(fun _ -> AltStringAssert.DoesNotEndWith match1)
     |> ignore
 
@@ -573,6 +574,7 @@ module NUnit =
 
     AltStringAssert.StartsWith match1
     AltStringAssert.StartsWith(match1, "bang {0} {2}", 1, 2., 3, 4)
+
     Assert.Throws<AssertionException>(fun _ -> AltStringAssert.DoesNotStartWith match1)
     |> ignore
 
@@ -611,7 +613,8 @@ module NUnit =
     AltStringAssert.AreEqualIgnoringCase match1
     AltStringAssert.AreEqualIgnoringCase(match1, "bang {0} {2}", 1, 2., 3, 4)
 
-    Assert.Throws<AssertionException>(fun _ -> AltStringAssert.AreNotEqualIgnoringCase match1)
+    Assert.Throws<AssertionException>(fun _ ->
+      AltStringAssert.AreNotEqualIgnoringCase match1)
     |> ignore
 
     Assert.Throws<AssertionException>(fun _ ->
@@ -637,4 +640,3 @@ module NUnit =
 
     AltStringAssert.AreNotEqualIgnoringCase match1
     AltStringAssert.AreNotEqualIgnoringCase(match1, "bang {0} {2}", 1, 2., 3, 4)
-
