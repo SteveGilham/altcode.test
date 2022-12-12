@@ -754,3 +754,156 @@ module NUnit =
     Assert.Throws<AssertionException>(fun _ ->
       AltFileAssert.AreEqual(match3, "bang {0} {2}", 1, 2., 3, 4))
     |> ignore
+
+  [<Test>]
+  let SetsShouldPass () =
+    let match1 =
+      { AssertionMatch.Create() with
+          Actual = [ B 1; B 5 ]
+          Expected = [ B 5; B 1; B 2 ] }
+
+    AltCollectionAssert.IsSubsetOf match1
+    AltCollectionAssert.IsSubsetOf(match1, "bang {0} {2}", 1, 2., 3, 4)
+
+    Assert.Throws<AssertionException>(fun _ -> AltCollectionAssert.IsNotSubsetOf match1)
+    |> ignore
+
+    Assert.Throws<AssertionException>(fun _ ->
+      AltCollectionAssert.IsNotSubsetOf(match1, "bang {0} {2}", 1, 2., 3, 4))
+    |> ignore
+
+
+    let match2 =
+      { AssertionMatch.Create() with
+          Actual = [ B 5; B 1; B 2 ]
+          Expected = [ B 1; B 5 ] }
+
+    AltCollectionAssert.IsSupersetOf match2
+    AltCollectionAssert.IsSupersetOf(match2, "bang {0} {2}", 1, 2., 3, 4)
+
+    Assert.Throws<AssertionException>(fun _ -> AltCollectionAssert.IsNotSupersetOf match2)
+    |> ignore
+
+    Assert.Throws<AssertionException>(fun _ ->
+      AltCollectionAssert.IsNotSupersetOf(match2, "bang {0} {2}", 1, 2., 3, 4))
+    |> ignore
+
+  [<Test>]
+  let SetsShouldFail () =
+    let match1 =
+      { AssertionMatch.Create() with
+          Actual = [ B 5; B 1; B 2 ]
+          Expected = [ B 1; B 5 ] }
+
+    Assert.Throws<AssertionException>(fun _ -> AltCollectionAssert.IsSubsetOf match1)
+    |> ignore
+
+    Assert.Throws<AssertionException>(fun _ ->
+      AltCollectionAssert.IsSubsetOf(match1, "bang {0} {2}", 1, 2., 3, 4))
+    |> ignore
+
+    AltCollectionAssert.IsNotSubsetOf match1
+    AltCollectionAssert.IsNotSubsetOf(match1, "bang {0} {2}", 1, 2., 3, 4)
+
+    let match2 =
+      { AssertionMatch.Create() with
+          Actual = [ B 1; B 5 ]
+          Expected = [ B 5; B 1; B 2 ] }
+
+    Assert.Throws<AssertionException>(fun _ -> AltCollectionAssert.IsSupersetOf match2)
+    |> ignore
+
+    Assert.Throws<AssertionException>(fun _ ->
+      AltCollectionAssert.IsSupersetOf(match2, "bang {0} {2}", 1, 2., 3, 4))
+    |> ignore
+
+    AltCollectionAssert.IsNotSupersetOf match2
+    AltCollectionAssert.IsNotSupersetOf(match2, "bang {0} {2}", 1, 2., 3, 4)
+
+  let excomp =
+    System.Collections.Comparer(System.Globalization.CultureInfo.InvariantCulture)
+
+  [<Test>]
+  let EqualCollectionsShouldPass () =
+    let match1 =
+      { AssertionMatch.Create() with
+          Actual = [ B 5; B 1; B 2 ]
+          Expected = [ B 5; B 1; B 2 ] }
+
+    AltCollectionAssert.AreEqual match1
+    AltCollectionAssert.AreEqual(match1, "bang {0} {2}", 1, 2., 3, 4)
+    AltCollectionAssert.AreEqual(match1, excomp)
+    AltCollectionAssert.AreEqual(match1, excomp, "bang {0} {2}", 1, 2., 3, 4)
+
+    Assert.Throws<AssertionException>(fun _ -> AltCollectionAssert.AreNotEqual match1)
+    |> ignore
+
+    Assert.Throws<AssertionException>(fun _ ->
+      AltCollectionAssert.AreNotEqual(match1, "bang {0} {2}", 1, 2., 3, 4))
+    |> ignore
+
+    Assert.Throws<AssertionException>(fun _ ->
+      AltCollectionAssert.AreNotEqual(match1, excomp))
+    |> ignore
+
+    Assert.Throws<AssertionException>(fun _ ->
+      AltCollectionAssert.AreNotEqual(match1, excomp, "bang {0} {2}", 1, 2., 3, 4))
+    |> ignore
+
+    let match2 =
+      { AssertionMatch.Create() with
+          Actual = [ B 5; B 1; B 2 ]
+          Expected = [ B 1; B 5; B 2 ] }
+
+    AltCollectionAssert.AreEquivalent match2
+    AltCollectionAssert.AreEquivalent(match2, "bang {0} {2}", 1, 2., 3, 4)
+
+    Assert.Throws<AssertionException>(fun _ -> AltCollectionAssert.AreNotEquivalent match2)
+    |> ignore
+
+    Assert.Throws<AssertionException>(fun _ ->
+      AltCollectionAssert.AreNotEquivalent(match2, "bang {0} {2}", 1, 2., 3, 4))
+    |> ignore
+
+  [<Test>]
+  let EqualCollectionsShouldFail () =
+    let match1 =
+      { AssertionMatch.Create() with
+          Actual = [ B 5; B 1; B 2 ]
+          Expected = [ B 1; B 5; B 3 ] }
+
+    AltCollectionAssert.AreNotEqual match1
+    AltCollectionAssert.AreNotEqual(match1, "bang {0} {2}", 1, 2., 3, 4)
+    AltCollectionAssert.AreNotEqual(match1, excomp)
+    AltCollectionAssert.AreNotEqual(match1, excomp, "bang {0} {2}", 1, 2., 3, 4)
+
+    Assert.Throws<AssertionException>(fun _ -> AltCollectionAssert.AreEqual match1)
+    |> ignore
+
+    Assert.Throws<AssertionException>(fun _ ->
+      AltCollectionAssert.AreEqual(match1, "bang {0} {2}", 1, 2., 3, 4))
+    |> ignore
+
+    Assert.Throws<AssertionException>(fun _ ->
+      AltCollectionAssert.AreEqual(match1, excomp))
+    |> ignore
+
+    Assert.Throws<AssertionException>(fun _ ->
+      AltCollectionAssert.AreEqual(match1, excomp, "bang {0} {2}", 1, 2., 3, 4))
+    |> ignore
+
+    let match2 =
+      { AssertionMatch.Create() with
+          Actual = [ B 1; B 5 ]
+          Expected = [ B 5; B 1; B 2 ] }
+
+
+    AltCollectionAssert.AreNotEquivalent match2
+    AltCollectionAssert.AreNotEquivalent(match2, "bang {0} {2}", 1, 2., 3, 4)
+
+    Assert.Throws<AssertionException>(fun _ -> AltCollectionAssert.AreEquivalent match2)
+    |> ignore
+
+    Assert.Throws<AssertionException>(fun _ ->
+      AltCollectionAssert.AreEquivalent(match2, "bang {0} {2}", 1, 2., 3, 4))
+    |> ignore

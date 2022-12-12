@@ -71,7 +71,9 @@ module Targets =
              :: (p.AssemblyFilter |> Seq.toList)
         LocalSource = true
         TypeFilter =
-          [ @"System\."; "Microsoft" ]
+          [ @"System\."
+            "Microsoft"
+            @"\$RepoRoot" ]
           @ (p.TypeFilter |> Seq.toList) }
 
   let withTestEnvironment l (o: DotNet.TestOptions) =
