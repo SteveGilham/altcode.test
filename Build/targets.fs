@@ -60,7 +60,6 @@ module Targets =
 
   let AltCoverFilter (p: Primitive.PrepareOptions) =
     { p with
-        AttributeFilter = "EntryPoint" :: (p.AttributeFilter |> Seq.toList)
         AssemblyExcludeFilter =
           @"NUnit3\."
           :: (@"\.Tests"
@@ -73,6 +72,7 @@ module Targets =
         TypeFilter =
           [ @"System\."
             "Microsoft"
+            "Program"
             @"\$RepoRoot" ]
           @ (p.TypeFilter |> Seq.toList) }
 

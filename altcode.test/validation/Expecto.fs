@@ -221,6 +221,39 @@ module Expecto =
     AltExpect.isFasterThan match1 "match1"
     AltFlipExpect.isFasterThan "flipmatch1" match1
 
+    let fastfunc =
+      System.Func<Expecto.Accuracy>(fun () -> fast ())
+
+    let slowfunc =
+      System.Func<Expecto.Accuracy>(fun () -> slow ())
+
+    let noop = System.Action(fun () -> ())
+
+    let match1a =
+      (AssertionMatch.Create().WithActual fastfunc)
+        .WithExpected slowfunc
+
+    let mutable result = System.String.Empty
+
+    Assert.True
+    <| AltCSharpExpect.IsFasterThan(match1a, "match1a", &result)
+
+    let match1b =
+      (AssertionMatch.Create().WithActual(noop, fastfunc))
+        .WithExpected(noop, slowfunc)
+
+    Assert.True
+    <| AltCSharpExpect.IsFasterThan(match1b, "match1b", &result)
+
+    let match1c =
+      (AssertionMatch
+        .Create()
+        .WithActual(noop, fastfunc, noop))
+        .WithExpected(noop, slowfunc, noop)
+
+    Assert.True
+    <| AltCSharpExpect.IsFasterThan(match1c, "match1c", &result)
+
     let match2 =
       { AssertionMatch.Create() with
           Actual = makeMeasurer fast
@@ -243,6 +276,38 @@ module Expecto =
       AltFlipExpect.isFasterThan "flipmatch1" match1)
     |> ignore
 
+    let fastfunc =
+      System.Func<Expecto.Accuracy>(fun () -> fast ())
+
+    let slowfunc =
+      System.Func<Expecto.Accuracy>(fun () -> slow ())
+
+    let noop = System.Action(fun () -> ())
+
+    let match1a =
+      (AssertionMatch.Create().WithActual slowfunc)
+        .WithExpected fastfunc
+
+    let mutable result = System.String.Empty
+
+    Assert.False
+    <| AltCSharpExpect.IsFasterThan(match1a, "match1a", &result)
+
+    let match1b =
+      (AssertionMatch.Create().WithActual(noop, slowfunc))
+        .WithExpected(noop, fastfunc)
+
+    Assert.False
+    <| AltCSharpExpect.IsFasterThan(match1b, "match1b", &result)
+
+    let match1c =
+      (AssertionMatch
+        .Create()
+        .WithActual(noop, slowfunc, noop))
+        .WithExpected(noop, fastfunc, noop)
+
+    Assert.False
+    <| AltCSharpExpect.IsFasterThan(match1c, "match1c", &result)
 
     let match2 =
       { AssertionMatch.Create() with

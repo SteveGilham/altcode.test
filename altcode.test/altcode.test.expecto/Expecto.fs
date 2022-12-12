@@ -149,9 +149,10 @@ module AltFlipExpect =
     Expecto.Flip.Expect.stringStarts message x.Expected x.Actual
 
 [<RequireQualifiedAccess>]
+[<AbstractClass; Sealed>]
 type AltCSharpExpect() =
 
-  static member IsFasterThan
+  static member public IsFasterThan
     (
       (x: AssertionMatch<Func<'a>>),
       message: string,
@@ -159,7 +160,7 @@ type AltCSharpExpect() =
     ) =
     Expecto.CSharp.Function.IsFasterThan(x.Actual, x.Expected, message, &result)
 
-  static member IsFasterThan
+  static member public IsFasterThan
     (
       (x: AssertionMatch<Action * Func<'a>>),
       message: string,
@@ -174,7 +175,7 @@ type AltCSharpExpect() =
       &result
     )
 
-  static member IsFasterThan
+  static member public IsFasterThan
     (
       (x: AssertionMatch<Action * Func<'a> * Action>),
       message: string,
