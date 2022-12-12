@@ -60,6 +60,8 @@ and wrappers for some `NUnit.Framework.Assert.That` overloads
 | | | |
 | --- | --- | --- | 
 | **Build** | <sup>GitHub</sup> [![CI](https://github.com/SteveGilham/altcode.test/workflows/CI/badge.svg)](https://github.com/SteveGilham/altcode.test/actions?query=workflow%3ACI) | [![Build history](https://buildstats.info/github/chart/SteveGilham/altcode.test?branch=master)](https://github.com/SteveGilham/altcode.test/actions?query=workflow%3ACI)
+| **Coverage** | <sup>Coveralls</sup> [![Coverage Status](https://coveralls.io/repos/github/SteveGilham/altcode.test/badge.svg?branch=master)](https://coveralls.io/github/SteveGilham/altcode.test?branch=master) |
+
 
 ## Building
 
@@ -80,3 +82,6 @@ Running `dotnet run --project ./Build/Build.fsproj` performs a full build/packag
 
 Use `dotnet run --project ./Build/Build.fsproj --target <targetname>` to run to a specific target.
 
+## Thanks to
+
+* [Coveralls](https://coveralls.io/r/SteveGilham/altcover) for allowing free services for Open Source projects

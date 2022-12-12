@@ -487,47 +487,47 @@ module Targets =
       //   |> Seq.toArray
       // )
 
-      // if
-      //   Environment.isWindows
-      //   && "COVERALLS_REPO_TOKEN"
-      //      |> Environment.environVar
-      //      |> String.IsNullOrWhiteSpace
-      //      |> not
-      // then
-      //   let maybe envvar fallback =
-      //     let x = Environment.environVar envvar
+      if
+        Environment.isWindows
+        && "COVERALLS_REPO_TOKEN"
+           |> Environment.environVar
+           |> String.IsNullOrWhiteSpace
+           |> not
+      then
+        let maybe envvar fallback =
+          let x = Environment.environVar envvar
 
-      //     if String.IsNullOrWhiteSpace x then
-      //       fallback
-      //     else
-      //       x
+          if String.IsNullOrWhiteSpace x then
+            fallback
+          else
+            x
 
-      //   let log = Information.shortlog "."
-      //   let gap = log.IndexOf ' '
-      //   let commit = log.Substring gap
+        let log = Information.shortlog "."
+        let gap = log.IndexOf ' '
+        let commit = log.Substring gap
 
-      //   Actions.Run
-      //     ("dotnet",
-      //      "_Reports",
-      //      [ "csmacnz.Coveralls"
-      //        "--opencover"
-      //        "-i"
-      //        coverage
-      //        "--repoToken"
-      //        Environment.environVar "COVERALLS_REPO_TOKEN"
-      //        "--commitId"
-      //        commitHash
-      //        "--commitBranch"
-      //        Information.getBranchName (".")
-      //        "--commitAuthor"
-      //        maybe "COMMIT_AUTHOR" "" // TODO
-      //        "--commitEmail"
-      //        maybe "COMMIT_AUTHOR_EMAIL" "" //
-      //        "--commitMessage"
-      //        commit
-      //        "--jobId"
-      //        DateTime.UtcNow.ToString("yyMMdd-HHmmss") ])
-      //     "Coveralls upload failed"
+        Actions.Run
+          ("dotnet",
+           "_Reports",
+           [ "csmacnz.Coveralls"
+             "--opencover"
+             "-i"
+             (Seq.head coverage)
+             "--repoToken"
+             Environment.environVar "COVERALLS_REPO_TOKEN"
+             "--commitId"
+             commitHash
+             "--commitBranch"
+             Information.getBranchName (".")
+             "--commitAuthor"
+             maybe "COMMIT_AUTHOR" "" // TODO
+             "--commitEmail"
+             maybe "COMMIT_AUTHOR_EMAIL" "" //
+             "--commitMessage"
+             commit
+             "--jobId"
+             DateTime.UtcNow.ToString("yyMMdd-HHmmss") ])
+          "Coveralls upload failed"
 
       (report @@ "Summary.xml")
       |> uncovered
