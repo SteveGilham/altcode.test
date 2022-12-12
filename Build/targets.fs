@@ -531,7 +531,10 @@ module Targets =
 
       (report @@ "Summary.xml")
       |> uncovered
-      |> printfn "%A uncovered lines")
+      |> (fun u ->
+        u |> (printfn "%A uncovered lines")
+        // printfn "%A" (u.GetType().FullName)
+        Assert.That(u, Is.EqualTo [0], "All lines should be covered")))
 
 
   // Code Analysis

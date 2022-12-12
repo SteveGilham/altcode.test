@@ -413,7 +413,10 @@ module Expecto =
       (fun x -> x |> Seq.exists (fun y -> y.Success))
       "match1a"
 
-    AltFlipExpect.isMatchGroups "flipmatch1a" (fun x -> x |> Seq.isEmpty |> not) match1
+    AltFlipExpect.isMatchGroups
+      "flipmatch1a"
+      (fun x -> x |> Seq.exists (fun y -> y.Success))
+      match1
 
     Assert.Throws<Expecto.AssertException>(fun _ -> AltExpect.isNotMatch match1 "match1b")
     |> ignore
@@ -529,7 +532,9 @@ module Expecto =
   [<Test>]
   let streamsEqualShouldPass () =
     let data = [| 1uy; 3uy |]
+    // fsharplint:disable-next-line  RedundantNewKeyword
     use s1 = new System.IO.MemoryStream(data)
+    // fsharplint:disable-next-line  RedundantNewKeyword
     use s2 = new System.IO.MemoryStream(data)
 
     let match1 =
@@ -541,10 +546,10 @@ module Expecto =
 
   [<Test>]
   let StreamsEqualShouldFail () =
-    use s1 =
+    use s1 = // fsharplint:disable-next-line  RedundantNewKeyword
       new System.IO.MemoryStream([| 1uy; 2uy; 3uy |])
 
-    use s2 =
+    use s2 = // fsharplint:disable-next-line  RedundantNewKeyword
       new System.IO.MemoryStream([| 1uy; 4uy |])
 
     let match1 =
@@ -557,4 +562,79 @@ module Expecto =
 
     Assert.Throws<Expecto.AssertException>(fun _ ->
       AltFlipExpect.streamsEqual "flipmatch1" match1)
+    |> ignore
+
+  [<Test>]
+  let SequenceEqualShouldPass () =
+    let match1 =
+      { AssertionMatch.Create() with
+          Actual = [ B 5; B 1; B 2 ]
+          Expected = [ B 5; B 1; B 2 ] }
+
+    AltExpect.sequenceEqual match1 "match1"
+    AltFlipExpect.sequenceEqual "flipmatch1" match1
+
+  [<Test>]
+  let SequenceEqualShouldFail () =
+    let match1 =
+      { AssertionMatch.Create() with
+          Actual = [ B 5; B 1; B 2 ]
+          Expected = [ B 1; B 5; B 3 ] }
+
+    Assert.Throws<Expecto.AssertException>(fun _ ->
+      AltExpect.sequenceEqual match1 "match1")
+    |> ignore
+
+    Assert.Throws<Expecto.AssertException>(fun _ ->
+      AltFlipExpect.sequenceEqual "flipmatch1" match1)
+    |> ignore
+
+  [<Test>]
+  let SequenceStartsShouldPass () =
+    let match1 =
+      { AssertionMatch.Create() with
+          Actual = [ B 5; B 1; B 2; B 2 ]
+          Expected = [ B 5; B 1 ] }
+
+    AltExpect.sequenceStarts match1 "match1"
+    AltFlipExpect.sequenceStarts "flipmatch1" match1
+
+  [<Test>]
+  let SequenceStartsShouldFail () =
+    let match1 =
+      { AssertionMatch.Create() with
+          Actual = [ B 5; B 1; B 2; B 3 ]
+          Expected = [ B 1; B 5 ] }
+
+    Assert.Throws<Expecto.AssertException>(fun _ ->
+      AltExpect.sequenceStarts match1 "match1")
+    |> ignore
+
+    Assert.Throws<Expecto.AssertException>(fun _ ->
+      AltFlipExpect.sequenceStarts "flipmatch1" match1)
+    |> ignore
+
+  [<Test>]
+  let SequenceContainsOrderShouldPass () =
+    let match1 =
+      { AssertionMatch.Create() with
+          Actual = [ B 5; B 1; B 2; B 2 ]
+          Expected = [ B 5; B 2 ] }
+
+    AltExpect.sequenceContainsOrder match1 "match1"
+    AltFlipExpect.sequenceContainsOrder "flipmatch1" match1
+
+  [<Test>]
+  let SequenceContainsOrderShouldFail () =
+    let match1 =
+      { AssertionMatch.Create() with
+          Actual = [ B 5; B 1; B 2; B 3 ]
+          Expected = [ B 1; B 5 ] }
+
+    Assert.Throws<Expecto.AssertException>(fun _ ->
+      AltExpect.sequenceContainsOrder match1 "match1")
+    |> ignore
+
+    Assert.Throws<Expecto.AssertException>(fun _ ->
+      AltFlipExpect.sequenceContainsOrder "flipmatch1" match1)
     |> ignore
