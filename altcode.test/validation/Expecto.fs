@@ -106,6 +106,13 @@ module Expecto =
     AltExpect.equalWithDiffPrinter diffPrinter match1 "match1"
     AltFlipExpect.equalWithDiffPrinter diffPrinter "flipmatch1" match1
 
+    Assert.Throws<Expecto.AssertException>(fun _ -> AltExpect.notEqual match1 "match1")
+    |> ignore
+
+    Assert.Throws<Expecto.AssertException>(fun _ ->
+      AltFlipExpect.notEqual "flipmatch1" match1)
+    |> ignore
+
   [<Test>]
   let equalShouldFail () =
     let match1 =
@@ -127,6 +134,9 @@ module Expecto =
     Assert.Throws<Expecto.AssertException>(fun _ ->
       AltFlipExpect.equalWithDiffPrinter diffPrinter "flipmatch1" match1)
     |> ignore
+
+    AltExpect.notEqual match1 "match1"
+    AltFlipExpect.notEqual "flipmatch1" match1
 
   let accuracy =
     { Expecto.Accuracy.absolute = 0.1
@@ -388,3 +398,57 @@ module Expecto =
     Assert.Throws<Expecto.AssertException>(fun _ ->
       AltFlipExpect.isLessThan "flipmatch1" match1)
     |> ignore
+
+  [<Test>]
+  let IsMatchShouldPass () =
+    let match1 =
+      (AssertionMatch.Create().WithActual "Hello")
+        .WithExpected "o"
+
+    AltExpect.isMatch match1 "match1"
+    AltFlipExpect.isMatch "flipmatch1" match1
+
+    AltExpect.isMatchGroups
+      match1
+      (fun x -> x |> Seq.exists (fun y -> y.Success))
+      "match1a"
+
+    AltFlipExpect.isMatchGroups "flipmatch1a" (fun x -> x |> Seq.isEmpty |> not) match1
+
+    Assert.Throws<Expecto.AssertException>(fun _ -> AltExpect.isNotMatch match1 "match1b")
+    |> ignore
+
+    Assert.Throws<Expecto.AssertException>(fun _ ->
+      AltFlipExpect.isNotMatch "flipmatch1b" match1)
+    |> ignore
+
+  [<Test>]
+  let IsMatchShouldFail () =
+    let match1 =
+      { AssertionMatch.Create() with
+          Actual = "Hello"
+          Expected = "x" }
+
+    Assert.Throws<Expecto.AssertException>(fun _ -> AltExpect.isMatch match1 "match1")
+    |> ignore
+
+    Assert.Throws<Expecto.AssertException>(fun _ ->
+      AltFlipExpect.isMatch "flipmatch1" match1)
+    |> ignore
+
+    Assert.Throws<Expecto.AssertException>(fun _ ->
+      AltExpect.isMatchGroups
+        match1
+        (fun x -> x |> Seq.exists (fun y -> y.Success))
+        "match1a")
+    |> ignore
+
+    Assert.Throws<Expecto.AssertException>(fun _ ->
+      AltFlipExpect.isMatchGroups
+        "flipmatch1a"
+        (fun x -> x |> Seq.exists (fun y -> y.Success))
+        match1)
+    |> ignore
+
+    AltExpect.isNotMatch match1 "match1b"
+    AltFlipExpect.isNotMatch "match1b" match1
