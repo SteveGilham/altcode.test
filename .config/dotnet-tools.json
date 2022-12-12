@@ -2,10 +2,16 @@
   "version": 1,
   "isRoot": true,
   "tools": {
-    "fake-cli": {
-      "version": "5.20.0",
+    "dotnet-reportgenerator-globaltool": {
+      "version": "5.1.12",
       "commands": [
-        "fake"
+        "reportgenerator"
+      ]
+    },
+    "dotnet-fsharplint": {
+      "version": "0.21.3",
+      "commands": [
+        "dotnet-fsharplint"
       ]
     }
   }
