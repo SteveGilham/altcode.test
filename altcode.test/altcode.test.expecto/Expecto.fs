@@ -65,7 +65,7 @@ module AltExpect =
   let sequenceStarts (x: AssertionMatch<#IEnumerable<'a>>) message =
     Expect.sequenceStarts x.Actual x.Expected message
 
-  let streamsEqual (x: AssertionMatch<Stream>) message =
+  let streamsEqual (x: AssertionMatch<#Stream>) message =
     Expect.streamsEqual x.Actual x.Expected message
 
   let stringContains (x: AssertionMatch<string>) message =
@@ -136,7 +136,7 @@ module AltFlipExpect =
   let sequenceStarts message (x: AssertionMatch<#IEnumerable<'a>>) =
     Expecto.Flip.Expect.sequenceStarts message x.Expected x.Actual
 
-  let streamsEqual message (x: AssertionMatch<Stream>) =
+  let streamsEqual message (x: AssertionMatch<#Stream>) =
     Expecto.Flip.Expect.streamsEqual message x.Expected x.Actual
 
   let stringContains message (x: AssertionMatch<string>) =

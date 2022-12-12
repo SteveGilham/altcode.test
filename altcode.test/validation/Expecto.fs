@@ -452,3 +452,109 @@ module Expecto =
 
     AltExpect.isNotMatch match1 "match1b"
     AltFlipExpect.isNotMatch "match1b" match1
+
+  [<Test>]
+  let StringStartsShouldPass () =
+    let match1 =
+      (AssertionMatch.Create().WithActual "Hello")
+        .WithExpected "H"
+
+    AltExpect.stringStarts match1 "match1"
+    AltFlipExpect.stringStarts "flipmatch1" match1
+
+
+  [<Test>]
+  let StringStartsShouldFail () =
+    let match1 =
+      { AssertionMatch.Create() with
+          Actual = "Hello"
+          Expected = "o" }
+
+    Assert.Throws<Expecto.AssertException>(fun _ -> AltExpect.stringStarts match1 "match1")
+    |> ignore
+
+    Assert.Throws<Expecto.AssertException>(fun _ ->
+      AltFlipExpect.stringStarts "flipmatch1" match1)
+    |> ignore
+
+  [<Test>]
+  let StringEndsShouldPass () =
+    let match1 =
+      (AssertionMatch.Create().WithActual "Hello")
+        .WithExpected "o"
+
+    AltExpect.stringEnds match1 "match1"
+    AltFlipExpect.stringEnds "flipmatch1" match1
+
+
+  [<Test>]
+  let StringEndsShouldFail () =
+    let match1 =
+      { AssertionMatch.Create() with
+          Actual = "Hello"
+          Expected = "H" }
+
+    Assert.Throws<Expecto.AssertException>(fun _ -> AltExpect.stringEnds match1 "match1")
+    |> ignore
+
+    Assert.Throws<Expecto.AssertException>(fun _ ->
+      AltFlipExpect.stringEnds "flipmatch1" match1)
+    |> ignore
+
+  [<Test>]
+  let StringContainsShouldPass () =
+    let match1 =
+      (AssertionMatch.Create().WithActual "Hello")
+        .WithExpected "l"
+
+    AltExpect.stringContains match1 "match1"
+    AltFlipExpect.stringContains "flipmatch1" match1
+
+
+  [<Test>]
+  let StringContainsShouldFail () =
+    let match1 =
+      { AssertionMatch.Create() with
+          Actual = "Hello"
+          Expected = "?" }
+
+    Assert.Throws<Expecto.AssertException>(fun _ ->
+      AltExpect.stringContains match1 "match1")
+    |> ignore
+
+    Assert.Throws<Expecto.AssertException>(fun _ ->
+      AltFlipExpect.stringContains "flipmatch1" match1)
+    |> ignore
+
+  [<Test>]
+  let streamsEqualShouldPass () =
+    let data = [| 1uy; 3uy |]
+    use s1 = new System.IO.MemoryStream(data)
+    use s2 = new System.IO.MemoryStream(data)
+
+    let match1 =
+      (AssertionMatch.Create().WithActual s1)
+        .WithExpected s2
+
+    AltExpect.streamsEqual match1 "match1"
+    AltFlipExpect.streamsEqual "flipmatch1" match1
+
+  [<Test>]
+  let StreamsEqualShouldFail () =
+    use s1 =
+      new System.IO.MemoryStream([| 1uy; 2uy; 3uy |])
+
+    use s2 =
+      new System.IO.MemoryStream([| 1uy; 4uy |])
+
+    let match1 =
+      { AssertionMatch.Create() with
+          Actual = s1
+          Expected = s2 }
+
+    Assert.Throws<Expecto.AssertException>(fun _ -> AltExpect.streamsEqual match1 "match1")
+    |> ignore
+
+    Assert.Throws<Expecto.AssertException>(fun _ ->
+      AltFlipExpect.streamsEqual "flipmatch1" match1)
+    |> ignore
