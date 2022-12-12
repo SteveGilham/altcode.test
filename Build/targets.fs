@@ -330,20 +330,23 @@ module Targets =
       let common =
         File.ReadAllText("./altcode.test/altcode.test.common/Common.fs")
 
-      [ "Expecto"; "Nunit"; "Xunit" ]
+      [ "Expecto"
+        "Common"
+        "Nunit"
+        "Xunit" ]
       |> List.iter (fun k ->
         let text = common.Replace("Common", k)
         File.WriteAllText("./_Generated/Common." + k + ".fs", text))
 
       let hack =
-        """namespace AltCover
-  module SolutionRoot =
+        """namespace AltCode.Test
+  module RepoRoot =
     let location = """
         + "\"\"\""
         + (Path.getFullName ".")
         + "\"\"\""
 
-      let path = "_Generated/SolutionRoot.fs"
+      let path = "_Generated/RepoRoot.fs"
 
       // Update the file only if it would change
       let old =

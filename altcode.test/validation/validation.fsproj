@@ -8,6 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\..\_Generated\AssemblyVersion.fs" Link="AssemblyVersion.fs" />
+    <Compile Include="..\..\_Generated\RepoRoot.fs" Link="Common.fs" />
     <Compile Include="Expecto.fs" />
     <Compile Include="NUnit.fs" />
     <Compile Include="Xunit.fs" />

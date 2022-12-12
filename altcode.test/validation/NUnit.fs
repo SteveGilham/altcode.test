@@ -600,8 +600,6 @@ module NUnit =
     AltStringAssert.DoesNotStartWith match1
     AltStringAssert.DoesNotStartWith(match1, "bang {0} {2}", 1, 2., 3, 4)
 
-
-
   [<Test>]
   let AreEqualIgnoringCaseStringsShouldPass () =
     let item = "DateTime.UtcNow"
@@ -640,3 +638,119 @@ module NUnit =
 
     AltStringAssert.AreNotEqualIgnoringCase match1
     AltStringAssert.AreNotEqualIgnoringCase(match1, "bang {0} {2}", 1, 2., 3, 4)
+
+  [<Test>]
+  let AreEqualFilesShouldPass () =
+    let left =
+      Path.Combine(
+        AltCode.Test.RepoRoot.location,
+        "altcode.test/altcode.test.common/Common.fs"
+      )
+
+    let right =
+      Path.Combine(AltCode.Test.RepoRoot.location, "_Generated/Common.Common.fs")
+
+    // let l1 = File.ReadAllText left
+    // let r1 = File.ReadAllText right
+    // Assert.That(l1, Is.EqualTo r1)
+
+    let match1 =
+      (AssertionMatch.Create().WithActual left)
+        .WithExpected(right)
+
+    AltFileAssert.AreEqual match1
+    AltFileAssert.AreEqual(match1, "bang {0} {2}", 1, 2., 3, 4)
+
+    Assert.Throws<AssertionException>(fun _ -> AltFileAssert.AreNotEqual match1)
+    |> ignore
+
+    Assert.Throws<AssertionException>(fun _ ->
+      AltFileAssert.AreNotEqual(match1, "bang {0} {2}", 1, 2., 3, 4))
+    |> ignore
+
+    let match2 =
+      (AssertionMatch.Create().WithActual(FileInfo left))
+        .WithExpected(FileInfo right)
+
+    AltFileAssert.AreEqual match2
+    AltFileAssert.AreEqual(match2, "bang {0} {2}", 1, 2., 3, 4)
+
+    Assert.Throws<AssertionException>(fun _ -> AltFileAssert.AreNotEqual match2)
+    |> ignore
+
+    Assert.Throws<AssertionException>(fun _ ->
+      AltFileAssert.AreNotEqual(match2, "bang {0} {2}", 1, 2., 3, 4))
+    |> ignore
+
+    use l2 = (File.OpenRead left) :> Stream
+    use r2 = (File.OpenRead right) :> Stream
+
+    let match3 =
+      (AssertionMatch.Create().WithActual l2)
+        .WithExpected(r2)
+
+    AltFileAssert.AreEqual match3
+    AltFileAssert.AreEqual(match3, "bang {0} {2}", 1, 2., 3, 4)
+
+    Assert.Throws<AssertionException>(fun _ -> AltFileAssert.AreNotEqual match3)
+    |> ignore
+
+    Assert.Throws<AssertionException>(fun _ ->
+      AltFileAssert.AreNotEqual(match3, "bang {0} {2}", 1, 2., 3, 4))
+    |> ignore
+
+  [<Test>]
+  let AreEqualFilesShouldFail () =
+    let left =
+      Path.Combine(
+        AltCode.Test.RepoRoot.location,
+        "altcode.test/altcode.test.common/Common.fs"
+      )
+
+    let right =
+      Path.Combine(AltCode.Test.RepoRoot.location, "_Generated/RepoRoot.fs")
+
+    let match1 =
+      (AssertionMatch.Create().WithActual left)
+        .WithExpected(right)
+
+    AltFileAssert.AreNotEqual match1
+    AltFileAssert.AreNotEqual(match1, "bang {0} {2}", 1, 2., 3, 4)
+
+    Assert.Throws<AssertionException>(fun _ -> AltFileAssert.AreEqual match1)
+    |> ignore
+
+    Assert.Throws<AssertionException>(fun _ ->
+      AltFileAssert.AreEqual(match1, "bang {0} {2}", 1, 2., 3, 4))
+    |> ignore
+
+    let match2 =
+      (AssertionMatch.Create().WithActual(FileInfo left))
+        .WithExpected(FileInfo right)
+
+    AltFileAssert.AreNotEqual match2
+    AltFileAssert.AreNotEqual(match2, "bang {0} {2}", 1, 2., 3, 4)
+
+    Assert.Throws<AssertionException>(fun _ -> AltFileAssert.AreEqual match2)
+    |> ignore
+
+    Assert.Throws<AssertionException>(fun _ ->
+      AltFileAssert.AreEqual(match2, "bang {0} {2}", 1, 2., 3, 4))
+    |> ignore
+
+    use l2 = (File.OpenRead left) :> Stream
+    use r2 = (File.OpenRead right) :> Stream
+
+    let match3 =
+      (AssertionMatch.Create().WithActual l2)
+        .WithExpected(r2)
+
+    AltFileAssert.AreNotEqual match3
+    AltFileAssert.AreNotEqual(match3, "bang {0} {2}", 1, 2., 3, 4)
+
+    Assert.Throws<AssertionException>(fun _ -> AltFileAssert.AreEqual match3)
+    |> ignore
+
+    Assert.Throws<AssertionException>(fun _ ->
+      AltFileAssert.AreEqual(match3, "bang {0} {2}", 1, 2., 3, 4))
+    |> ignore

@@ -1,4 +1,4 @@
-﻿namespace AltCode.Test.Common
+namespace AltCode.Test.Common
 
 type AssertionMatch<'a> =
   { Actual: 'a
