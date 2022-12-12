@@ -2,14 +2,14 @@ Q. Never mind the fluff -- how do I get started?
 
 A. Start with the README : https://github.com/SteveGilham/altcode.test/blob/master/README.md
 
-# 2.0.xx
+# 2.0.31
 * [BREAKING] make the `AssertionMatch` type specific to each package to avoid name clashes if multiple test suites are in use
 * [BREAKING] remove support for obsolescing Expecto `Expect.floatEqual`
 * [BREAKING] remove support for obsolescing NUnit `Assert.AreEqual<Nullable<double>>` methods
 * [BREAKING] rename `AltCode.Test.Xunit.AltAssert.DoesNotAssertionMatch` & `AssertionMatches` to `AltCode.Test.Xunit.AltAssert.DoesNotMatch` and `Matches` to line up with the methods being shadowed in `Xunit.Assert`
 * [BREAKING] in NUnit methods with `...,message, args)` correctly declare args as a `params object[]` making the methods take variable numbers of arguments
 * support `netstandard2.0` only (meaning ≥ `net472` compatible)
-* various fixes to `Expecto.Flip.Expect` support
+* various fixes to `Expecto.Expect` and `Expecto.Flip.Expect` support, including Stream subtypes to be passed w/o explicit coercion to base
 * various fixes to `Xunit.Assert`, including respecting optional arguments and allowing interface subtypes to be passed w/o explicit coercion to base
 * support Expecto ≥ 9.0.4, NUnit ≥ 3.13.3, Xunit ≥ 2.4.2,  FSharp.Core ≥ 6.0.0
 * new for `Expecto.Expect`

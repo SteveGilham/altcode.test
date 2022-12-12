@@ -1,5 +1,5 @@
 # altcode.test
-Named argument overloads for unit test frameworks to disambiguate between which argument of type `'a` is `expected` and which `actual` as there's no consistent ordering.
+Named argument wrappers for unit test frameworks to disambiguate between which argument of type `'a` is `expected` and which `actual` as there's no consistent ordering between libraries, and even within them (e.g. Expecto and Expecto.Flip).
 
 ## What's in the box?
 
@@ -63,20 +63,20 @@ and wrappers for some `NUnit.Framework.Assert.That` overloads
 
 ## Building
 
-Uses the nuget package for platform-independent build of the Framework support; the .net core part of the artifacts are already platform independent
+Cross platform, dotnet code throughout.
 
 ### Tooling
 
-It is assumed that .net 5.0.100 or later is available  (`dotnet`) -- try https://www.microsoft.com/net/download  
+It is assumed that .net 7.0.100 or later is available  (`dotnet`) -- try https://www.microsoft.com/net/download  
 
 ### Bootstrapping
 
-Start by setting up `dotnet fake` with `dotnet tool restore `
-Then `dotnet fake run ./Build/setup.fsx` to do the rest of the set-up.
+Start by setting up with `dotnet tool restore `
+Then `dotnet run --project ./Build/Setup.fsproj` to do the rest of the set-up.
 
 ### Normal builds
 
-Running `dotnet fake run ./Build/build.fsx` performs a full build/package process.
+Running `dotnet run --project ./Build/Build.fsproj` performs a full build/package process.
 
-Use `dotnet fake run ./Build/build.fsx --target <targetname>` to run to a specific target.
+Use `dotnet run --project ./Build/Build.fsproj --target <targetname>` to run to a specific target.
 
