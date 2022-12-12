@@ -38,7 +38,7 @@ Contains class `AltCode.Test.Xunit.AltAssert` which provides wrappers for `Xunit
 
 [`AltCode.Test.NUnit` ![Nuget](https://buildstats.info/nuget/altcode.test.nunit)](http://nuget.org/packages/altcode.test.nunit)
 
-Contains classes `AltCode.Test.NUnit.Alt*Assert` which provide wrappers for the corresponding `NUnit.Framework.*Assert` for `*` = `''`, `'Directory'`, `'File'` and `'String'`  with an appropriate `AltCode.Test.Nunit.AssertionMatch`-typed argument in place of actual and template expectation; also 
+Contains classes `AltCode.Test.NUnit.Alt*Assert` which provide wrappers for the corresponding `NUnit.Framework.*Assert` for `*` = `''`, `'Collection'`, `'Directory'`, `'File'` and `'String'`  with an appropriate `AltCode.Test.Nunit.AssertionMatch`-typed argument in place of actual and template expectation; also 
 ```
 type Constraint<'a> =
   {
