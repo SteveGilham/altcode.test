@@ -25,7 +25,11 @@ module NUnit =
       (Constraint.Create().WithActual 5.0)
         .WithConstraint(Is.GreaterThan 4.0)
 
-    AltAssert.That(match2, (fun () -> "bang!"))
+    // use this function to get coverage 100%
+    let banger () = "bang!"
+    Assert.That(banger(), Is.EqualTo "bang!")
+
+    AltAssert.That(match2, banger)
 
     let match3 =
       { Constraint.Create() with
