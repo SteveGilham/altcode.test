@@ -27,7 +27,7 @@ module NUnit =
 
     // use this function to get coverage 100%
     let banger () = "bang!"
-    Assert.That(banger(), Is.EqualTo "bang!")
+    Assert.That(banger (), Is.EqualTo "bang!")
 
     AltAssert.That(match2, banger)
 

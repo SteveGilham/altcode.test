@@ -49,9 +49,6 @@ module Targets =
     | Some f -> { o with DotNetCliPath = f }
     | None -> o
 
-  let dotnetVersion =
-    DotNet.getVersion (fun o -> o.WithCommon dotnetOptions)
-
   let nugetCache =
     Path.Combine(
       Environment.GetFolderPath Environment.SpecialFolder.UserProfile,
@@ -75,25 +72,6 @@ module Targets =
             "Program"
             @"\$RepoRoot" ]
           @ (p.TypeFilter |> Seq.toList) }
-
-  let withTestEnvironment l (o: DotNet.TestOptions) =
-    let before = o.Environment |> Map.toList
-
-    let after =
-      [ l; before ] |> List.concat |> Map.ofList
-
-    o.WithEnvironment after
-
-  let withAltCoverOptions
-    (prepare: Abstract.IPrepareOptions)
-    (collect: Abstract.ICollectOptions)
-    (force: DotNet.ICLIOptions)
-    (o: DotNet.TestOptions)
-    =
-    if dotnetVersion <> "7.0.100" then
-      o.WithAltCoverOptions prepare collect force
-    else
-      withTestEnvironment (DotNet.ToTestPropertiesList prepare collect force) o
 
   let mutable misses = 0
 
@@ -435,8 +413,10 @@ module Targets =
                try
                  DotNet.test
                    (fun to' ->
-                     { (to'.WithCommon(setBaseOptions)
-                        |> (withAltCoverOptions prepare collect forceTrue)) with
+                     { (to'.WithCommon(setBaseOptions).WithAltCoverOptions
+                         prepare
+                         collect
+                         forceTrue) with
                          MSBuildParams = cliArguments
                          NoBuild = true })
                    test
@@ -456,36 +436,6 @@ module Targets =
                   ReportGenerator.ReportType.XmlSummary ]
               TargetDir = report })
         coverage
-
-      // let reportLines =
-      //   coverage |> List.map File.ReadAllLines
-
-      // let top =
-      //   reportLines
-      //   |> List.head
-      //   |> Seq.takeWhile (fun l -> l.StartsWith("    <Module") |> not)
-
-      // let tail =
-      //   reportLines
-      //   |> List.head
-      //   |> Seq.skipWhile (fun l -> l <> "  </Modules>")
-
-      // let core =
-      //   reportLines
-      //   |> List.map (fun f ->
-      //     f
-      //     |> Seq.skipWhile (fun l -> l.StartsWith("    <Module") |> not)
-      //     |> Seq.takeWhile (fun l -> l <> "  </Modules>"))
-
-      // let coverage =
-      //   reports
-      //   @@ "CombinedTestWithAltCoverRunner.coveralls"
-
-      // File.WriteAllLines(
-      //   coverage,
-      //   Seq.concat [ top; Seq.concat core; tail ]
-      //   |> Seq.toArray
-      // )
 
       if
         Environment.isWindows
@@ -534,7 +484,7 @@ module Targets =
       |> (fun u ->
         u |> (printfn "%A uncovered lines")
         // printfn "%A" (u.GetType().FullName)
-        Assert.That(u, Is.EqualTo [0], "All lines should be covered")))
+        Assert.That(u, Is.EqualTo [ 0 ], "All lines should be covered")))
 
 
   // Code Analysis
