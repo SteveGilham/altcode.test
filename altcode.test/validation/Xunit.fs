@@ -426,6 +426,13 @@ module Xunit =
           member this.Equals(x, y) = x = y
           member this.GetHashCode(x) = x.GetHashCode() }
 
+    let hashmatch =
+      { AssertionMatch.Create() with
+          Actual = doublecomp.GetHashCode(5.0)
+          Expected = (5.0).GetHashCode() }
+
+    AltAssert.Equal(hashmatch)
+
     Assert.Throws<Xunit.Sdk.NotEqualException>(fun _ -> AltAssert.NotEqual(match1, doublecomp))
     |> ignore
 
