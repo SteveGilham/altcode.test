@@ -17,7 +17,8 @@ module NUnit =
   let ThatShouldPass () =
     let match1 =
       (Constraint.Create().WithActual true)
-        .WithConstraint Is.True
+        .WithConstraint
+        Is.True
 
     AltAssert.That match1
 
@@ -42,7 +43,8 @@ module NUnit =
   let ThatShouldFail () =
     let match1 =
       (Constraint.Create().WithActual true)
-        .WithConstraint Is.Not.True
+        .WithConstraint
+        Is.Not.True
 
     Assert.Throws<AssertionException>(fun _ -> AltAssert.That match1)
     |> ignore
@@ -51,7 +53,8 @@ module NUnit =
       (Constraint.Create().WithActual 5.0)
         .WithConstraint(Is.Not.GreaterThan 4.0)
 
-    Assert.Throws<AssertionException>(fun _ -> AltAssert.That(match2, (fun () -> "bang!")))
+    Assert.Throws<AssertionException>(fun _ ->
+      AltAssert.That(match2, (fun () -> "bang!")))
     |> ignore
 
     let match3 =
@@ -398,7 +401,8 @@ module NUnit =
 
     let match1 =
       (AssertionMatch.Create().WithActual d1)
-        .WithExpected d1
+        .WithExpected
+        d1
 
     AltDirectoryAssert.AreEqual match1
 
@@ -430,7 +434,8 @@ module NUnit =
 
     let match1 =
       (AssertionMatch.Create().WithActual d1)
-        .WithExpected d2
+        .WithExpected
+        d2
 
     Assert.Throws<AssertionException>(fun _ -> AltDirectoryAssert.AreEqual match1)
     |> ignore
@@ -465,14 +470,16 @@ module NUnit =
   let StringContainsShouldPass () =
     let match1 =
       (AssertionMatch.Create().WithActual "Hello")
-        .WithExpected "e"
+        .WithExpected
+        "e"
 
     AltStringAssert.Contains match1
     AltStringAssert.Contains(match1, "bang {0} {2}", 1, 2., 3, 4)
 
     let match2 =
       (AssertionMatch.Create().WithActual "Hello")
-        .WithExpected "?"
+        .WithExpected
+        "?"
 
     AltStringAssert.DoesNotContain match2
     AltStringAssert.DoesNotContain(match2, "bang {0} {2}", 1, 2., 3, 4)
@@ -507,7 +514,8 @@ module NUnit =
   let DoesNotMatchShouldPass () =
     let match1 =
       (AssertionMatch.Create().WithActual "Hello")
-        .WithExpected "x"
+        .WithExpected
+        "x"
 
     AltStringAssert.DoesNotMatch match1
     AltStringAssert.DoesNotMatch(match1, "bang {0} {2}", 1, 2., 3, 4)
@@ -540,7 +548,8 @@ module NUnit =
   let StringEndsWithShouldPass () =
     let match1 =
       (AssertionMatch.Create().WithActual "Hello")
-        .WithExpected "o"
+        .WithExpected
+        "o"
 
     AltStringAssert.EndsWith match1
     AltStringAssert.EndsWith(match1, "bang {0} {2}", 1, 2., 3, 4)
@@ -574,7 +583,8 @@ module NUnit =
   let StringStartsWithShouldPass () =
     let match1 =
       (AssertionMatch.Create().WithActual "Hello")
-        .WithExpected "H"
+        .WithExpected
+        "H"
 
     AltStringAssert.StartsWith match1
     AltStringAssert.StartsWith(match1, "bang {0} {2}", 1, 2., 3, 4)
@@ -633,7 +643,8 @@ module NUnit =
           Actual = item
           Expected = later }
 
-    Assert.Throws<AssertionException>(fun _ -> AltStringAssert.AreEqualIgnoringCase match1)
+    Assert.Throws<AssertionException>(fun _ ->
+      AltStringAssert.AreEqualIgnoringCase match1)
     |> ignore
 
     Assert.Throws<AssertionException>(fun _ ->
@@ -862,7 +873,8 @@ module NUnit =
     AltCollectionAssert.AreEquivalent match2
     AltCollectionAssert.AreEquivalent(match2, "bang {0} {2}", 1, 2., 3, 4)
 
-    Assert.Throws<AssertionException>(fun _ -> AltCollectionAssert.AreNotEquivalent match2)
+    Assert.Throws<AssertionException>(fun _ ->
+      AltCollectionAssert.AreNotEquivalent match2)
     |> ignore
 
     Assert.Throws<AssertionException>(fun _ ->

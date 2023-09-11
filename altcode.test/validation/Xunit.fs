@@ -17,14 +17,16 @@ module Xunit =
   let StringContainsShouldPass () =
     let match1 =
       (AssertionMatch.Create().WithActual "Hello")
-        .WithExpected "e"
+        .WithExpected
+        "e"
 
     AltAssert.Contains match1
     AltAssert.Contains(match1, StringComparison.Ordinal)
 
     let match2 =
       (AssertionMatch.Create().WithActual "Hello")
-        .WithExpected "?"
+        .WithExpected
+        "?"
 
     AltAssert.DoesNotContain match2
     AltAssert.DoesNotContain(match2, StringComparison.Ordinal)
@@ -60,7 +62,8 @@ module Xunit =
   let DoesNotMatchShouldPass () =
     let match1 =
       (AssertionMatch.Create().WithActual "Hello")
-        .WithExpected "x"
+        .WithExpected
+        "x"
 
     AltAssert.DoesNotMatch match1
 
@@ -78,7 +81,8 @@ module Xunit =
   let StringEndsWithShouldPass () =
     let match1 =
       (AssertionMatch.Create().WithActual "Hello")
-        .WithExpected "o"
+        .WithExpected
+        "o"
 
     AltAssert.EndsWith match1
     AltAssert.EndsWith(match1, StringComparison.Ordinal)
@@ -103,10 +107,9 @@ module Xunit =
   [<Test>]
   let EqualEnumerablesShouldPass () =
     let match1 =
-      (AssertionMatch
-        .Create()
-        .WithActual [ "Hello"; "World" ])
-        .WithExpected [ "Hello"; "World" ]
+      (AssertionMatch.Create().WithActual [ "Hello"; "World" ])
+        .WithExpected
+        [ "Hello"; "World" ]
 
     // How better to say this??
     AltAssert.Equal<String list, String> match1
@@ -127,6 +130,11 @@ module Xunit =
       AltAssert.Equal<String list, String>(match1, strcomp))
     |> ignore
 
+    let func = Func<string, string, bool>(fun x y -> x.Equals y)
+    Assert.Throws<Xunit.Sdk.EqualException>(fun _ ->
+      AltAssert.Equal<String list, String>(match1, func))
+    |> ignore
+
   let exrefcomp =
     { new IEqualityComparer<Example> with
         member this.Equals(x, y) = Object.ReferenceEquals(x, y)
@@ -138,7 +146,8 @@ module Xunit =
 
     let match1 =
       (AssertionMatch.Create().WithActual item)
-        .WithExpected item
+        .WithExpected
+        item
 
     AltAssert.Equal<Example> match1
     AltAssert.Equal<Example>(match1, exrefcomp)
@@ -164,11 +173,17 @@ module Xunit =
       AltAssert.Equal<Example>(match1, exrefcomp))
     |> ignore
 
+    let func = Func<_,_,bool>(fun x y -> Object.ReferenceEquals(x, y))
+    Assert.Throws<Xunit.Sdk.EqualException>(fun _ ->
+      AltAssert.Equal<Example>(match1, func))
+    |> ignore
+
   [<Test>]
   let EqualScalarsShouldPass () =
     let match1 =
       (AssertionMatch.Create().WithActual 5.0)
-        .WithExpected 5.0
+        .WithExpected
+        5.0
 
     AltAssert.Equal(match1, 2)
     AltAssert.Equal(match1, 2, MidpointRounding.ToZero)
@@ -176,16 +191,17 @@ module Xunit =
 
     let match2 =
       (AssertionMatch.Create().WithActual 5.0M)
-        .WithExpected 5.0M
+        .WithExpected
+        5.0M
 
     AltAssert.Equal(match2, 2)
 
     let match3 =
       (AssertionMatch.Create().WithActual 5.0f)
-        .WithExpected 5.0f
+        .WithExpected
+        5.0f
 
     AltAssert.Equal(match3, 0.1f)
-
 
   [<Test>]
   let EqualScalarsShouldFail () =
@@ -226,7 +242,8 @@ module Xunit =
 
     let match1 =
       (AssertionMatch.Create().WithActual item)
-        .WithExpected item
+        .WithExpected
+        item
 
     AltAssert.Equal(match1, TimeSpan(1, 0, 0))
 
@@ -250,7 +267,8 @@ module Xunit =
 
     let match1 =
       (AssertionMatch.Create().WithActual item)
-        .WithExpected item
+        .WithExpected
+        item
 
     AltAssert.Equal match1
     AltAssert.Equal(match1, false, false, false)
@@ -283,7 +301,7 @@ module Xunit =
   [<Test>]
   let EquivalentShouldFail () =
     let match1 =
-      { AssertionMatch<Object>.Create () with
+      { AssertionMatch<Object>.Create() with
           Actual = A
           Expected = C "ulater" }
 
@@ -295,7 +313,8 @@ module Xunit =
   let MatchesShouldPass () =
     let match1 =
       (AssertionMatch.Create().WithActual "Hello")
-        .WithExpected "l"
+        .WithExpected
+        "l"
 
     AltAssert.Matches match1
 
@@ -312,10 +331,9 @@ module Xunit =
   [<Test>]
   let NotEqualEnumerablesShouldPass () =
     let match1 =
-      (AssertionMatch
-        .Create()
-        .WithActual [ "Hello"; "World" ])
-        .WithExpected [ "hello"; "world" ]
+      (AssertionMatch.Create().WithActual [ "Hello"; "World" ])
+        .WithExpected
+        [ "hello"; "world" ]
 
     // How better to say this??
     AltAssert.NotEqual<String list, String> match1
@@ -336,6 +354,11 @@ module Xunit =
       AltAssert.NotEqual<String list, String>(match1, strcomp))
     |> ignore
 
+    let func = Func<string, string, bool>(fun x y -> x.Equals y)
+    Assert.Throws<Xunit.Sdk.NotEqualException>(fun _ ->
+      AltAssert.NotEqual<String list, String>(match1, func))
+    |> ignore
+
   [<Test>]
   let NotEqualItemsShouldPass () =
     let match1 =
@@ -352,26 +375,35 @@ module Xunit =
 
     let match1 =
       (AssertionMatch.Create().WithActual item)
-        .WithExpected item
+        .WithExpected
+        item
 
-    Assert.Throws<Xunit.Sdk.NotEqualException>(fun _ -> AltAssert.NotEqual<Example> match1)
+    Assert.Throws<Xunit.Sdk.NotEqualException>(fun _ ->
+      AltAssert.NotEqual<Example> match1)
     |> ignore
 
     Assert.Throws<Xunit.Sdk.NotEqualException>(fun _ ->
       AltAssert.NotEqual<Example>(match1, exrefcomp))
     |> ignore
 
+    let func = Func<_,_,bool>(fun x y -> Object.ReferenceEquals(x, y))
+    Assert.Throws<Xunit.Sdk.NotEqualException>(fun _ ->
+      AltAssert.NotEqual<Example>(match1, func))
+    |> ignore
+
   [<Test>]
   let NotEqualScalarsShouldPass () =
     let match1 =
       (AssertionMatch.Create().WithActual 5.0)
-        .WithExpected 6.0
+        .WithExpected
+        6.0
 
     AltAssert.NotEqual(match1, 2)
 
     let match2 =
       (AssertionMatch.Create().WithActual 5.0M)
-        .WithExpected 6.0M
+        .WithExpected
+        6.0M
 
     AltAssert.NotEqual(match2, 2)
 
@@ -383,6 +415,18 @@ module Xunit =
           Expected = 5.0 }
 
     Assert.Throws<Xunit.Sdk.NotEqualException>(fun _ -> AltAssert.NotEqual(match1, 2))
+    |> ignore
+
+    let func = Func<double,double,bool>(=)
+    Assert.Throws<Xunit.Sdk.NotEqualException>(fun _ -> AltAssert.NotEqual(match1, func))
+    |> ignore
+
+    let doublecomp =
+      { new IEqualityComparer<double> with
+          member this.Equals(x, y) = x = y
+          member this.GetHashCode(x) = x.GetHashCode() }
+
+    Assert.Throws<Xunit.Sdk.NotEqualException>(fun _ -> AltAssert.NotEqual(match1, doublecomp))
     |> ignore
 
     let match2 =
@@ -408,7 +452,8 @@ module Xunit =
 
     let match1 =
       (AssertionMatch.Create().WithActual item)
-        .WithExpected item
+        .WithExpected
+        item
 
     Assert.Throws<Xunit.Sdk.NotSameException>(fun _ -> AltAssert.NotSame match1)
     |> ignore
@@ -428,9 +473,11 @@ module Xunit =
 
     let match1 =
       (AssertionMatch.Create().WithActual item)
-        .WithExpected item
+        .WithExpected
+        item
 
-    Assert.Throws<Xunit.Sdk.NotEqualException>(fun _ -> AltAssert.NotStrictEqual match1)
+    Assert.Throws<Xunit.Sdk.NotStrictEqualException>(fun _ ->
+      AltAssert.NotStrictEqual match1)
     |> ignore
 
   [<Test>]
@@ -482,7 +529,8 @@ module Xunit =
 
     let match1 =
       (AssertionMatch.Create().WithActual item)
-        .WithExpected item
+        .WithExpected
+        item
 
     AltAssert.Same match1
 
@@ -502,7 +550,8 @@ module Xunit =
 
     let match1 =
       (AssertionMatch.Create().WithActual item)
-        .WithExpected item
+        .WithExpected
+        item
 
     AltAssert.StrictEqual match1
 
@@ -513,14 +562,15 @@ module Xunit =
           Actual = B 1
           Expected = A }
 
-    Assert.Throws<Xunit.Sdk.EqualException>(fun _ -> AltAssert.StrictEqual match1)
+    Assert.Throws<Xunit.Sdk.StrictEqualException>(fun _ -> AltAssert.StrictEqual match1)
     |> ignore
 
   [<Test>]
   let StringStartsWithShouldPass () =
     let match1 =
       (AssertionMatch.Create().WithActual "Hello")
-        .WithExpected "H"
+        .WithExpected
+        "H"
 
     AltAssert.StartsWith match1
     AltAssert.StartsWith(match1, StringComparison.Ordinal)

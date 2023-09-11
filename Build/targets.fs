@@ -64,7 +64,7 @@ module Targets =
         AssemblyFilter =
           "FSharp"
           :: @"\.Placeholder"
-             :: (p.AssemblyFilter |> Seq.toList)
+          :: (p.AssemblyFilter |> Seq.toList)
         LocalSource = true
         TypeFilter =
           [ @"System\."
@@ -115,6 +115,7 @@ module Targets =
     { MSBuild.CliArguments.Create() with
         ConsoleLogParameters = []
         DistributedLoggers = None
+        Properties = []
         DisableInternalBinLog = true }
 
   let withWorkingDirectoryVM dir o =
@@ -123,7 +124,8 @@ module Targets =
         Verbosity = Some DotNet.Verbosity.Minimal }
 
   let withWorkingDirectoryOnly dir o =
-    { dotnetOptions o with WorkingDirectory = Path.getFullName dir }
+    { dotnetOptions o with
+        WorkingDirectory = Path.getFullName dir }
 
   let withCLIArgs (o: Fake.DotNet.DotNet.TestOptions) =
     { o with MSBuildParams = cliArguments }
@@ -228,7 +230,8 @@ module Targets =
   let dotnetBuildDebug proj =
     DotNet.build
       (fun p ->
-        { p.WithCommon dotnetOptions with Configuration = DotNet.BuildConfiguration.Debug }
+        { p.WithCommon dotnetOptions with
+            Configuration = DotNet.BuildConfiguration.Debug }
         |> buildWithCLIArguments
         |> withEnvironment)
       (Path.GetFullPath proj)
@@ -356,7 +359,6 @@ module Targets =
       "./altcode.test/altcode.test.sln"
       |> dotnetBuildDebug)
 
-
   let Validation =
     (fun _ ->
       DotNet.test
@@ -380,52 +382,53 @@ module Targets =
       let coverage =
         !!(@"./**/validation.fsproj")
         |> Seq.fold
-             (fun l test ->
-               printfn "%A" test
+          (fun l test ->
+            printfn "%A" test
 
-               let tname =
-                 test |> Path.GetFileNameWithoutExtension
+            let tname =
+              test |> Path.GetFileNameWithoutExtension
 
-               let testDirectory =
-                 test |> Path.getFullName |> Path.GetDirectoryName
+            let testDirectory =
+              test |> Path.getFullName |> Path.GetDirectoryName
 
-               let altReport =
-                 reports @@ ("Coverage." + tname + ".xml")
+            let altReport =
+              reports @@ ("Coverage." + tname + ".xml")
 
-               let collect =
-                 AltCover.CollectOptions.Primitive(Primitive.CollectOptions.Create()) // FSApi
+            let collect =
+              AltCover.CollectOptions.Primitive(Primitive.CollectOptions.Create()) // FSApi
 
-               let prepare =
-                 AltCover.PrepareOptions.Primitive(
-                   { Primitive.PrepareOptions.Create() with
-                       Report = altReport
-                       SingleVisit = true }
-                   |> AltCoverFilter
-                 )
+            let prepare =
+              AltCover.PrepareOptions.Primitive(
+                { Primitive.PrepareOptions.Create() with
+                    Report = altReport
+                    SingleVisit = true }
+                |> AltCoverFilter
+              )
 
-               let forceTrue = DotNet.CLIOptions.Force true
+            let forceTrue = DotNet.CLIOptions.Force true
 
-               let setBaseOptions (o: DotNet.Options) =
-                 { o with
-                     WorkingDirectory = Path.getFullName testDirectory
-                     Verbosity = Some DotNet.Verbosity.Minimal }
+            let setBaseOptions (o: DotNet.Options) =
+              { o with
+                  WorkingDirectory = Path.getFullName testDirectory
+                  Verbosity = Some DotNet.Verbosity.Minimal }
 
-               try
-                 DotNet.test
-                   (fun to' ->
-                     { (to'.WithCommon(setBaseOptions).WithAltCoverOptions
-                         prepare
-                         collect
-                         forceTrue) with
-                         MSBuildParams = cliArguments
-                         NoBuild = true })
-                   test
-               with x ->
-                 printfn "%A" x
-               // reraise()) // while fixing
+            try
+              DotNet.test
+                (fun to' ->
+                  { to'.WithCommon(setBaseOptions) with
+                      MSBuildParams = cliArguments
+                      NoBuild = true }
+                    .WithAltCoverOptions
+                    prepare
+                    collect
+                    forceTrue)
+                test
+            with x ->
+              printfn "%A" x
+            // reraise()) // while fixing
 
-               altReport :: l)
-             []
+            altReport :: l)
+          []
 
       ReportGenerator.generateReports
         (fun p ->
@@ -485,7 +488,6 @@ module Targets =
         u |> (printfn "%A uncovered lines")
         // printfn "%A" (u.GetType().FullName)
         Assert.That(u, Is.EqualTo [ 0 ], "All lines should be covered")))
-
 
   // Code Analysis
 
