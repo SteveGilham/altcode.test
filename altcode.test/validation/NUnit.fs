@@ -41,6 +41,23 @@ module NUnit =
 
     Assert.That(x1.Message, Is.EqualTo expected)
 
+    let match2 =
+      (Constraint.Create().WithActual true)
+        .WithConstraint
+        Is.Not.True
+
+    let x2 =
+      Assert.Throws<AssertionException>(fun _ -> AltAssert.That(match2, "some text"))
+
+    let expected2 =
+      "  some text\n"
+      + """Assert.That(, )
+  Expected: not True
+  But was:  True
+"""
+
+    Assert.That(x2.Message, Is.EqualTo expected2)
+
   [<Test>]
   let AreEqualShouldPass () =
     let match1 = { Actual = 5; Expected = 5 }
