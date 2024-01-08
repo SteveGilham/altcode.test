@@ -15,6 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildItems", "BuildItems", 
 	ProjectSection(SolutionItems) = preProject
 		..\Build\actions.fs = ..\Build\actions.fs
 		..\Build\build.fs = ..\Build\build.fs
+		..\Directory.Packages.props = ..\Directory.Packages.props
 		..\.config\dotnet-tools.json = ..\.config\dotnet-tools.json
 		..\fsharplint.json = ..\fsharplint.json
 		..\global.json = ..\global.json
@@ -26,7 +27,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildItems", "BuildItems", 
 		..\Build\targets.fs = ..\Build\targets.fs
 	EndProjectSection
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "validation", "validation\validation.fsproj", "{50BCED2A-D91E-40B2-8C35-5BBFB8BD7E3D}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "validation", "validation\validation.fsproj", "{50BCED2A-D91E-40B2-8C35-5BBFB8BD7E3D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

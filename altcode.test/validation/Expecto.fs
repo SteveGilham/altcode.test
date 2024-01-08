@@ -21,25 +21,22 @@ module Expecto =
     AltFlipExpect.containsAll "flipmatch1" match1
 
     let match2 =
-      { AssertionMatch.Create() with
-          Actual = [ '1'; '2'; '3' ]
-          Expected = [ '3'; '1' ] }
+      { Actual = [ '1'; '2'; '3' ]
+        Expected = [ '3'; '1' ] }
 
     AltExpect.containsAll match2 "match2"
     AltFlipExpect.containsAll "flipmatch2" match2
 
     let match3 =
-      { AssertionMatch.Create() with
-          Actual = [ "1"; "2"; "3" ]
-          Expected = [ "1"; "3" ] }
+      { Actual = [ "1"; "2"; "3" ]
+        Expected = [ "1"; "3" ] }
 
     AltExpect.containsAll match3 "match3"
     AltFlipExpect.containsAll "flipmatch3" match3
 
     let match4 =
-      { AssertionMatch.Create() with
-          Actual = [ A; B 1; C "3" ]
-          Expected = [ C "3"; A ] }
+      { Actual = [ A; B 1; C "3" ]
+        Expected = [ C "3"; A ] }
 
     AltExpect.containsAll match4 "match4"
     AltFlipExpect.containsAll "flipmatch4" match4
@@ -47,9 +44,8 @@ module Expecto =
   [<Test>]
   let containsAllShouldFail () =
     let match1 =
-      { AssertionMatch.Create() with
-          Actual = [ 1; 2; 3 ]
-          Expected = [ 1; 4 ] }
+      { Actual = [ 1; 2; 3 ]
+        Expected = [ 1; 4 ] }
 
     Assert.Throws<Expecto.AssertException>(fun _ -> AltExpect.containsAll match1 "match1")
     |> ignore
@@ -59,9 +55,8 @@ module Expecto =
     |> ignore
 
     let match2 =
-      { AssertionMatch.Create() with
-          Actual = [ '1'; '2'; '3' ]
-          Expected = [ '4'; '1' ] }
+      { Actual = [ '1'; '2'; '3' ]
+        Expected = [ '4'; '1' ] }
 
     Assert.Throws<Expecto.AssertException>(fun _ -> AltExpect.containsAll match2 "match2")
     |> ignore
@@ -71,9 +66,8 @@ module Expecto =
     |> ignore
 
     let match3 =
-      { AssertionMatch.Create() with
-          Actual = [ "1"; "2"; "3" ]
-          Expected = [ "1"; "4" ] }
+      { Actual = [ "1"; "2"; "3" ]
+        Expected = [ "1"; "4" ] }
 
     Assert.Throws<Expecto.AssertException>(fun _ -> AltExpect.containsAll match3 "match3")
     |> ignore
@@ -83,9 +77,8 @@ module Expecto =
     |> ignore
 
     let match4 =
-      { AssertionMatch.Create() with
-          Actual = [ A; B 1; C "3" ]
-          Expected = [ C "4"; A ] }
+      { Actual = [ A; B 1; C "3" ]
+        Expected = [ C "4"; A ] }
 
     Assert.Throws<Expecto.AssertException>(fun _ -> AltExpect.containsAll match4 "match4")
     |> ignore
@@ -118,9 +111,8 @@ module Expecto =
   [<Test>]
   let equalShouldFail () =
     let match1 =
-      { AssertionMatch.Create() with
-          Actual = [ 1; 2; 3 ]
-          Expected = [ 1; 4 ] }
+      { Actual = [ 1; 2; 3 ]
+        Expected = [ 1; 4 ] }
 
     Assert.Throws<Expecto.AssertException>(fun _ -> AltExpect.equal match1 "match1")
     |> ignore
@@ -157,9 +149,7 @@ module Expecto =
   [<Test>]
   let floatCloseShouldFail () =
     let match1 =
-      { AssertionMatch.Create() with
-          Actual = 5.0
-          Expected = 3.0 }
+      { Actual = 5.0; Expected = 3.0 }
 
     Assert.Throws<Expecto.AssertException>(fun _ ->
       AltExpect.floatClose accuracy match1 "match1")
@@ -182,9 +172,7 @@ module Expecto =
   [<Test>]
   let floatGreaterThanOrCloseShouldFail () =
     let match1 =
-      { AssertionMatch.Create() with
-          Actual = -5.0
-          Expected = 3.0 }
+      { Actual = -5.0; Expected = 3.0 }
 
     Assert.Throws<Expecto.AssertException>(fun _ ->
       AltExpect.floatGreaterThanOrClose accuracy match1 "match1")
@@ -207,9 +195,7 @@ module Expecto =
   [<Test>]
   let floatLessThanOrCloseShouldFail () =
     let match1 =
-      { AssertionMatch.Create() with
-          Actual = 5.0
-          Expected = 3.0 }
+      { Actual = 5.0; Expected = 3.0 }
 
     Assert.Throws<Expecto.AssertException>(fun _ ->
       AltExpect.floatLessThanOrClose accuracy match1 "match1")
@@ -252,15 +238,13 @@ module Expecto =
 
     let mutable result = System.String.Empty
 
-    Assert.True
-    <| AltCSharpExpect.IsFasterThan(match1a, "match1a", &result)
+    Assert.That(AltCSharpExpect.IsFasterThan(match1a, "match1a", &result))
 
     let match1b =
       (AssertionMatch.Create().WithActual(noop, fastfunc))
         .WithExpected(noop, slowfunc)
 
-    Assert.True
-    <| AltCSharpExpect.IsFasterThan(match1b, "match1b", &result)
+    Assert.That(AltCSharpExpect.IsFasterThan(match1b, "match1b", &result))
 
     let match1c =
       (AssertionMatch
@@ -268,13 +252,11 @@ module Expecto =
         .WithActual(noop, fastfunc, noop))
         .WithExpected(noop, slowfunc, noop)
 
-    Assert.True
-    <| AltCSharpExpect.IsFasterThan(match1c, "match1c", &result)
+    Assert.That(AltCSharpExpect.IsFasterThan(match1c, "match1c", &result))
 
     let match2 =
-      { AssertionMatch.Create() with
-          Actual = makeMeasurer fast
-          Expected = makeMeasurer slow }
+      { Actual = makeMeasurer fast
+        Expected = makeMeasurer slow }
 
     AltExpect.isFasterThanSub match2 "match2"
     AltFlipExpect.isFasterThanSub "flipmatch2" match2
@@ -282,9 +264,7 @@ module Expecto =
   [<Test>]
   let isFasterThanShouldFail () =
     let match1 =
-      { AssertionMatch.Create() with
-          Actual = slow
-          Expected = fast }
+      { Actual = slow; Expected = fast }
 
     Assert.Throws<Expecto.FailedException>(fun _ ->
       AltExpect.isFasterThan match1 "match1")
@@ -309,15 +289,19 @@ module Expecto =
 
     let mutable result = System.String.Empty
 
-    Assert.False
-    <| AltCSharpExpect.IsFasterThan(match1a, "match1a", &result)
+    Assert.That(
+      not
+      <| AltCSharpExpect.IsFasterThan(match1a, "match1a", &result)
+    )
 
     let match1b =
       (AssertionMatch.Create().WithActual(noop, slowfunc))
         .WithExpected(noop, fastfunc)
 
-    Assert.False
-    <| AltCSharpExpect.IsFasterThan(match1b, "match1b", &result)
+    Assert.That(
+      not
+      <| AltCSharpExpect.IsFasterThan(match1b, "match1b", &result)
+    )
 
     let match1c =
       (AssertionMatch
@@ -325,13 +309,14 @@ module Expecto =
         .WithActual(noop, slowfunc, noop))
         .WithExpected(noop, fastfunc, noop)
 
-    Assert.False
-    <| AltCSharpExpect.IsFasterThan(match1c, "match1c", &result)
+    Assert.That(
+      not
+      <| AltCSharpExpect.IsFasterThan(match1c, "match1c", &result)
+    )
 
     let match2 =
-      { AssertionMatch.Create() with
-          Actual = makeMeasurer slow
-          Expected = makeMeasurer fast }
+      { Actual = makeMeasurer slow
+        Expected = makeMeasurer fast }
 
     Assert.Throws<Expecto.FailedException>(fun _ ->
       AltExpect.isFasterThanSub match2 "match2")
@@ -355,10 +340,7 @@ module Expecto =
 
   [<Test>]
   let isGreaterThanOrEqualShouldFail () =
-    let match1 =
-      { AssertionMatch.Create() with
-          Actual = -5
-          Expected = 3 }
+    let match1 = { Actual = -5; Expected = 3 }
 
     Assert.Throws<Expecto.AssertException>(fun _ ->
       AltExpect.isGreaterThanOrEqual match1 "match1")
@@ -390,10 +372,7 @@ module Expecto =
 
   [<Test>]
   let isLessThanOrEqualShouldFail () =
-    let match1 =
-      { AssertionMatch.Create() with
-          Actual = 5
-          Expected = 3 }
+    let match1 = { Actual = 5; Expected = 3 }
 
     Assert.Throws<Expecto.AssertException>(fun _ ->
       AltExpect.isLessThanOrEqual match1 "match1")
@@ -440,9 +419,7 @@ module Expecto =
   [<Test>]
   let IsMatchShouldFail () =
     let match1 =
-      { AssertionMatch.Create() with
-          Actual = "Hello"
-          Expected = "x" }
+      { Actual = "Hello"; Expected = "x" }
 
     Assert.Throws<Expecto.AssertException>(fun _ -> AltExpect.isMatch match1 "match1")
     |> ignore
@@ -478,13 +455,10 @@ module Expecto =
     AltExpect.stringStarts match1 "match1"
     AltFlipExpect.stringStarts "flipmatch1" match1
 
-
   [<Test>]
   let StringStartsShouldFail () =
     let match1 =
-      { AssertionMatch.Create() with
-          Actual = "Hello"
-          Expected = "o" }
+      { Actual = "Hello"; Expected = "o" }
 
     Assert.Throws<Expecto.AssertException>(fun _ ->
       AltExpect.stringStarts match1 "match1")
@@ -504,13 +478,10 @@ module Expecto =
     AltExpect.stringEnds match1 "match1"
     AltFlipExpect.stringEnds "flipmatch1" match1
 
-
   [<Test>]
   let StringEndsShouldFail () =
     let match1 =
-      { AssertionMatch.Create() with
-          Actual = "Hello"
-          Expected = "H" }
+      { Actual = "Hello"; Expected = "H" }
 
     Assert.Throws<Expecto.AssertException>(fun _ -> AltExpect.stringEnds match1 "match1")
     |> ignore
@@ -529,13 +500,10 @@ module Expecto =
     AltExpect.stringContains match1 "match1"
     AltFlipExpect.stringContains "flipmatch1" match1
 
-
   [<Test>]
   let StringContainsShouldFail () =
     let match1 =
-      { AssertionMatch.Create() with
-          Actual = "Hello"
-          Expected = "?" }
+      { Actual = "Hello"; Expected = "?" }
 
     Assert.Throws<Expecto.AssertException>(fun _ ->
       AltExpect.stringContains match1 "match1")
@@ -569,10 +537,7 @@ module Expecto =
     use s2 = // fsharplint:disable-next-line  RedundantNewKeyword
       new System.IO.MemoryStream([| 1uy; 4uy |])
 
-    let match1 =
-      { AssertionMatch.Create() with
-          Actual = s1
-          Expected = s2 }
+    let match1 = { Actual = s1; Expected = s2 }
 
     Assert.Throws<Expecto.AssertException>(fun _ ->
       AltExpect.streamsEqual match1 "match1")
@@ -585,9 +550,8 @@ module Expecto =
   [<Test>]
   let SequenceEqualShouldPass () =
     let match1 =
-      { AssertionMatch.Create() with
-          Actual = [ B 5; B 1; B 2 ]
-          Expected = [ B 5; B 1; B 2 ] }
+      { Actual = [ B 5; B 1; B 2 ]
+        Expected = [ B 5; B 1; B 2 ] }
 
     AltExpect.sequenceEqual match1 "match1"
     AltFlipExpect.sequenceEqual "flipmatch1" match1
@@ -595,9 +559,8 @@ module Expecto =
   [<Test>]
   let SequenceEqualShouldFail () =
     let match1 =
-      { AssertionMatch.Create() with
-          Actual = [ B 5; B 1; B 2 ]
-          Expected = [ B 1; B 5; B 3 ] }
+      { Actual = [ B 5; B 1; B 2 ]
+        Expected = [ B 1; B 5; B 3 ] }
 
     Assert.Throws<Expecto.AssertException>(fun _ ->
       AltExpect.sequenceEqual match1 "match1")
@@ -610,9 +573,8 @@ module Expecto =
   [<Test>]
   let SequenceStartsShouldPass () =
     let match1 =
-      { AssertionMatch.Create() with
-          Actual = [ B 5; B 1; B 2; B 2 ]
-          Expected = [ B 5; B 1 ] }
+      { Actual = [ B 5; B 1; B 2; B 2 ]
+        Expected = [ B 5; B 1 ] }
 
     AltExpect.sequenceStarts match1 "match1"
     AltFlipExpect.sequenceStarts "flipmatch1" match1
@@ -620,9 +582,8 @@ module Expecto =
   [<Test>]
   let SequenceStartsShouldFail () =
     let match1 =
-      { AssertionMatch.Create() with
-          Actual = [ B 5; B 1; B 2; B 3 ]
-          Expected = [ B 1; B 5 ] }
+      { Actual = [ B 5; B 1; B 2; B 3 ]
+        Expected = [ B 1; B 5 ] }
 
     Assert.Throws<Expecto.AssertException>(fun _ ->
       AltExpect.sequenceStarts match1 "match1")
@@ -635,9 +596,8 @@ module Expecto =
   [<Test>]
   let SequenceContainsOrderShouldPass () =
     let match1 =
-      { AssertionMatch.Create() with
-          Actual = [ B 5; B 1; B 2; B 2 ]
-          Expected = [ B 5; B 2 ] }
+      { Actual = [ B 5; B 1; B 2; B 2 ]
+        Expected = [ B 5; B 2 ] }
 
     AltExpect.sequenceContainsOrder match1 "match1"
     AltFlipExpect.sequenceContainsOrder "flipmatch1" match1
@@ -645,9 +605,8 @@ module Expecto =
   [<Test>]
   let SequenceContainsOrderShouldFail () =
     let match1 =
-      { AssertionMatch.Create() with
-          Actual = [ B 5; B 1; B 2; B 3 ]
-          Expected = [ B 1; B 5 ] }
+      { Actual = [ B 5; B 1; B 2; B 3 ]
+        Expected = [ B 1; B 5 ] }
 
     Assert.Throws<Expecto.AssertException>(fun _ ->
       AltExpect.sequenceContainsOrder match1 "match1")
