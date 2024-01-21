@@ -4,7 +4,6 @@ open System
 open System.Collections
 open System.IO
 open NUnit.Framework
-open NUnit.Framework.Legacy
 
 type Constraint<'a> =
   { Actual: 'a
@@ -15,6 +14,16 @@ type Constraint<'a> =
 
   member this.WithActual e = { this with Actual = e }
   member this.WithConstraint e = { this with Constraint = e }
+
+[<AbstractClass; Sealed>]
+type AltAssertBase =
+  static member ConvertMessageWithArgs(message: string, [<ParamArray>] args: Object[]) =
+    NUnitString(
+      if (isNull args) || (Array.isEmpty args) then
+        message
+      else
+        String.Format(message, args)
+    )
 
 [<AbstractClass; Sealed>]
 type AltAssert =
@@ -30,13 +39,21 @@ type AltAssert =
       message,
       [<ParamArray>] args: Object[]
     ) =
-    Assert.That(x.Actual, Is.EqualTo(x.Expected).Within(delta), String.Format(message, args))
+    Assert.That(
+      x.Actual,
+      Is.EqualTo(x.Expected).Within(delta),
+      String.Format(message, args)
+    )
 
   static member AreEqual(x: AssertionMatch<double>, delta) =
     Assert.That(x.Actual, Is.EqualTo(x.Expected).Within(delta))
 
   static member AreEqual(x: AssertionMatch<'a>, message, [<ParamArray>] args: Object[]) =
-    Assert.That(x.Actual, Is.EqualTo(x.Expected),NUnitString(String.Format(message, args)))
+    Assert.That(
+      x.Actual,
+      Is.EqualTo(x.Expected),
+      AltAssertBase.ConvertMessageWithArgs(message, args)
+    )
 
   static member AreEqual(x: AssertionMatch<'a>) =
     Assert.That(x.Actual, Is.EqualTo(x.Expected))
@@ -47,13 +64,21 @@ type AltAssert =
       message,
       [<ParamArray>] args: Object[]
     ) =
-    Assert.That(x.Actual, Is.Not.EqualTo x.Expected,NUnitString(String.Format(message, args)))
+    Assert.That(
+      x.Actual,
+      Is.Not.EqualTo x.Expected,
+      AltAssertBase.ConvertMessageWithArgs(message, args)
+    )
 
   static member AreNotEqual(x: AssertionMatch<'a>) =
     Assert.That(x.Actual, Is.Not.EqualTo(x.Expected))
 
   static member AreSame(x: AssertionMatch<'a>, message, [<ParamArray>] args: Object[]) =
-    Assert.That(x.Actual, Is.SameAs x.Expected, NUnitString(String.Format(message, args)))
+    Assert.That(
+      x.Actual,
+      Is.SameAs x.Expected,
+      AltAssertBase.ConvertMessageWithArgs(message, args)
+    )
 
   static member AreSame(x: AssertionMatch<'a>) =
     Assert.That(x.Actual, Is.SameAs x.Expected)
@@ -64,13 +89,21 @@ type AltAssert =
       message,
       [<ParamArray>] args: Object[]
     ) =
-    Assert.That(x.Actual, Is.Not.SameAs x.Expected, NUnitString(String.Format(message, args)))
+    Assert.That(
+      x.Actual,
+      Is.Not.SameAs x.Expected,
+      AltAssertBase.ConvertMessageWithArgs(message, args)
+    )
 
   static member AreNotSame(x: AssertionMatch<'a>) =
     Assert.That(x.Actual, Is.Not.SameAs x.Expected)
 
   static member Greater(x: AssertionMatch<'a>, message, [<ParamArray>] args: Object[]) =
-    Assert.That(x.Actual, Is.GreaterThan x.Expected, NUnitString(String.Format(message, args)))
+    Assert.That(
+      x.Actual,
+      Is.GreaterThan x.Expected,
+      AltAssertBase.ConvertMessageWithArgs(message, args)
+    )
 
   static member Greater(x: AssertionMatch<'a>) =
     Assert.That(x.Actual, Is.GreaterThan x.Expected)
@@ -81,13 +114,21 @@ type AltAssert =
       message,
       [<ParamArray>] args: Object[]
     ) =
-    Assert.That(x.Actual, Is.GreaterThanOrEqualTo x.Expected, NUnitString(String.Format(message, args)))
+    Assert.That(
+      x.Actual,
+      Is.GreaterThanOrEqualTo x.Expected,
+      AltAssertBase.ConvertMessageWithArgs(message, args)
+    )
 
   static member GreaterOrEqual(x: AssertionMatch<'a>) =
     Assert.That(x.Actual, Is.GreaterThanOrEqualTo x.Expected)
 
   static member Less(x: AssertionMatch<'a>, message, [<ParamArray>] args: Object[]) =
-    Assert.That(x.Actual, Is.LessThan x.Expected, NUnitString(String.Format(message, args)))
+    Assert.That(
+      x.Actual,
+      Is.LessThan x.Expected,
+      AltAssertBase.ConvertMessageWithArgs(message, args)
+    )
 
   static member Less(x: AssertionMatch<'a>) =
     Assert.That(x.Actual, Is.LessThan x.Expected)
@@ -98,7 +139,11 @@ type AltAssert =
       message,
       [<ParamArray>] args: Object[]
     ) =
-    Assert.That(x.Actual, Is.LessThanOrEqualTo x.Expected, NUnitString(String.Format(message, args)))
+    Assert.That(
+      x.Actual,
+      Is.LessThanOrEqualTo x.Expected,
+      AltAssertBase.ConvertMessageWithArgs(message, args)
+    )
 
   static member LessOrEqual(x: AssertionMatch<'a>) =
     Assert.That(x.Actual, Is.LessThanOrEqualTo x.Expected)
@@ -108,7 +153,11 @@ type AltCollectionAssert =
   static member AreEqual<'a when 'a :> IEnumerable>(x: AssertionMatch<'a>) =
     Assert.That(x.Actual, Is.EqualTo x.Expected)
 
-  static member AreEqual<'a when 'a :> IEnumerable>(x: AssertionMatch<'a>, comparer:IComparer) =
+  static member AreEqual<'a when 'a :> IEnumerable>
+    (
+      x: AssertionMatch<'a>,
+      comparer: IComparer
+    ) =
     Assert.That(x.Actual, Is.EqualTo(x.Expected).Using(comparer))
 
   static member AreEqual<'a when 'a :> IEnumerable>
@@ -117,16 +166,24 @@ type AltCollectionAssert =
       message,
       [<ParamArray>] args: Object[]
     ) =
-    Assert.That(x.Actual, Is.EqualTo x.Expected, NUnitString(String.Format(message, args)))
+    Assert.That(
+      x.Actual,
+      Is.EqualTo x.Expected,
+      AltAssertBase.ConvertMessageWithArgs(message, args)
+    )
 
   static member AreEqual<'a when 'a :> IEnumerable>
     (
       x: AssertionMatch<'a>,
-      comparer:IComparer,
+      comparer: IComparer,
       message,
       [<ParamArray>] args: Object[]
     ) =
-    Assert.That(x.Actual, Is.EqualTo(x.Expected).Using(comparer), NUnitString(String.Format(message, args)))
+    Assert.That(
+      x.Actual,
+      Is.EqualTo(x.Expected).Using(comparer),
+      AltAssertBase.ConvertMessageWithArgs(message, args)
+    )
 
   static member AreEquivalent<'a when 'a :> IEnumerable>(x: AssertionMatch<'a>) =
     Assert.That(x.Actual, Is.EquivalentTo x.Expected)
@@ -137,12 +194,20 @@ type AltCollectionAssert =
       message,
       [<ParamArray>] args: Object[]
     ) =
-    Assert.That(x.Actual, Is.EquivalentTo x.Expected, NUnitString(String.Format(message, args)))
+    Assert.That(
+      x.Actual,
+      Is.EquivalentTo x.Expected,
+      AltAssertBase.ConvertMessageWithArgs(message, args)
+    )
 
   static member AreNotEqual<'a when 'a :> IEnumerable>(x: AssertionMatch<'a>) =
     Assert.That(x.Actual, Is.Not.EqualTo x.Expected)
 
-  static member AreNotEqual<'a when 'a :> IEnumerable>(x: AssertionMatch<'a>, comparer:IComparer) =
+  static member AreNotEqual<'a when 'a :> IEnumerable>
+    (
+      x: AssertionMatch<'a>,
+      comparer: IComparer
+    ) =
     Assert.That(x.Actual, Is.Not.EqualTo(x.Expected).Using(comparer))
 
   static member AreNotEqual<'a when 'a :> IEnumerable>
@@ -151,16 +216,24 @@ type AltCollectionAssert =
       message,
       [<ParamArray>] args: Object[]
     ) =
-    Assert.That(x.Actual, Is.Not.EqualTo x.Expected, NUnitString(String.Format(message, args)))
+    Assert.That(
+      x.Actual,
+      Is.Not.EqualTo x.Expected,
+      AltAssertBase.ConvertMessageWithArgs(message, args)
+    )
 
   static member AreNotEqual<'a when 'a :> IEnumerable>
     (
       x: AssertionMatch<'a>,
-      comparer:IComparer,
+      comparer: IComparer,
       message,
       [<ParamArray>] args: Object[]
     ) =
-    Assert.That(x.Actual, Is.Not.EqualTo(x.Expected).Using(comparer), NUnitString(String.Format(message, args)))
+    Assert.That(
+      x.Actual,
+      Is.Not.EqualTo(x.Expected).Using(comparer),
+      AltAssertBase.ConvertMessageWithArgs(message, args)
+    )
 
   static member AreNotEquivalent<'a when 'a :> IEnumerable>(x: AssertionMatch<'a>) =
     Assert.That(x.Actual, Is.Not.EquivalentTo x.Expected)
@@ -171,7 +244,11 @@ type AltCollectionAssert =
       message,
       [<ParamArray>] args: Object[]
     ) =
-    Assert.That(x.Actual, Is.Not.EquivalentTo x.Expected, NUnitString(String.Format(message, args)))
+    Assert.That(
+      x.Actual,
+      Is.Not.EquivalentTo x.Expected,
+      AltAssertBase.ConvertMessageWithArgs(message, args)
+    )
 
   static member IsNotSubsetOf<'a when 'a :> IEnumerable>(x: AssertionMatch<'a>) =
     Assert.That(x.Actual, Is.Not.SubsetOf x.Expected)
@@ -182,7 +259,11 @@ type AltCollectionAssert =
       message,
       [<ParamArray>] args: Object[]
     ) =
-    Assert.That(x.Actual, Is.Not.SubsetOf x.Expected, NUnitString(String.Format(message, args)))
+    Assert.That(
+      x.Actual,
+      Is.Not.SubsetOf x.Expected,
+      AltAssertBase.ConvertMessageWithArgs(message, args)
+    )
 
   static member IsNotSupersetOf<'a when 'a :> IEnumerable>(x: AssertionMatch<'a>) =
     Assert.That(x.Actual, Is.Not.SupersetOf x.Expected)
@@ -193,7 +274,11 @@ type AltCollectionAssert =
       message,
       [<ParamArray>] args: Object[]
     ) =
-    Assert.That(x.Actual, Is.Not.SupersetOf x.Expected, NUnitString(String.Format(message, args)))
+    Assert.That(
+      x.Actual,
+      Is.Not.SupersetOf x.Expected,
+      AltAssertBase.ConvertMessageWithArgs(message, args)
+    )
 
   static member IsSubsetOf<'a when 'a :> IEnumerable>(x: AssertionMatch<'a>) =
     Assert.That(x.Actual, Is.SubsetOf x.Expected)
@@ -204,7 +289,11 @@ type AltCollectionAssert =
       message,
       [<ParamArray>] args: Object[]
     ) =
-    Assert.That(x.Actual, Is.SubsetOf x.Expected, NUnitString(String.Format(message, args)))
+    Assert.That(
+      x.Actual,
+      Is.SubsetOf x.Expected,
+      AltAssertBase.ConvertMessageWithArgs(message, args)
+    )
 
   static member IsSupersetOf<'a when 'a :> IEnumerable>(x: AssertionMatch<'a>) =
     Assert.That(x.Actual, Is.SupersetOf x.Expected)
@@ -215,12 +304,16 @@ type AltCollectionAssert =
       message,
       [<ParamArray>] args: Object[]
     ) =
-    Assert.That(x.Actual, Is.SupersetOf x.Expected, NUnitString(String.Format(message, args)))
+    Assert.That(
+      x.Actual,
+      Is.SupersetOf x.Expected,
+      AltAssertBase.ConvertMessageWithArgs(message, args)
+    )
 
 [<AbstractClass; Sealed>]
 type AltDirectoryAssert =
   static member AreEqual(x: AssertionMatch<DirectoryInfo>) =
-    DirectoryAssert.AreEqual(x.Expected, x.Actual)
+    Assert.That(x.Actual, Is.EqualTo x.Expected)
 
   static member AreEqual
     (
@@ -228,10 +321,14 @@ type AltDirectoryAssert =
       message,
       [<ParamArray>] args: Object[]
     ) =
-    DirectoryAssert.AreEqual(x.Expected, x.Actual, message, args)
+    Assert.That(
+      x.Actual,
+      Is.EqualTo x.Expected,
+      AltAssertBase.ConvertMessageWithArgs(message, args)
+    )
 
   static member AreNotEqual(x: AssertionMatch<DirectoryInfo>) =
-    DirectoryAssert.AreNotEqual(x.Expected, x.Actual)
+    Assert.That(x.Actual, Is.Not.EqualTo x.Expected)
 
   static member AreNotEqual
     (
@@ -239,12 +336,16 @@ type AltDirectoryAssert =
       message,
       [<ParamArray>] args: Object[]
     ) =
-    DirectoryAssert.AreNotEqual(x.Expected, x.Actual, message, args)
+    Assert.That(
+      x.Actual,
+      Is.Not.EqualTo x.Expected,
+      AltAssertBase.ConvertMessageWithArgs(message, args)
+    )
 
 [<AbstractClass; Sealed>]
 type AltFileAssert =
   static member AreEqual(x: AssertionMatch<FileInfo>) =
-    FileAssert.AreEqual(x.Expected, x.Actual)
+    AltFileAssert.AreEqual(x, String.Empty, null)
 
   static member AreEqual
     (
@@ -252,10 +353,20 @@ type AltFileAssert =
       message,
       [<ParamArray>] args: Object[]
     ) =
-    FileAssert.AreEqual(x.Expected, x.Actual, message, args)
+    use expected2 =
+      x.Expected.OpenRead() :> Stream
+
+    use actual2 = x.Actual.OpenRead()
+
+    AltFileAssert.AreEqual(
+      { Expected = expected2
+        Actual = actual2 },
+      message,
+      args
+    )
 
   static member AreEqual(x: AssertionMatch<Stream>) =
-    FileAssert.AreEqual(x.Expected, x.Actual)
+    AltFileAssert.AreEqual(x, String.Empty, null)
 
   static member AreEqual
     (
@@ -263,10 +374,14 @@ type AltFileAssert =
       message,
       [<ParamArray>] args: Object[]
     ) =
-    FileAssert.AreEqual(x.Expected, x.Actual, message, args)
+    Assert.That(
+      x.Actual,
+      Is.EqualTo x.Expected,
+      AltAssertBase.ConvertMessageWithArgs(message, args)
+    )
 
   static member AreEqual(x: AssertionMatch<String>) =
-    FileAssert.AreEqual(x.Expected, x.Actual)
+    AltFileAssert.AreEqual(x, String.Empty, null)
 
   static member AreEqual
     (
@@ -274,10 +389,20 @@ type AltFileAssert =
       message,
       [<ParamArray>] args: Object[]
     ) =
-    FileAssert.AreEqual(x.Expected, x.Actual, message, args)
+    use expected2 =
+      File.OpenRead(x.Expected) :> Stream
+
+    use actual2 = File.OpenRead(x.Actual)
+
+    AltFileAssert.AreEqual(
+      { Expected = expected2
+        Actual = actual2 },
+      message,
+      args
+    )
 
   static member AreNotEqual(x: AssertionMatch<FileInfo>) =
-    FileAssert.AreNotEqual(x.Expected, x.Actual)
+    AltFileAssert.AreNotEqual(x, String.Empty, null)
 
   static member AreNotEqual
     (
@@ -285,10 +410,20 @@ type AltFileAssert =
       message,
       [<ParamArray>] args: Object[]
     ) =
-    FileAssert.AreNotEqual(x.Expected, x.Actual, message, args)
+    use expected2 =
+      x.Expected.OpenRead() :> Stream
+
+    use actual2 = x.Actual.OpenRead()
+
+    AltFileAssert.AreNotEqual(
+      { Expected = expected2
+        Actual = actual2 },
+      message,
+      args
+    )
 
   static member AreNotEqual(x: AssertionMatch<Stream>) =
-    FileAssert.AreNotEqual(x.Expected, x.Actual)
+    AltFileAssert.AreNotEqual(x, String.Empty, null)
 
   static member AreNotEqual
     (
@@ -296,10 +431,14 @@ type AltFileAssert =
       message,
       [<ParamArray>] args: Object[]
     ) =
-    FileAssert.AreNotEqual(x.Expected, x.Actual, message, args)
+    Assert.That(
+      x.Actual,
+      Is.Not.EqualTo x.Expected,
+      AltAssertBase.ConvertMessageWithArgs(message, args)
+    )
 
   static member AreNotEqual(x: AssertionMatch<String>) =
-    FileAssert.AreNotEqual(x.Expected, x.Actual)
+    AltFileAssert.AreNotEqual(x, String.Empty, null)
 
   static member AreNotEqual
     (
@@ -307,12 +446,22 @@ type AltFileAssert =
       message,
       [<ParamArray>] args: Object[]
     ) =
-    FileAssert.AreNotEqual(x.Expected, x.Actual, message, args)
+    use expected2 =
+      File.OpenRead(x.Expected) :> Stream
+
+    use actual2 = File.OpenRead(x.Actual)
+
+    AltFileAssert.AreNotEqual(
+      { Expected = expected2
+        Actual = actual2 },
+      message,
+      args
+    )
 
 [<AbstractClass; Sealed>]
 type AltStringAssert =
   static member AreEqualIgnoringCase(x: AssertionMatch<String>) =
-    StringAssert.AreEqualIgnoringCase(x.Expected, x.Actual)
+    Assert.That(x.Actual, Is.EqualTo(x.Expected).IgnoreCase)
 
   static member AreEqualIgnoringCase
     (
@@ -320,10 +469,14 @@ type AltStringAssert =
       message,
       [<ParamArray>] args: Object[]
     ) =
-    StringAssert.AreEqualIgnoringCase(x.Expected, x.Actual, message, args)
+    Assert.That(
+      x.Actual,
+      Is.EqualTo(x.Expected).IgnoreCase,
+      AltAssertBase.ConvertMessageWithArgs(message, args)
+    )
 
   static member AreNotEqualIgnoringCase(x: AssertionMatch<String>) =
-    StringAssert.AreNotEqualIgnoringCase(x.Expected, x.Actual)
+    Assert.That(x.Actual, Is.Not.EqualTo(x.Expected).IgnoreCase)
 
   static member AreNotEqualIgnoringCase
     (
@@ -331,7 +484,11 @@ type AltStringAssert =
       message,
       [<ParamArray>] args: Object[]
     ) =
-    StringAssert.AreNotEqualIgnoringCase(x.Expected, x.Actual, message, args)
+    Assert.That(
+      x.Actual,
+      Is.Not.EqualTo(x.Expected).IgnoreCase,
+      AltAssertBase.ConvertMessageWithArgs(message, args)
+    )
 
   static member Contains(x: AssertionMatch<String>) =
     Assert.That(x.Actual, Does.Contain x.Expected)
@@ -342,7 +499,11 @@ type AltStringAssert =
       message,
       [<ParamArray>] args: Object[]
     ) =
-    Assert.That(x.Actual, Does.Contain x.Expected, NUnitString(String.Format(message, args)))
+    Assert.That(
+      x.Actual,
+      Does.Contain x.Expected,
+      AltAssertBase.ConvertMessageWithArgs(message, args)
+    )
 
   static member DoesNotContain(x: AssertionMatch<String>) =
     Assert.That(x.Actual, Does.Not.Contain x.Expected)
@@ -353,7 +514,11 @@ type AltStringAssert =
       message,
       [<ParamArray>] args: Object[]
     ) =
-    Assert.That(x.Actual, Does.Not.Contain x.Expected, NUnitString(String.Format(message, args)))
+    Assert.That(
+      x.Actual,
+      Does.Not.Contain x.Expected,
+      AltAssertBase.ConvertMessageWithArgs(message, args)
+    )
 
   static member DoesNotEndWith(x: AssertionMatch<String>) =
     Assert.That(x.Actual, Does.Not.EndWith x.Expected)
@@ -364,7 +529,11 @@ type AltStringAssert =
       message,
       [<ParamArray>] args: Object[]
     ) =
-    Assert.That(x.Actual, Does.Not.EndWith x.Expected, NUnitString(String.Format(message, args)))
+    Assert.That(
+      x.Actual,
+      Does.Not.EndWith x.Expected,
+      AltAssertBase.ConvertMessageWithArgs(message, args)
+    )
 
   static member DoesNotMatch(x: AssertionMatch<String>) =
     Assert.That(x.Actual, Does.Not.Match x.Expected)
@@ -375,7 +544,11 @@ type AltStringAssert =
       message,
       [<ParamArray>] args: Object[]
     ) =
-    Assert.That(x.Actual, Does.Not.Match x.Expected, NUnitString(String.Format(message, args)))
+    Assert.That(
+      x.Actual,
+      Does.Not.Match x.Expected,
+      AltAssertBase.ConvertMessageWithArgs(message, args)
+    )
 
   static member DoesNotStartWith(x: AssertionMatch<String>) =
     Assert.That(x.Actual, Does.Not.StartWith x.Expected)
@@ -386,7 +559,11 @@ type AltStringAssert =
       message,
       [<ParamArray>] args: Object[]
     ) =
-    Assert.That(x.Actual, Does.Not.StartWith x.Expected, NUnitString(String.Format(message, args)))
+    Assert.That(
+      x.Actual,
+      Does.Not.StartWith x.Expected,
+      AltAssertBase.ConvertMessageWithArgs(message, args)
+    )
 
   static member EndsWith(x: AssertionMatch<String>) =
     Assert.That(x.Actual, Does.EndWith x.Expected)
@@ -397,10 +574,14 @@ type AltStringAssert =
       message,
       [<ParamArray>] args: Object[]
     ) =
-    Assert.That(x.Actual, Does.EndWith x.Expected, NUnitString(String.Format(message, args)))
+    Assert.That(
+      x.Actual,
+      Does.EndWith x.Expected,
+      AltAssertBase.ConvertMessageWithArgs(message, args)
+    )
 
   static member IsMatch(x: AssertionMatch<String>) =
-   Assert.That(x.Actual, Does.Match x.Expected)
+    Assert.That(x.Actual, Does.Match x.Expected)
 
   static member IsMatch
     (
@@ -408,7 +589,11 @@ type AltStringAssert =
       message,
       [<ParamArray>] args: Object[]
     ) =
-    Assert.That(x.Actual, Does.Match x.Expected, NUnitString(String.Format(message, args)))
+    Assert.That(
+      x.Actual,
+      Does.Match x.Expected,
+      AltAssertBase.ConvertMessageWithArgs(message, args)
+    )
 
   static member StartsWith(x: AssertionMatch<String>) =
     Assert.That(x.Actual, Does.StartWith x.Expected)
@@ -419,6 +604,10 @@ type AltStringAssert =
       message,
       [<ParamArray>] args: Object[]
     ) =
-    Assert.That(x.Actual, Does.StartWith x.Expected, NUnitString(String.Format(message, args)))
+    Assert.That(
+      x.Actual,
+      Does.StartWith x.Expected,
+      AltAssertBase.ConvertMessageWithArgs(message, args)
+    )
 
 //
