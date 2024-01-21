@@ -74,7 +74,7 @@ Cross platform, dotnet code throughout.
 
 ### Tooling
 
-It is assumed that .net 7.0.100 or later is available  (`dotnet`) -- try https://www.microsoft.com/net/download  
+It is assumed that .net 8.0.100 or later is available  (`dotnet`) -- try https://www.microsoft.com/net/download  
 
 ### Bootstrapping
 
