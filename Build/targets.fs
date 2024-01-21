@@ -154,13 +154,15 @@ module Targets =
   let infoV =
     Information.showName "." commitHash
 
-  let ReleaseNotes =
+  let ReleaseNotes () =
     let source =
       Path.getFullName "ReleaseNotes.md"
       |> File.ReadAllLines
       |> Seq.map (fun s ->
+        let sv = s.Replace("#????", "# " + Version)
+
         let t =
-          System.Text.RegularExpressions.Regex.Replace(s, "^\*\s", "* •\u00A0")
+          System.Text.RegularExpressions.Regex.Replace(sv, "^\*\s", "* •\u00A0")
 
         let u =
           System.Text.RegularExpressions.Regex.Replace(
@@ -211,7 +213,7 @@ module Targets =
       [ "Copyright", Copyright //.Replace("©", "(c)
         "PackageVersion", Version
         "VersionSuffix", VersionSuffix
-        "PackageReleaseNotes", ReleaseNotes ]
+        "PackageReleaseNotes", ReleaseNotes() ]
 
     let after =
       [ l; before ] |> List.concat |> Map.ofList
