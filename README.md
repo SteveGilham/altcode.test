@@ -4,7 +4,7 @@ Named argument wrappers for unit test frameworks to disambiguate between which a
 ## What's in the box?
 
 A core type
-```
+```fsharp
 namespace AltCode.Test.[Expecto|NUnit|Xunit]
 
 type AssertionMatch<'a> =
@@ -38,8 +38,8 @@ Contains class `AltCode.Test.Xunit.AltAssert` which provides wrappers for `Xunit
 
 [`AltCode.Test.NUnit` ![Nuget](https://buildstats.info/nuget/altcode.test.nunit)](http://nuget.org/packages/altcode.test.nunit)
 
-Contains classes `AltCode.Test.NUnit.Alt*Assert` which provide wrappers for the corresponding `NUnit.Framework.*Assert` for `*` = `''`, `'Collection'`, `'Directory'`, `'File'` and `'String'`  with an appropriate `AltCode.Test.Nunit.AssertionMatch`-typed argument in place of actual and template expectation; also 
-```
+Contains classes `AltCode.Test.NUnit.Alt*Assert` which provide emulators for the corresponding `NUnit.Framework.Legacy.*Assert` for `*` = `'Classic'` (just `AltAssert`, not `AltClassicAssert`), `'Collection'`, `'Directory'`, `'File'` and `'String'` types with an appropriate `AltCode.Test.Nunit.AssertionMatch`-typed argument in place of actual and template expectation; also 
+```fsharp
 type Constraint<'a> =
   {
     Actual : 'a
@@ -53,7 +53,12 @@ type Constraint<'a> =
   member this.WithActual e = { this with Actual = e }
   member this.WithConstraint e = { this with Constraint = e }
 ```
-and wrappers for some `NUnit.Framework.Assert.That` overloads
+and wrappers for `NUnit.Framework.Assert.That` overloads
+```fsharp
+  static member That(x: Constraint<'a>)
+  static member That(x: Constraint<'a>, message: string)
+
+```
 
 ## Continuous Integration
 
