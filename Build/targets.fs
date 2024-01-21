@@ -49,9 +49,6 @@ module Targets =
     | Some f -> { o with DotNetCliPath = f }
     | None -> o
 
-  let dotnetVersion =
-    DotNet.getVersion (fun o -> o.WithCommon dotnetOptions)
-
   let nugetCache =
     Path.Combine(
       Environment.GetFolderPath Environment.SpecialFolder.UserProfile,
@@ -67,7 +64,7 @@ module Targets =
         AssemblyFilter =
           "FSharp"
           :: @"\.Placeholder"
-             :: (p.AssemblyFilter |> Seq.toList)
+          :: (p.AssemblyFilter |> Seq.toList)
         LocalSource = true
         TypeFilter =
           [ @"System\."
@@ -75,25 +72,6 @@ module Targets =
             "Program"
             @"\$RepoRoot" ]
           @ (p.TypeFilter |> Seq.toList) }
-
-  let withTestEnvironment l (o: DotNet.TestOptions) =
-    let before = o.Environment |> Map.toList
-
-    let after =
-      [ l; before ] |> List.concat |> Map.ofList
-
-    o.WithEnvironment after
-
-  let withAltCoverOptions
-    (prepare: Abstract.IPrepareOptions)
-    (collect: Abstract.ICollectOptions)
-    (force: DotNet.ICLIOptions)
-    (o: DotNet.TestOptions)
-    =
-    if dotnetVersion <> "7.0.100" then
-      o.WithAltCoverOptions prepare collect force
-    else
-      withTestEnvironment (DotNet.ToTestPropertiesList prepare collect force) o
 
   let mutable misses = 0
 
@@ -137,6 +115,7 @@ module Targets =
     { MSBuild.CliArguments.Create() with
         ConsoleLogParameters = []
         DistributedLoggers = None
+        Properties = []
         DisableInternalBinLog = true }
 
   let withWorkingDirectoryVM dir o =
@@ -145,7 +124,8 @@ module Targets =
         Verbosity = Some DotNet.Verbosity.Minimal }
 
   let withWorkingDirectoryOnly dir o =
-    { dotnetOptions o with WorkingDirectory = Path.getFullName dir }
+    { dotnetOptions o with
+        WorkingDirectory = Path.getFullName dir }
 
   let withCLIArgs (o: Fake.DotNet.DotNet.TestOptions) =
     { o with MSBuildParams = cliArguments }
@@ -174,13 +154,15 @@ module Targets =
   let infoV =
     Information.showName "." commitHash
 
-  let ReleaseNotes =
+  let ReleaseNotes () =
     let source =
       Path.getFullName "ReleaseNotes.md"
       |> File.ReadAllLines
       |> Seq.map (fun s ->
+        let sv = s.Replace("#????", "# " + Version)
+
         let t =
-          System.Text.RegularExpressions.Regex.Replace(s, "^\*\s", "* •\u00A0")
+          System.Text.RegularExpressions.Regex.Replace(sv, "^\*\s", "* •\u00A0")
 
         let u =
           System.Text.RegularExpressions.Regex.Replace(
@@ -231,7 +213,7 @@ module Targets =
       [ "Copyright", Copyright //.Replace("©", "(c)
         "PackageVersion", Version
         "VersionSuffix", VersionSuffix
-        "PackageReleaseNotes", ReleaseNotes ]
+        "PackageReleaseNotes", ReleaseNotes() ]
 
     let after =
       [ l; before ] |> List.concat |> Map.ofList
@@ -250,7 +232,8 @@ module Targets =
   let dotnetBuildDebug proj =
     DotNet.build
       (fun p ->
-        { p.WithCommon dotnetOptions with Configuration = DotNet.BuildConfiguration.Debug }
+        { p.WithCommon dotnetOptions with
+            Configuration = DotNet.BuildConfiguration.Debug }
         |> buildWithCLIArguments
         |> withEnvironment)
       (Path.GetFullPath proj)
@@ -378,7 +361,6 @@ module Targets =
       "./altcode.test/altcode.test.sln"
       |> dotnetBuildDebug)
 
-
   let Validation =
     (fun _ ->
       DotNet.test
@@ -402,50 +384,53 @@ module Targets =
       let coverage =
         !!(@"./**/validation.fsproj")
         |> Seq.fold
-             (fun l test ->
-               printfn "%A" test
+          (fun l test ->
+            printfn "%A" test
 
-               let tname =
-                 test |> Path.GetFileNameWithoutExtension
+            let tname =
+              test |> Path.GetFileNameWithoutExtension
 
-               let testDirectory =
-                 test |> Path.getFullName |> Path.GetDirectoryName
+            let testDirectory =
+              test |> Path.getFullName |> Path.GetDirectoryName
 
-               let altReport =
-                 reports @@ ("Coverage." + tname + ".xml")
+            let altReport =
+              reports @@ ("Coverage." + tname + ".xml")
 
-               let collect =
-                 AltCover.CollectOptions.Primitive(Primitive.CollectOptions.Create()) // FSApi
+            let collect =
+              AltCover.CollectOptions.Primitive(Primitive.CollectOptions.Create()) // FSApi
 
-               let prepare =
-                 AltCover.PrepareOptions.Primitive(
-                   { Primitive.PrepareOptions.Create() with
-                       Report = altReport
-                       SingleVisit = true }
-                   |> AltCoverFilter
-                 )
+            let prepare =
+              AltCover.PrepareOptions.Primitive(
+                { Primitive.PrepareOptions.Create() with
+                    Report = altReport
+                    SingleVisit = true }
+                |> AltCoverFilter
+              )
 
-               let forceTrue = DotNet.CLIOptions.Force true
+            let forceTrue = DotNet.CLIOptions.Force true
 
-               let setBaseOptions (o: DotNet.Options) =
-                 { o with
-                     WorkingDirectory = Path.getFullName testDirectory
-                     Verbosity = Some DotNet.Verbosity.Minimal }
+            let setBaseOptions (o: DotNet.Options) =
+              { o with
+                  WorkingDirectory = Path.getFullName testDirectory
+                  Verbosity = Some DotNet.Verbosity.Minimal }
 
-               try
-                 DotNet.test
-                   (fun to' ->
-                     { (to'.WithCommon(setBaseOptions)
-                        |> (withAltCoverOptions prepare collect forceTrue)) with
-                         MSBuildParams = cliArguments
-                         NoBuild = true })
-                   test
-               with x ->
-                 printfn "%A" x
-               // reraise()) // while fixing
+            try
+              DotNet.test
+                (fun to' ->
+                  { to'.WithCommon(setBaseOptions) with
+                      MSBuildParams = cliArguments
+                      NoBuild = true }
+                    .WithAltCoverOptions
+                    prepare
+                    collect
+                    forceTrue)
+                test
+            with x ->
+              printfn "%A" x
+            // reraise()) // while fixing
 
-               altReport :: l)
-             []
+            altReport :: l)
+          []
 
       ReportGenerator.generateReports
         (fun p ->
@@ -457,85 +442,54 @@ module Targets =
               TargetDir = report })
         coverage
 
-      // let reportLines =
-      //   coverage |> List.map File.ReadAllLines
+      if
+        Environment.isWindows
+        && "COVERALLS_REPO_TOKEN"
+           |> Environment.environVar
+           |> String.IsNullOrWhiteSpace
+           |> not
+      then
+        let maybe envvar fallback =
+          let x = Environment.environVar envvar
 
-      // let top =
-      //   reportLines
-      //   |> List.head
-      //   |> Seq.takeWhile (fun l -> l.StartsWith("    <Module") |> not)
+          if String.IsNullOrWhiteSpace x then
+            fallback
+          else
+            x
 
-      // let tail =
-      //   reportLines
-      //   |> List.head
-      //   |> Seq.skipWhile (fun l -> l <> "  </Modules>")
+        let log = Information.shortlog "."
+        let gap = log.IndexOf ' '
+        let commit = log.Substring gap
 
-      // let core =
-      //   reportLines
-      //   |> List.map (fun f ->
-      //     f
-      //     |> Seq.skipWhile (fun l -> l.StartsWith("    <Module") |> not)
-      //     |> Seq.takeWhile (fun l -> l <> "  </Modules>"))
-
-      // let coverage =
-      //   reports
-      //   @@ "CombinedTestWithAltCoverRunner.coveralls"
-
-      // File.WriteAllLines(
-      //   coverage,
-      //   Seq.concat [ top; Seq.concat core; tail ]
-      //   |> Seq.toArray
-      // )
-
-      // if
-      //   Environment.isWindows
-      //   && "COVERALLS_REPO_TOKEN"
-      //      |> Environment.environVar
-      //      |> String.IsNullOrWhiteSpace
-      //      |> not
-      // then
-      //   let maybe envvar fallback =
-      //     let x = Environment.environVar envvar
-
-      //     if String.IsNullOrWhiteSpace x then
-      //       fallback
-      //     else
-      //       x
-
-      //   let log = Information.shortlog "."
-      //   let gap = log.IndexOf ' '
-      //   let commit = log.Substring gap
-
-      //   Actions.Run
-      //     ("dotnet",
-      //      "_Reports",
-      //      [ "csmacnz.Coveralls"
-      //        "--opencover"
-      //        "-i"
-      //        coverage
-      //        "--repoToken"
-      //        Environment.environVar "COVERALLS_REPO_TOKEN"
-      //        "--commitId"
-      //        commitHash
-      //        "--commitBranch"
-      //        Information.getBranchName (".")
-      //        "--commitAuthor"
-      //        maybe "COMMIT_AUTHOR" "" // TODO
-      //        "--commitEmail"
-      //        maybe "COMMIT_AUTHOR_EMAIL" "" //
-      //        "--commitMessage"
-      //        commit
-      //        "--jobId"
-      //        DateTime.UtcNow.ToString("yyMMdd-HHmmss") ])
-      //     "Coveralls upload failed"
+        Actions.Run
+          ("dotnet",
+           "_Reports",
+           [ "csmacnz.Coveralls"
+             "--opencover"
+             "-i"
+             (Seq.head coverage)
+             "--repoToken"
+             Environment.environVar "COVERALLS_REPO_TOKEN"
+             "--commitId"
+             commitHash
+             "--commitBranch"
+             Information.getBranchName (".")
+             "--commitAuthor"
+             maybe "COMMIT_AUTHOR" "" // TODO
+             "--commitEmail"
+             maybe "COMMIT_AUTHOR_EMAIL" "" //
+             "--commitMessage"
+             commit
+             "--jobId"
+             DateTime.UtcNow.ToString("yyMMdd-HHmmss") ])
+          "Coveralls upload failed"
 
       (report @@ "Summary.xml")
       |> uncovered
       |> (fun u ->
         u |> (printfn "%A uncovered lines")
         // printfn "%A" (u.GetType().FullName)
-        Assert.That(u, Is.EqualTo [0], "All lines should be covered")))
-
+        Assert.That(u, Is.EqualTo [ 0 ], "All lines should be covered")))
 
   // Code Analysis
 

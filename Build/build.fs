@@ -26,4 +26,4 @@ module Build =
     Targets.initTargets ()
     Target.runOrDefault <| Targets.defaultTarget ()
 
-    0 // return an integer exit code
+    0

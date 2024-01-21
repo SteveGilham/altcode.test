@@ -2,6 +2,14 @@ Q. Never mind the fluff -- how do I get started?
 
 A. Start with the README : https://github.com/SteveGilham/altcode.test/blob/master/README.md
 
+#????
+* support Expecto ≥ 10.1.0, NUnit ≥ 4.0.1, Xunit ≥ 2.4.2, FSharp.Core ≥ 8.0.100
+* runtime support driven by the consumed packages
+  * Expecto support on `net6.0`
+  * NUnit support on `net462` and `net6.0`
+  * Xunit support on `netstandard2.0`
+* NUnit support does not rely on the legacy `ClassicAssert` assembly
+
 # 2.0.31
 * [BREAKING] make the `AssertionMatch` type specific to each package to avoid name clashes if multiple test suites are in use
 * [BREAKING] remove support for obsolescing Expecto `Expect.floatEqual`
@@ -11,7 +19,7 @@ A. Start with the README : https://github.com/SteveGilham/altcode.test/blob/mast
 * support `netstandard2.0` only (meaning ≥ `net472` compatible)
 * various fixes to `Expecto.Expect` and `Expecto.Flip.Expect` support, including Stream subtypes to be passed w/o explicit coercion to base
 * various fixes to `Xunit.Assert`, including respecting optional arguments and allowing interface subtypes to be passed w/o explicit coercion to base
-* support Expecto ≥ 9.0.4, NUnit ≥ 3.13.3, Xunit ≥ 2.4.2,  FSharp.Core ≥ 6.0.0
+* support Expecto ≥ 9.0.4, NUnit ≥ 3.13.3, Xunit ≥ 2.4.2, FSharp.Core ≥ 6.0.0
 * new for `Expecto.Expect`
   * equalWithDiffPrinter
   * isFasterThan 
