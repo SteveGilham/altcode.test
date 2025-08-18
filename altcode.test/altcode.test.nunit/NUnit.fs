@@ -38,7 +38,7 @@ type AltAssert =
     Assert.That(
       x.Actual,
       Is.EqualTo(x.Expected).Within(delta),
-      String.Format(message, args)
+      AltAssertBase.ConvertMessageWithArgs(message, args)
     )
 
   static member AreEqual(x: AssertionMatch<double>, delta) =

@@ -92,12 +92,20 @@ type AltAssert =
   static member NotEqual
     (x: AssertionMatch<#IEnumerable<'a>>, comparer: Func<'a, 'a, bool>)
     =
-    Assert.NotEqual<'a>(x.Expected :> IEnumerable<'a>, x.Actual :> IEnumerable<'a>, comparer)
+    Assert.NotEqual<'a>(
+      x.Expected :> IEnumerable<'a>,
+      x.Actual :> IEnumerable<'a>,
+      comparer
+    )
 
   static member NotEqual
     (x: AssertionMatch<#IEnumerable<'a>>, comparer: IEqualityComparer<'a>)
     =
-    Assert.NotEqual<'a>(x.Expected :> IEnumerable<'a>, x.Actual :> IEnumerable<'a>, comparer)
+    Assert.NotEqual<'a>(
+      x.Expected :> IEnumerable<'a>,
+      x.Actual :> IEnumerable<'a>,
+      comparer
+    )
 
   static member NotEqual<'a>(x: AssertionMatch<'a>) =
     Assert.NotEqual<'a>(x.Expected, x.Actual)

@@ -14,12 +14,12 @@ jobs:
   windows:
     runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v5.0.0
       with:
         fetch-depth: 2
     - uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '9.0.304'
+        global-json-file: global.json
     - name: Tools
       run: dotnet tool restore
     - name: Setup
@@ -36,10 +36,12 @@ jobs:
   linux:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v5.0.0
+      with:
+        fetch-depth: 2
     - uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '9.0.304'
+        global-json-file: global.json
     - name: Tools
       run: dotnet tool restore
     - name: Setup

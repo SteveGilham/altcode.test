@@ -9,6 +9,7 @@
     <File Path="../Build/targets.fs" />
     <File Path="../Directory.Packages.props" />
     <File Path="../fsharplint.json" />
+    <File Path="../fullbuild.ps1" />
     <File Path="../global.json" />
     <File Path="../README.md" />
     <File Path="../ReleaseNotes.md" />

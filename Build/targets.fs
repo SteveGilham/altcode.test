@@ -426,7 +426,7 @@ module Targets =
                 test
             with x ->
               printfn "%A" x
-            // reraise()) // while fixing
+              reraise () // argue either way
 
             altReport :: l)
           []
