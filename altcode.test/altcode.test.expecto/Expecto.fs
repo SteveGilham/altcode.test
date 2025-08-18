@@ -153,19 +153,12 @@ module AltFlipExpect =
 type AltCSharpExpect() =
 
   static member public IsFasterThan
-    (
-      (x: AssertionMatch<Func<'a>>),
-      message: string,
-      [<Out>] result: string byref
-    ) =
+    ((x: AssertionMatch<Func<'a>>), message: string, [<Out>] result: string byref)
+    =
     Expecto.CSharp.Function.IsFasterThan(x.Actual, x.Expected, message, &result)
 
   static member public IsFasterThan
-    (
-      (x: AssertionMatch<Action * Func<'a>>),
-      message: string,
-      [<Out>] result: string byref
-    ) =
+    ((x: AssertionMatch<Action * Func<'a>>), message: string, [<Out>] result: string byref) =
     Expecto.CSharp.Function.IsFasterThan(
       fst x.Actual,
       snd x.Actual,

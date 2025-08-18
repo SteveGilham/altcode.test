@@ -16,9 +16,7 @@ module NUnit =
   [<Test>]
   let ThatShouldPass () =
     let match1 =
-      (Constraint.Create().WithActual true)
-        .WithConstraint
-        Is.True
+      (Constraint.Create().WithActual true).WithConstraint Is.True
 
     AltAssert.That match1
     AltAssert.That(match1, "message")
@@ -26,9 +24,7 @@ module NUnit =
   [<Test>]
   let ThatShouldFail () =
     let match1 =
-      (Constraint.Create().WithActual true)
-        .WithConstraint
-        Is.Not.True
+      (Constraint.Create().WithActual true).WithConstraint Is.Not.True
 
     let x1 =
       Assert.Throws<AssertionException>(fun _ -> AltAssert.That match1)
@@ -42,9 +38,7 @@ module NUnit =
     Assert.That(x1.Message, Is.EqualTo expected)
 
     let match2 =
-      (Constraint.Create().WithActual true)
-        .WithConstraint
-        Is.Not.True
+      (Constraint.Create().WithActual true).WithConstraint Is.Not.True
 
     let x2 =
       Assert.Throws<AssertionException>(fun _ -> AltAssert.That(match2, "some text"))
@@ -287,9 +281,7 @@ module NUnit =
     let d2 = DirectoryInfo ".."
 
     let match1 =
-      (AssertionMatch.Create().WithActual d1)
-        .WithExpected
-        d1
+      (AssertionMatch.Create().WithActual d1).WithExpected d1
 
     AltDirectoryAssert.AreEqual match1
 
@@ -311,9 +303,7 @@ module NUnit =
     let d2 = DirectoryInfo ".."
 
     let match1 =
-      (AssertionMatch.Create().WithActual d1)
-        .WithExpected
-        d2
+      (AssertionMatch.Create().WithActual d1).WithExpected d2
 
     Assert.Throws<AssertionException>(fun _ -> AltDirectoryAssert.AreEqual match1)
     |> ignore
@@ -338,17 +328,13 @@ module NUnit =
   [<Test>]
   let StringContainsShouldPass () =
     let match1 =
-      (AssertionMatch.Create().WithActual "Hello")
-        .WithExpected
-        "e"
+      (AssertionMatch.Create().WithActual "Hello").WithExpected "e"
 
     AltStringAssert.Contains match1
     AltStringAssert.Contains(match1, "bang {0} {2}", 1, 2., 3, 4)
 
     let match2 =
-      (AssertionMatch.Create().WithActual "Hello")
-        .WithExpected
-        "?"
+      (AssertionMatch.Create().WithActual "Hello").WithExpected "?"
 
     AltStringAssert.DoesNotContain match2
     AltStringAssert.DoesNotContain(match2, "bang {0} {2}", 1, 2., 3, 4)
@@ -378,9 +364,7 @@ module NUnit =
   [<Test>]
   let DoesNotMatchShouldPass () =
     let match1 =
-      (AssertionMatch.Create().WithActual "Hello")
-        .WithExpected
-        "x"
+      (AssertionMatch.Create().WithActual "Hello").WithExpected "x"
 
     AltStringAssert.DoesNotMatch match1
     AltStringAssert.DoesNotMatch(match1, "bang {0} {2}", 1, 2., 3, 4)
@@ -410,9 +394,7 @@ module NUnit =
   [<Test>]
   let StringEndsWithShouldPass () =
     let match1 =
-      (AssertionMatch.Create().WithActual "Hello")
-        .WithExpected
-        "o"
+      (AssertionMatch.Create().WithActual "Hello").WithExpected "o"
 
     AltStringAssert.EndsWith match1
     AltStringAssert.EndsWith(match1, "bang {0} {2}", 1, 2., 3, 4)
@@ -442,9 +424,7 @@ module NUnit =
   [<Test>]
   let StringStartsWithShouldPass () =
     let match1 =
-      (AssertionMatch.Create().WithActual "Hello")
-        .WithExpected
-        "H"
+      (AssertionMatch.Create().WithActual "Hello").WithExpected "H"
 
     AltStringAssert.StartsWith match1
     AltStringAssert.StartsWith(match1, "bang {0} {2}", 1, 2., 3, 4)
@@ -476,8 +456,7 @@ module NUnit =
     let item = "DateTime.UtcNow"
 
     let match1 =
-      (AssertionMatch.Create().WithActual item)
-        .WithExpected(item.ToUpperInvariant())
+      (AssertionMatch.Create().WithActual item).WithExpected(item.ToUpperInvariant())
 
     AltStringAssert.AreEqualIgnoringCase match1
     AltStringAssert.AreEqualIgnoringCase(match1, "bang {0} {2}", 1, 2., 3, 4)
@@ -525,8 +504,7 @@ module NUnit =
     // Assert.That(l1, Is.EqualTo r1)
 
     let match1 =
-      (AssertionMatch.Create().WithActual left)
-        .WithExpected(right)
+      (AssertionMatch.Create().WithActual left).WithExpected(right)
 
     AltFileAssert.AreEqual match1
     AltFileAssert.AreEqual(match1, "bang {0} {2}", 1, 2., 3, 4)
@@ -539,8 +517,7 @@ module NUnit =
     |> ignore
 
     let match2 =
-      (AssertionMatch.Create().WithActual(FileInfo left))
-        .WithExpected(FileInfo right)
+      (AssertionMatch.Create().WithActual(FileInfo left)).WithExpected(FileInfo right)
 
     AltFileAssert.AreEqual match2
     AltFileAssert.AreEqual(match2, "bang {0} {2}", 1, 2., 3, 4)
@@ -556,8 +533,7 @@ module NUnit =
     use r2 = (File.OpenRead right) :> Stream
 
     let match3 =
-      (AssertionMatch.Create().WithActual l2)
-        .WithExpected(r2)
+      (AssertionMatch.Create().WithActual l2).WithExpected(r2)
 
     AltFileAssert.AreEqual match3
     AltFileAssert.AreEqual(match3, "bang {0} {2}", 1, 2., 3, 4)
@@ -581,8 +557,7 @@ module NUnit =
       Path.Combine(AltCode.Test.RepoRoot.location, "_Generated/RepoRoot.fs")
 
     let match1 =
-      (AssertionMatch.Create().WithActual left)
-        .WithExpected(right)
+      (AssertionMatch.Create().WithActual left).WithExpected(right)
 
     AltFileAssert.AreNotEqual match1
     AltFileAssert.AreNotEqual(match1, "bang {0} {2}", 1, 2., 3, 4)
@@ -595,8 +570,7 @@ module NUnit =
     |> ignore
 
     let match2 =
-      (AssertionMatch.Create().WithActual(FileInfo left))
-        .WithExpected(FileInfo right)
+      (AssertionMatch.Create().WithActual(FileInfo left)).WithExpected(FileInfo right)
 
     AltFileAssert.AreNotEqual match2
     AltFileAssert.AreNotEqual(match2, "bang {0} {2}", 1, 2., 3, 4)
@@ -612,8 +586,7 @@ module NUnit =
     use r2 = (File.OpenRead right) :> Stream
 
     let match3 =
-      (AssertionMatch.Create().WithActual l2)
-        .WithExpected(r2)
+      (AssertionMatch.Create().WithActual l2).WithExpected(r2)
 
     AltFileAssert.AreNotEqual match3
     AltFileAssert.AreNotEqual(match3, "bang {0} {2}", 1, 2., 3, 4)
