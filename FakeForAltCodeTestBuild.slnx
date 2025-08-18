@@ -2,8 +2,8 @@
   <Folder Name="/Solution Items/">
     <File Path=".config/dotnet-tools.json" />
     <File Path=".github/workflows/main.yml" />
-    <File Path="Build/build-rules.xml" />
     <File Path="Build/Directory.Build.props" />
+    <File Path="Build/rules-fake.xml" />
     <File Path="Directory.Build.props" />
     <File Path="Directory.Build.targets" />
     <File Path="Directory.Packages.props" />

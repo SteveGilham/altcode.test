@@ -21,7 +21,6 @@
     <PackageReference Include="Fake.DotNet.MSBuild" />
     <PackageReference Include="Fake.DotNet.NuGet" />
     <PackageReference Include="Fake.DotNet.Testing.NUnit" />
-    <PackageReference Include="Fake.DotNet.Testing.OpenCover" />
     <PackageReference Include="Fake.DotNet.Testing.XUnit2" />
     <PackageReference Include="Fake.IO.FileSystem" />
     <PackageReference Include="Fake.Tools.Git" />
@@ -31,5 +30,4 @@
     <PackageReference Include="Markdig" />
     <PackageReference Include="NUnit" />
   </ItemGroup>
-
 </Project>
