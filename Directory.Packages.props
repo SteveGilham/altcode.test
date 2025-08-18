@@ -7,19 +7,18 @@
     <PackageVersion Include="BlackFox.CommandLine" Version="1.0.0" />
     <PackageVersion Include="BlackFox.VsWhere" Version="1.1.0" />
     <PackageVersion Include="DotNet.ReproducibleBuilds" Version="1.2.25" />
-    <PackageVersion Include="FAKE.Core.Environment" Version="6.0.0" />
-    <PackageVersion Include="FAKE.Core.Process" Version="6.0.0" />
-    <PackageVersion Include="FAKE.Core.Target" Version="6.0.0" />
-    <PackageVersion Include="FAKE.DotNet.AssemblyInfoFile" Version="6.0.0" />
-    <PackageVersion Include="FAKE.DotNet.Cli" Version="6.0.0" />
-    <PackageVersion Include="FAKE.DotNet.FxCop" Version="6.0.0" />
-    <PackageVersion Include="FAKE.DotNet.MSBuild" Version="6.0.0" />
-    <PackageVersion Include="FAKE.DotNet.Nuget" Version="6.0.0" />
-    <PackageVersion Include="FAKE.DotNet.Testing.NUnit" Version="6.0.0" />
-    <PackageVersion Include="FAKE.DotNet.Testing.XUnit2" Version="6.0.0" />
-    <PackageVersion Include="FAKE.IO.FileSystem" Version="6.0.0" />
-    <PackageVersion Include="FAKE.Testing.ReportGenerator" Version="6.0.0" />
-    <PackageVersion Include="FAKE.Tools.Git" Version="6.0.0" />
+    <PackageVersion Include="Fake.Core.Environment" Version="6.0.0" />
+    <PackageVersion Include="Fake.Core.Process" Version="6.0.0" />
+    <PackageVersion Include="Fake.Core.Target" Version="6.0.0" />
+    <PackageVersion Include="Fake.DotNet.AssemblyInfoFile" Version="6.0.0" />
+    <PackageVersion Include="Fake.DotNet.Cli" Version="6.0.0" />
+    <PackageVersion Include="Fake.DotNet.MSBuild" Version="6.0.0" />
+    <PackageVersion Include="Fake.DotNet.Nuget" Version="6.0.0" />
+    <PackageVersion Include="Fake.DotNet.Testing.NUnit" Version="6.0.0" />
+    <PackageVersion Include="Fake.DotNet.Testing.XUnit2" Version="6.0.0" />
+    <PackageVersion Include="Fake.IO.FileSystem" Version="6.0.0" />
+    <PackageVersion Include="Fake.Testing.ReportGenerator" Version="6.0.0" />
+    <PackageVersion Include="Fake.Tools.Git" Version="6.0.0" />
     <PackageVersion Include="FSharp.Core" Version="9.0.303" />
     <PackageVersion Include="Markdig" Version="0.41.3" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
