@@ -195,9 +195,7 @@ module Targets =
       + commitHash
       + Environment.NewLine
       + Environment.NewLine
-      + w
-        .ToString()
-        .Replace("\u204B", Environment.NewLine)
+      + w.ToString().Replace("\u204B", Environment.NewLine)
 
     printfn "release notes are %A characters" releaseNotes.Length
     Assert.That(releaseNotes.Length, Is.LessThan 35000)
@@ -350,7 +348,7 @@ module Targets =
   let BuildRelease =
     (fun _ ->
       try
-        "./altcode.test/altcode.test.sln"
+        "./altcode.test/altcode.test.slnx"
         |> dotnetBuildRelease
       with x ->
         printfn "%A" x
@@ -358,7 +356,7 @@ module Targets =
 
   let BuildDebug =
     (fun _ ->
-      "./altcode.test/altcode.test.sln"
+      "./altcode.test/altcode.test.slnx"
       |> dotnetBuildDebug)
 
   let Validation =
@@ -368,7 +366,7 @@ module Targets =
           { p.WithCommon dotnetOptions with
               MSBuildParams = cliArguments
               Configuration = DotNet.BuildConfiguration.Debug
-              Framework = Some "net7.0"
+              Framework = Some "net8.0"
               NoBuild = true })
         "./altcode.test/validation")
 
@@ -419,6 +417,7 @@ module Targets =
                 (fun to' ->
                   { to'.WithCommon(setBaseOptions) with
                       MSBuildParams = cliArguments
+                      Framework = Some "net8.0"
                       NoBuild = true }
                     .WithAltCoverOptions
                     prepare
@@ -427,7 +426,7 @@ module Targets =
                 test
             with x ->
               printfn "%A" x
-            // reraise()) // while fixing
+              reraise () // argue either way
 
             altReport :: l)
           []
@@ -489,7 +488,11 @@ module Targets =
       |> (fun u ->
         u |> (printfn "%A uncovered lines")
         // printfn "%A" (u.GetType().FullName)
-        Assert.That(u, Is.EqualTo [ 0 ], "All lines should be covered")))
+        Assert.That<int list>(
+          u,
+          Is.EqualTo<int list> [ 0 ],
+          "All lines should be covered"
+        )))
 
   // Code Analysis
 
@@ -513,9 +516,8 @@ module Targets =
       let failOnIssuesFound (issuesFound: bool) =
         Assert.That(issuesFound, Is.False, "Lint issues were found")
 
-      [ !! "./**/*.fsproj"
-        |> Seq.sortBy (Path.GetFileName)
-        !! "./Build/*.fsx" |> Seq.map Path.GetFullPath ]
+      [ !!"./**/*.fsproj" |> Seq.sortBy (Path.GetFileName)
+        !!"./Build/*.fsx" |> Seq.map Path.GetFullPath ]
       |> Seq.concat
       |> Seq.map doLintAsync
       |> throttle
@@ -544,10 +546,7 @@ module Targets =
       Directory.ensure "./_Binaries"
 
       Actions.PrepareReadMe(
-        (Copyright)
-          .Replace("©", "&#xa9;")
-          .Replace("<", "&lt;")
-          .Replace(">", "&gt;")
+        (Copyright).Replace("©", "&#xa9;").Replace("<", "&lt;").Replace(">", "&gt;")
       ))
 
   //let Deployment ignore
@@ -563,7 +562,7 @@ module Targets =
            |> String.IsNullOrWhiteSpace
            |> not
       then
-        (!! "./_Packagin*/*.nupkg")
+        (!!"./_Packagin*/*.nupkg")
         |> Seq.iter (fun f ->
           printfn "Publishing %A from %A" f currentBranch
 

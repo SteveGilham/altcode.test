@@ -13,9 +13,7 @@ module Expecto =
   [<Test>]
   let containsAllShouldPass () =
     let match1 =
-      (AssertionMatch.Create().WithActual [ 1; 2; 3 ])
-        .WithExpected
-        [ 1; 3 ]
+      (AssertionMatch.Create().WithActual [ 1; 2; 3 ]).WithExpected [ 1; 3 ]
 
     AltExpect.containsAll match1 "match1"
     AltFlipExpect.containsAll "flipmatch1" match1
@@ -92,9 +90,7 @@ module Expecto =
   [<Test>]
   let equalShouldPass () =
     let match1 =
-      (AssertionMatch.Create().WithActual [ 1; 3 ])
-        .WithExpected
-        [ 1; 3 ]
+      (AssertionMatch.Create().WithActual [ 1; 3 ]).WithExpected [ 1; 3 ]
 
     AltExpect.equal match1 "match1"
     AltFlipExpect.equal "flipmatch1" match1
@@ -139,9 +135,7 @@ module Expecto =
   [<Test>]
   let floatCloseShouldPass () =
     let match1 =
-      (AssertionMatch.Create().WithActual 3.0)
-        .WithExpected
-        3.0
+      (AssertionMatch.Create().WithActual 3.0).WithExpected 3.0
 
     AltExpect.floatClose accuracy match1 "match1"
     AltFlipExpect.floatClose "flipmatch1" accuracy match1
@@ -162,9 +156,7 @@ module Expecto =
   [<Test>]
   let floatGreaterThanOrCloseShouldPass () =
     let match1 =
-      (AssertionMatch.Create().WithActual 5.0)
-        .WithExpected
-        3.0
+      (AssertionMatch.Create().WithActual 5.0).WithExpected 3.0
 
     AltExpect.floatGreaterThanOrClose accuracy match1 "match1"
     AltFlipExpect.floatGreaterThanOrClose "flipmatch1" accuracy match1
@@ -185,9 +177,7 @@ module Expecto =
   [<Test>]
   let floatLessThanOrCloseShouldPass () =
     let match1 =
-      (AssertionMatch.Create().WithActual -5.0)
-        .WithExpected
-        3.0
+      (AssertionMatch.Create().WithActual -5.0).WithExpected 3.0
 
     AltExpect.floatLessThanOrClose accuracy match1 "match1"
     AltFlipExpect.floatLessThanOrClose "flipmatch1" accuracy match1
@@ -216,9 +206,7 @@ module Expecto =
   [<Test>]
   let isFasterThanShouldPass () =
     let match1 =
-      (AssertionMatch.Create().WithActual fast)
-        .WithExpected
-        slow
+      (AssertionMatch.Create().WithActual fast).WithExpected slow
 
     AltExpect.isFasterThan match1 "match1"
     AltFlipExpect.isFasterThan "flipmatch1" match1
@@ -232,24 +220,19 @@ module Expecto =
     let noop = System.Action(fun () -> ())
 
     let match1a =
-      (AssertionMatch.Create().WithActual fastfunc)
-        .WithExpected
-        slowfunc
+      (AssertionMatch.Create().WithActual fastfunc).WithExpected slowfunc
 
     let mutable result = System.String.Empty
 
     Assert.That(AltCSharpExpect.IsFasterThan(match1a, "match1a", &result))
 
     let match1b =
-      (AssertionMatch.Create().WithActual(noop, fastfunc))
-        .WithExpected(noop, slowfunc)
+      (AssertionMatch.Create().WithActual(noop, fastfunc)).WithExpected(noop, slowfunc)
 
     Assert.That(AltCSharpExpect.IsFasterThan(match1b, "match1b", &result))
 
     let match1c =
-      (AssertionMatch
-        .Create()
-        .WithActual(noop, fastfunc, noop))
+      (AssertionMatch.Create().WithActual(noop, fastfunc, noop))
         .WithExpected(noop, slowfunc, noop)
 
     Assert.That(AltCSharpExpect.IsFasterThan(match1c, "match1c", &result))
@@ -283,9 +266,7 @@ module Expecto =
     let noop = System.Action(fun () -> ())
 
     let match1a =
-      (AssertionMatch.Create().WithActual slowfunc)
-        .WithExpected
-        fastfunc
+      (AssertionMatch.Create().WithActual slowfunc).WithExpected fastfunc
 
     let mutable result = System.String.Empty
 
@@ -295,8 +276,7 @@ module Expecto =
     )
 
     let match1b =
-      (AssertionMatch.Create().WithActual(noop, slowfunc))
-        .WithExpected(noop, fastfunc)
+      (AssertionMatch.Create().WithActual(noop, slowfunc)).WithExpected(noop, fastfunc)
 
     Assert.That(
       not
@@ -304,9 +284,7 @@ module Expecto =
     )
 
     let match1c =
-      (AssertionMatch
-        .Create()
-        .WithActual(noop, slowfunc, noop))
+      (AssertionMatch.Create().WithActual(noop, slowfunc, noop))
         .WithExpected(noop, fastfunc, noop)
 
     Assert.That(
@@ -329,9 +307,7 @@ module Expecto =
   [<Test>]
   let isGreaterThanOrEqualShouldPass () =
     let match1 =
-      (AssertionMatch.Create().WithActual 5)
-        .WithExpected
-        3
+      (AssertionMatch.Create().WithActual 5).WithExpected 3
 
     AltExpect.isGreaterThanOrEqual match1 "match1"
     AltFlipExpect.isGreaterThanOrEqual "flipmatch1" match1
@@ -361,9 +337,7 @@ module Expecto =
   [<Test>]
   let isLessThanOrEqualShouldPass () =
     let match1 =
-      (AssertionMatch.Create().WithActual -5)
-        .WithExpected
-        3
+      (AssertionMatch.Create().WithActual -5).WithExpected 3
 
     AltExpect.isLessThanOrEqual match1 "match1"
     AltFlipExpect.isLessThanOrEqual "flipmatch1" match1
@@ -392,9 +366,7 @@ module Expecto =
   [<Test>]
   let IsMatchShouldPass () =
     let match1 =
-      (AssertionMatch.Create().WithActual "Hello")
-        .WithExpected
-        "o"
+      (AssertionMatch.Create().WithActual "Hello").WithExpected "o"
 
     AltExpect.isMatch match1 "match1"
     AltFlipExpect.isMatch "flipmatch1" match1
@@ -448,9 +420,7 @@ module Expecto =
   [<Test>]
   let StringStartsShouldPass () =
     let match1 =
-      (AssertionMatch.Create().WithActual "Hello")
-        .WithExpected
-        "H"
+      (AssertionMatch.Create().WithActual "Hello").WithExpected "H"
 
     AltExpect.stringStarts match1 "match1"
     AltFlipExpect.stringStarts "flipmatch1" match1
@@ -471,9 +441,7 @@ module Expecto =
   [<Test>]
   let StringEndsShouldPass () =
     let match1 =
-      (AssertionMatch.Create().WithActual "Hello")
-        .WithExpected
-        "o"
+      (AssertionMatch.Create().WithActual "Hello").WithExpected "o"
 
     AltExpect.stringEnds match1 "match1"
     AltFlipExpect.stringEnds "flipmatch1" match1
@@ -493,9 +461,7 @@ module Expecto =
   [<Test>]
   let StringContainsShouldPass () =
     let match1 =
-      (AssertionMatch.Create().WithActual "Hello")
-        .WithExpected
-        "l"
+      (AssertionMatch.Create().WithActual "Hello").WithExpected "l"
 
     AltExpect.stringContains match1 "match1"
     AltFlipExpect.stringContains "flipmatch1" match1
@@ -522,9 +488,7 @@ module Expecto =
     use s2 = new System.IO.MemoryStream(data)
 
     let match1 =
-      (AssertionMatch.Create().WithActual s1)
-        .WithExpected
-        s2
+      (AssertionMatch.Create().WithActual s1).WithExpected s2
 
     AltExpect.streamsEqual match1 "match1"
     AltFlipExpect.streamsEqual "flipmatch1" match1
