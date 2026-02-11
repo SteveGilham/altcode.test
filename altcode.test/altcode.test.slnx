@@ -13,6 +13,7 @@
     <File Path="../global.json" />
     <File Path="../README.md" />
     <File Path="../ReleaseNotes.md" />
+    <File Path="../ToolUpdate.ps1" />
     <Project Path="../Build/NuGet.csproj">
       <Build Project="false" />
     </Project>

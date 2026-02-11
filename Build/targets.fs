@@ -409,7 +409,8 @@ module Targets =
               AltCover.PrepareOptions.Primitive(
                 { Primitive.PrepareOptions.Create() with
                     Report = altReport
-                    SingleVisit = true }
+                    All = false
+                }
                 |> AltCoverFilter
               )
 
