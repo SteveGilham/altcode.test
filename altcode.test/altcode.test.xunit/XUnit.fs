@@ -28,17 +28,15 @@ type AltAssert =
     Assert.EndsWith(x.Expected, x.Actual, comparison)
 
   static member Equal(x: AssertionMatch<#IEnumerable<'a>>) =
-    Assert.Equal<'a>(x.Expected, x.Actual)
+    Assert.Equal<'a>(x.Expected :> IEnumerable<'a>, x.Actual :> IEnumerable<'a>)
 
   static member Equal
-    (
-      x: AssertionMatch<#IEnumerable<'a>>,
-      comparer: IEqualityComparer<'a>
-    ) =
-    Assert.Equal<'a>(x.Expected, x.Actual, comparer)
+    (x: AssertionMatch<#IEnumerable<'a>>, comparer: IEqualityComparer<'a>)
+    =
+    Assert.Equal<'a>(x.Expected :> IEnumerable<'a>, x.Actual :> IEnumerable<'a>, comparer)
 
   static member Equal(x: AssertionMatch<#IEnumerable<'a>>, comparer: Func<'a, 'a, bool>) =
-    Assert.Equal<'a>(x.Expected, x.Actual, comparer)
+    Assert.Equal<'a>(x.Expected :> IEnumerable<'a>, x.Actual :> IEnumerable<'a>, comparer)
 
   static member Equal<'a>(x: AssertionMatch<'a>) = Assert.Equal<'a>(x.Expected, x.Actual)
 
@@ -89,21 +87,25 @@ type AltAssert =
   static member Matches(x: AssertionMatch<string>) = Assert.Matches(x.Expected, x.Actual)
 
   static member NotEqual(x: AssertionMatch<#IEnumerable<'a>>) =
-    Assert.NotEqual<'a>(x.Expected, x.Actual)
+    Assert.NotEqual<'a>(x.Expected :> IEnumerable<'a>, x.Actual :> IEnumerable<'a>)
 
   static member NotEqual
-    (
-      x: AssertionMatch<#IEnumerable<'a>>,
-      comparer: Func<'a, 'a, bool>
-    ) =
-    Assert.NotEqual<'a>(x.Expected, x.Actual, comparer)
+    (x: AssertionMatch<#IEnumerable<'a>>, comparer: Func<'a, 'a, bool>)
+    =
+    Assert.NotEqual<'a>(
+      x.Expected :> IEnumerable<'a>,
+      x.Actual :> IEnumerable<'a>,
+      comparer
+    )
 
   static member NotEqual
-    (
-      x: AssertionMatch<#IEnumerable<'a>>,
-      comparer: IEqualityComparer<'a>
-    ) =
-    Assert.NotEqual<'a>(x.Expected, x.Actual, comparer)
+    (x: AssertionMatch<#IEnumerable<'a>>, comparer: IEqualityComparer<'a>)
+    =
+    Assert.NotEqual<'a>(
+      x.Expected :> IEnumerable<'a>,
+      x.Actual :> IEnumerable<'a>,
+      comparer
+    )
 
   static member NotEqual<'a>(x: AssertionMatch<'a>) =
     Assert.NotEqual<'a>(x.Expected, x.Actual)
@@ -118,10 +120,8 @@ type AltAssert =
     Assert.NotEqual(x.Expected, x.Actual, precision)
 
   static member NotEqual
-    (
-      x: AssertionMatch<double>,
-      comparer: Func<double, double, bool>
-    ) =
+    (x: AssertionMatch<double>, comparer: Func<double, double, bool>)
+    =
     Assert.NotEqual(x.Expected, x.Actual, comparer)
 
   static member NotEqual(x: AssertionMatch<double>, comparer: IEqualityComparer<double>) =

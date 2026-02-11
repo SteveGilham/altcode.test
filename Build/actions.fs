@@ -15,8 +15,7 @@ module Actions =
   let Clean () =
     let rec clean1 depth =
       try
-        (DirectoryInfo ".")
-          .GetDirectories("*", SearchOption.AllDirectories)
+        (DirectoryInfo ".").GetDirectories("*", SearchOption.AllDirectories)
         |> Seq.filter (fun x ->
           x.Name.StartsWith "_"
           || x.Name = "bin"
@@ -209,6 +208,9 @@ do ()"""
     CreateProcess.fromRawCommand file args
     |> CreateProcess.withWorkingDirectory dir
     |> CreateProcess.withFramework
+    |> CreateProcess.withEnvironment
+      [ ("DOTNET_ROLL_FORWARD", "Major")
+        ("DOTNET_ROLL_FORWARD_ON_NO_CANDIDATE_FX", "2") ]
     |> Proc.run
     |> (AssertResult msg)
 
