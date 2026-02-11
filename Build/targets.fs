@@ -12,7 +12,6 @@ module Targets =
   open Fake.Core
   open Fake.Core.TargetOperators
   open Fake.DotNet
-  open Fake.DotNet.NuGet.NuGet
   open Fake.IO
   open Fake.IO.FileSystemOperators
   open Fake.IO.Globbing.Operators
