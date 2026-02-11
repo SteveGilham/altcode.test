@@ -374,7 +374,7 @@ module Targets =
           { p.WithCommon dotnetOptions with
               MSBuildParams = cliArguments
               Configuration = DotNet.BuildConfiguration.Debug
-              Framework = Some "net8.0"
+              Framework = Some "net10.0"
               NoBuild = true })
         "./altcode.test/validation")
 
@@ -426,7 +426,7 @@ module Targets =
                 (fun to' ->
                   { to'.WithCommon(setBaseOptions) with
                       MSBuildParams = cliArguments
-                      Framework = Some "net8.0"
+                      Framework = Some "net10.0"
                       NoBuild = true }
                     .WithAltCoverOptions
                     prepare
