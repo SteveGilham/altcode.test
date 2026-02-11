@@ -3,6 +3,8 @@ Q. Never mind the fluff -- how do I get started?
 A. Start with the README : https://github.com/SteveGilham/altcode.test/blob/master/README.md
 
 #????
+
+# 2.0.72
 * Maintenance release to update dependencies and build targets
 * Build against net8.0 for deliverables, net10.0 for infrastructure and tests
 * Support Expecto ≥ 10.2.3, NUnit ≥ 4.4.0, Xunit ≥ 2.4.2, FSharp.Core ≥ 9.0.303
