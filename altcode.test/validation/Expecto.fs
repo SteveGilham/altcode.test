@@ -46,44 +46,56 @@ module Expecto =
       { Actual = [ 1; 2; 3 ]
         Expected = [ 1; 4 ] }
 
-    Assert.Throws<Expecto.AssertException>(new Action(fun _ -> AltExpect.containsAll match1 "match1"))
+    Assert.Throws<Expecto.AssertException>(
+      Action(fun _ -> AltExpect.containsAll match1 "match1")
+    )
     |> ignore
 
-    Assert.Throws<Expecto.AssertException>(new Action(fun _ ->
-      AltFlipExpect.containsAll "flipmatch1" match1))
+    Assert.Throws<Expecto.AssertException>(
+      Action(fun _ -> AltFlipExpect.containsAll "flipmatch1" match1)
+    )
     |> ignore
 
     let match2 =
       { Actual = [ '1'; '2'; '3' ]
         Expected = [ '4'; '1' ] }
 
-    Assert.Throws<Expecto.AssertException>(new Action(fun _ -> AltExpect.containsAll match2 "match2"))
+    Assert.Throws<Expecto.AssertException>(
+      Action(fun _ -> AltExpect.containsAll match2 "match2")
+    )
     |> ignore
 
-    Assert.Throws<Expecto.AssertException>(new Action(fun _ ->
-      AltFlipExpect.containsAll "flipmatch2" match2))
+    Assert.Throws<Expecto.AssertException>(
+      Action(fun _ -> AltFlipExpect.containsAll "flipmatch2" match2)
+    )
     |> ignore
 
     let match3 =
       { Actual = [ "1"; "2"; "3" ]
         Expected = [ "1"; "4" ] }
 
-    Assert.Throws<Expecto.AssertException>(new Action(fun _ -> AltExpect.containsAll match3 "match3"))
+    Assert.Throws<Expecto.AssertException>(
+      Action(fun _ -> AltExpect.containsAll match3 "match3")
+    )
     |> ignore
 
-    Assert.Throws<Expecto.AssertException>(new Action(fun _ ->
-      AltFlipExpect.containsAll "flipmatch3" match3))
+    Assert.Throws<Expecto.AssertException>(
+      Action(fun _ -> AltFlipExpect.containsAll "flipmatch3" match3)
+    )
     |> ignore
 
     let match4 =
       { Actual = [ A; B 1; C "3" ]
         Expected = [ C "4"; A ] }
 
-    Assert.Throws<Expecto.AssertException>(new Action(fun _ -> AltExpect.containsAll match4 "match4"))
+    Assert.Throws<Expecto.AssertException>(
+      Action(fun _ -> AltExpect.containsAll match4 "match4")
+    )
     |> ignore
 
-    Assert.Throws<Expecto.AssertException>(new Action(fun _ ->
-      AltFlipExpect.containsAll "flipmatch4" match4))
+    Assert.Throws<Expecto.AssertException>(
+      Action(fun _ -> AltFlipExpect.containsAll "flipmatch4" match4)
+    )
     |> ignore
 
   let diffPrinter a b = sprintf "%A.ne.%A" a b
@@ -98,11 +110,14 @@ module Expecto =
     AltExpect.equalWithDiffPrinter diffPrinter match1 "match1"
     AltFlipExpect.equalWithDiffPrinter diffPrinter "flipmatch1" match1
 
-    Assert.Throws<Expecto.AssertException>(new Action(fun _ -> AltExpect.notEqual match1 "match1"))
+    Assert.Throws<Expecto.AssertException>(
+      Action(fun _ -> AltExpect.notEqual match1 "match1")
+    )
     |> ignore
 
-    Assert.Throws<Expecto.AssertException>(new Action(fun _ ->
-      AltFlipExpect.notEqual "flipmatch1" match1))
+    Assert.Throws<Expecto.AssertException>(
+      Action(fun _ -> AltFlipExpect.notEqual "flipmatch1" match1)
+    )
     |> ignore
 
   [<Test>]
@@ -111,19 +126,24 @@ module Expecto =
       { Actual = [ 1; 2; 3 ]
         Expected = [ 1; 4 ] }
 
-    Assert.Throws<Expecto.AssertException>(new Action(fun _ -> AltExpect.equal match1 "match1"))
+    Assert.Throws<Expecto.AssertException>(
+      Action(fun _ -> AltExpect.equal match1 "match1")
+    )
     |> ignore
 
-    Assert.Throws<Expecto.AssertException>(new Action(fun _ ->
-      AltFlipExpect.equal "flipmatch1" match1))
+    Assert.Throws<Expecto.AssertException>(
+      Action(fun _ -> AltFlipExpect.equal "flipmatch1" match1)
+    )
     |> ignore
 
-    Assert.Throws<Expecto.AssertException>(new Action(fun _ ->
-      AltExpect.equalWithDiffPrinter diffPrinter match1 "match1"))
+    Assert.Throws<Expecto.AssertException>(
+      Action(fun _ -> AltExpect.equalWithDiffPrinter diffPrinter match1 "match1")
+    )
     |> ignore
 
-    Assert.Throws<Expecto.AssertException>(new Action(fun _ ->
-      AltFlipExpect.equalWithDiffPrinter diffPrinter "flipmatch1" match1))
+    Assert.Throws<Expecto.AssertException>(
+      Action(fun _ -> AltFlipExpect.equalWithDiffPrinter diffPrinter "flipmatch1" match1)
+    )
     |> ignore
 
     AltExpect.notEqual match1 "match1"
@@ -146,12 +166,14 @@ module Expecto =
     let match1 =
       { Actual = 5.0; Expected = 3.0 }
 
-    Assert.Throws<Expecto.AssertException>(new Action(fun _ ->
-      AltExpect.floatClose accuracy match1 "match1"))
+    Assert.Throws<Expecto.AssertException>(
+      Action(fun _ -> AltExpect.floatClose accuracy match1 "match1")
+    )
     |> ignore
 
-    Assert.Throws<Expecto.AssertException>(new Action(fun _ ->
-      AltFlipExpect.floatClose "flipmatch1" accuracy match1))
+    Assert.Throws<Expecto.AssertException>(
+      Action(fun _ -> AltFlipExpect.floatClose "flipmatch1" accuracy match1)
+    )
     |> ignore
 
   [<Test>]
@@ -167,12 +189,14 @@ module Expecto =
     let match1 =
       { Actual = -5.0; Expected = 3.0 }
 
-    Assert.Throws<Expecto.AssertException>(new Action(fun _ ->
-      AltExpect.floatGreaterThanOrClose accuracy match1 "match1"))
+    Assert.Throws<Expecto.AssertException>(
+      Action(fun _ -> AltExpect.floatGreaterThanOrClose accuracy match1 "match1")
+    )
     |> ignore
 
-    Assert.Throws<Expecto.AssertException>(new Action(fun _ ->
-      AltFlipExpect.floatGreaterThanOrClose "flipmatch1" accuracy match1))
+    Assert.Throws<Expecto.AssertException>(
+      Action(fun _ -> AltFlipExpect.floatGreaterThanOrClose "flipmatch1" accuracy match1)
+    )
     |> ignore
 
   [<Test>]
@@ -188,12 +212,14 @@ module Expecto =
     let match1 =
       { Actual = 5.0; Expected = 3.0 }
 
-    Assert.Throws<Expecto.AssertException>(new Action(fun _ ->
-      AltExpect.floatLessThanOrClose accuracy match1 "match1"))
+    Assert.Throws<Expecto.AssertException>(
+      Action(fun _ -> AltExpect.floatLessThanOrClose accuracy match1 "match1")
+    )
     |> ignore
 
-    Assert.Throws<Expecto.AssertException>(new Action(fun _ ->
-      AltFlipExpect.floatLessThanOrClose "flipmatch1" accuracy match1))
+    Assert.Throws<Expecto.AssertException>(
+      Action(fun _ -> AltFlipExpect.floatLessThanOrClose "flipmatch1" accuracy match1)
+    )
     |> ignore
 
   let fast () = accuracy
@@ -250,12 +276,14 @@ module Expecto =
     let match1 =
       { Actual = slow; Expected = fast }
 
-    Assert.Throws<Expecto.FailedException>(new Action(fun _ ->
-      AltExpect.isFasterThan match1 "match1"))
+    Assert.Throws<Expecto.FailedException>(
+      Action(fun _ -> AltExpect.isFasterThan match1 "match1")
+    )
     |> ignore
 
-    Assert.Throws<Expecto.FailedException>(new Action(fun _ ->
-      AltFlipExpect.isFasterThan "flipmatch1" match1))
+    Assert.Throws<Expecto.FailedException>(
+      Action(fun _ -> AltFlipExpect.isFasterThan "flipmatch1" match1)
+    )
     |> ignore
 
     let fastfunc =
@@ -297,12 +325,14 @@ module Expecto =
       { Actual = makeMeasurer slow
         Expected = makeMeasurer fast }
 
-    Assert.Throws<Expecto.FailedException>(new Action(fun _ ->
-      AltExpect.isFasterThanSub match2 "match2"))
+    Assert.Throws<Expecto.FailedException>(
+      Action(fun _ -> AltExpect.isFasterThanSub match2 "match2")
+    )
     |> ignore
 
-    Assert.Throws<Expecto.FailedException>(new Action(fun _ ->
-      AltFlipExpect.isFasterThanSub "flipmatch2" match2))
+    Assert.Throws<Expecto.FailedException>(
+      Action(fun _ -> AltFlipExpect.isFasterThanSub "flipmatch2" match2)
+    )
     |> ignore
 
   [<Test>]
@@ -319,20 +349,24 @@ module Expecto =
   let isGreaterThanOrEqualShouldFail () =
     let match1 = { Actual = -5; Expected = 3 }
 
-    Assert.Throws<Expecto.AssertException>(new Action(fun _ ->
-      AltExpect.isGreaterThanOrEqual match1 "match1"))
+    Assert.Throws<Expecto.AssertException>(
+      Action(fun _ -> AltExpect.isGreaterThanOrEqual match1 "match1")
+    )
     |> ignore
 
-    Assert.Throws<Expecto.AssertException>(new Action(fun _ ->
-      AltFlipExpect.isGreaterThanOrEqual "flipmatch1" match1))
+    Assert.Throws<Expecto.AssertException>(
+      Action(fun _ -> AltFlipExpect.isGreaterThanOrEqual "flipmatch1" match1)
+    )
     |> ignore
 
-    Assert.Throws<Expecto.AssertException>(new Action(fun _ ->
-      AltExpect.isGreaterThan match1 "match1"))
+    Assert.Throws<Expecto.AssertException>(
+      Action(fun _ -> AltExpect.isGreaterThan match1 "match1")
+    )
     |> ignore
 
-    Assert.Throws<Expecto.AssertException>(new Action(fun _ ->
-      AltFlipExpect.isGreaterThan "flipmatch1" match1))
+    Assert.Throws<Expecto.AssertException>(
+      Action(fun _ -> AltFlipExpect.isGreaterThan "flipmatch1" match1)
+    )
     |> ignore
 
   [<Test>]
@@ -349,19 +383,24 @@ module Expecto =
   let isLessThanOrEqualShouldFail () =
     let match1 = { Actual = 5; Expected = 3 }
 
-    Assert.Throws<Expecto.AssertException>(new Action(fun _ ->
-      AltExpect.isLessThanOrEqual match1 "match1"))
+    Assert.Throws<Expecto.AssertException>(
+      Action(fun _ -> AltExpect.isLessThanOrEqual match1 "match1")
+    )
     |> ignore
 
-    Assert.Throws<Expecto.AssertException>(new Action(fun _ ->
-      AltFlipExpect.isLessThanOrEqual "flipmatch1" match1))
+    Assert.Throws<Expecto.AssertException>(
+      Action(fun _ -> AltFlipExpect.isLessThanOrEqual "flipmatch1" match1)
+    )
     |> ignore
 
-    Assert.Throws<Expecto.AssertException>(new Action(fun _ -> AltExpect.isLessThan match1 "match1"))
+    Assert.Throws<Expecto.AssertException>(
+      Action(fun _ -> AltExpect.isLessThan match1 "match1")
+    )
     |> ignore
 
-    Assert.Throws<Expecto.AssertException>(new Action(fun _ ->
-      AltFlipExpect.isLessThan "flipmatch1" match1))
+    Assert.Throws<Expecto.AssertException>(
+      Action(fun _ -> AltFlipExpect.isLessThan "flipmatch1" match1)
+    )
     |> ignore
 
   [<Test>]
@@ -382,11 +421,14 @@ module Expecto =
       (fun x -> x |> Seq.exists (fun y -> y.Success))
       match1
 
-    Assert.Throws<Expecto.AssertException>(new Action(fun _ -> AltExpect.isNotMatch match1 "match1b"))
+    Assert.Throws<Expecto.AssertException>(
+      Action(fun _ -> AltExpect.isNotMatch match1 "match1b")
+    )
     |> ignore
 
-    Assert.Throws<Expecto.AssertException>(new Action(fun _ ->
-      AltFlipExpect.isNotMatch "flipmatch1b" match1))
+    Assert.Throws<Expecto.AssertException>(
+      Action(fun _ -> AltFlipExpect.isNotMatch "flipmatch1b" match1)
+    )
     |> ignore
 
   [<Test>]
@@ -394,25 +436,32 @@ module Expecto =
     let match1 =
       { Actual = "Hello"; Expected = "x" }
 
-    Assert.Throws<Expecto.AssertException>(new Action(fun _ -> AltExpect.isMatch match1 "match1"))
+    Assert.Throws<Expecto.AssertException>(
+      Action(fun _ -> AltExpect.isMatch match1 "match1")
+    )
     |> ignore
 
-    Assert.Throws<Expecto.AssertException>(new Action(fun _ ->
-      AltFlipExpect.isMatch "flipmatch1" match1))
+    Assert.Throws<Expecto.AssertException>(
+      Action(fun _ -> AltFlipExpect.isMatch "flipmatch1" match1)
+    )
     |> ignore
 
-    Assert.Throws<Expecto.AssertException>(new Action(fun _ ->
-      AltExpect.isMatchGroups
-        match1
-        (fun x -> x |> Seq.exists (fun y -> y.Success))
-        "match1a"))
+    Assert.Throws<Expecto.AssertException>(
+      Action(fun _ ->
+        AltExpect.isMatchGroups
+          match1
+          (fun x -> x |> Seq.exists (fun y -> y.Success))
+          "match1a")
+    )
     |> ignore
 
-    Assert.Throws<Expecto.AssertException>(new Action(fun _ ->
-      AltFlipExpect.isMatchGroups
-        "flipmatch1a"
-        (fun x -> x |> Seq.exists (fun y -> y.Success))
-        match1))
+    Assert.Throws<Expecto.AssertException>(
+      Action(fun _ ->
+        AltFlipExpect.isMatchGroups
+          "flipmatch1a"
+          (fun x -> x |> Seq.exists (fun y -> y.Success))
+          match1)
+    )
     |> ignore
 
     AltExpect.isNotMatch match1 "match1b"
@@ -431,12 +480,14 @@ module Expecto =
     let match1 =
       { Actual = "Hello"; Expected = "o" }
 
-    Assert.Throws<Expecto.AssertException>(new Action(fun _ ->
-      AltExpect.stringStarts match1 "match1"))
+    Assert.Throws<Expecto.AssertException>(
+      Action(fun _ -> AltExpect.stringStarts match1 "match1")
+    )
     |> ignore
 
-    Assert.Throws<Expecto.AssertException>(new Action(fun _ ->
-      AltFlipExpect.stringStarts "flipmatch1" match1))
+    Assert.Throws<Expecto.AssertException>(
+      Action(fun _ -> AltFlipExpect.stringStarts "flipmatch1" match1)
+    )
     |> ignore
 
   [<Test>]
@@ -452,11 +503,14 @@ module Expecto =
     let match1 =
       { Actual = "Hello"; Expected = "H" }
 
-    Assert.Throws<Expecto.AssertException>(new Action(fun _ -> AltExpect.stringEnds match1 "match1"))
+    Assert.Throws<Expecto.AssertException>(
+      Action(fun _ -> AltExpect.stringEnds match1 "match1")
+    )
     |> ignore
 
-    Assert.Throws<Expecto.AssertException>(new Action(fun _ ->
-      AltFlipExpect.stringEnds "flipmatch1" match1))
+    Assert.Throws<Expecto.AssertException>(
+      Action(fun _ -> AltFlipExpect.stringEnds "flipmatch1" match1)
+    )
     |> ignore
 
   [<Test>]
@@ -472,12 +526,14 @@ module Expecto =
     let match1 =
       { Actual = "Hello"; Expected = "?" }
 
-    Assert.Throws<Expecto.AssertException>(new Action(fun _ ->
-      AltExpect.stringContains match1 "match1"))
+    Assert.Throws<Expecto.AssertException>(
+      Action(fun _ -> AltExpect.stringContains match1 "match1")
+    )
     |> ignore
 
-    Assert.Throws<Expecto.AssertException>(new Action(fun _ ->
-      AltFlipExpect.stringContains "flipmatch1" match1))
+    Assert.Throws<Expecto.AssertException>(
+      Action(fun _ -> AltFlipExpect.stringContains "flipmatch1" match1)
+    )
     |> ignore
 
   [<Test>]
@@ -504,12 +560,14 @@ module Expecto =
 
     let match1 = { Actual = s1; Expected = s2 }
 
-    Assert.Throws<Expecto.AssertException>(new Action(fun _ ->
-      AltExpect.streamsEqual match1 "match1"))
+    Assert.Throws<Expecto.AssertException>(
+      Action(fun _ -> AltExpect.streamsEqual match1 "match1")
+    )
     |> ignore
 
-    Assert.Throws<Expecto.AssertException>(new Action(fun _ ->
-      AltFlipExpect.streamsEqual "flipmatch1" match1))
+    Assert.Throws<Expecto.AssertException>(
+      Action(fun _ -> AltFlipExpect.streamsEqual "flipmatch1" match1)
+    )
     |> ignore
 
   [<Test>]
@@ -527,12 +585,14 @@ module Expecto =
       { Actual = [ B 5; B 1; B 2 ]
         Expected = [ B 1; B 5; B 3 ] }
 
-    Assert.Throws<Expecto.AssertException>(new Action(fun _ ->
-      AltExpect.sequenceEqual match1 "match1"))
+    Assert.Throws<Expecto.AssertException>(
+      Action(fun _ -> AltExpect.sequenceEqual match1 "match1")
+    )
     |> ignore
 
-    Assert.Throws<Expecto.AssertException>(new Action(fun _ ->
-      AltFlipExpect.sequenceEqual "flipmatch1" match1))
+    Assert.Throws<Expecto.AssertException>(
+      Action(fun _ -> AltFlipExpect.sequenceEqual "flipmatch1" match1)
+    )
     |> ignore
 
   [<Test>]
@@ -550,12 +610,14 @@ module Expecto =
       { Actual = [ B 5; B 1; B 2; B 3 ]
         Expected = [ B 1; B 5 ] }
 
-    Assert.Throws<Expecto.AssertException>(new Action(fun _ ->
-      AltExpect.sequenceStarts match1 "match1"))
+    Assert.Throws<Expecto.AssertException>(
+      Action(fun _ -> AltExpect.sequenceStarts match1 "match1")
+    )
     |> ignore
 
-    Assert.Throws<Expecto.AssertException>(new Action(fun _ ->
-      AltFlipExpect.sequenceStarts "flipmatch1" match1))
+    Assert.Throws<Expecto.AssertException>(
+      Action(fun _ -> AltFlipExpect.sequenceStarts "flipmatch1" match1)
+    )
     |> ignore
 
   [<Test>]
@@ -573,10 +635,12 @@ module Expecto =
       { Actual = [ B 5; B 1; B 2; B 3 ]
         Expected = [ B 1; B 5 ] }
 
-    Assert.Throws<Expecto.AssertException>(new Action(fun _ ->
-      AltExpect.sequenceContainsOrder match1 "match1"))
+    Assert.Throws<Expecto.AssertException>(
+      Action(fun _ -> AltExpect.sequenceContainsOrder match1 "match1")
+    )
     |> ignore
 
-    Assert.Throws<Expecto.AssertException>(new Action(fun _ ->
-      AltFlipExpect.sequenceContainsOrder "flipmatch1" match1))
+    Assert.Throws<Expecto.AssertException>(
+      Action(fun _ -> AltFlipExpect.sequenceContainsOrder "flipmatch1" match1)
+    )
     |> ignore

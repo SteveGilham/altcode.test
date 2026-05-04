@@ -27,7 +27,7 @@ module NUnit =
       (Constraint.Create().WithActual true).WithConstraint Is.Not.True
 
     let x1 =
-      Assert.Throws<Expecto.AssertException>(new Action(fun _ -> AltAssert.That match1))
+      Assert.Throws<NUnit.Framework.AssertionException>(Action(fun _ -> AltAssert.That match1))
 
     let expected =
       """  Assert.That(, )
@@ -41,8 +41,8 @@ module NUnit =
       (Constraint.Create().WithActual true).WithConstraint Is.Not.True
 
     let x2 =
-      Assert.Throws<Expecto.AssertException>(
-        new Action(fun _ -> AltAssert.That(match2, "some text"))
+      Assert.Throws<NUnit.Framework.AssertionException>(
+        Action(fun _ -> AltAssert.That(match2, "some text"))
       )
 
     let expected2 =
@@ -78,29 +78,29 @@ module NUnit =
   let AreEqualShouldFail () =
     let match1 = { Actual = 5; Expected = 6 }
 
-    Assert.Throws<Expecto.AssertException>(new Action(fun _ -> AltAssert.AreEqual match1))
+    Assert.Throws<NUnit.Framework.AssertionException>(Action(fun _ -> AltAssert.AreEqual match1))
     |> ignore
 
     let match2 =
       { Actual = 5.0; Expected = 6.0 }
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ -> AltAssert.AreEqual(match2, 0.1))
+    Assert.Throws<NUnit.Framework.AssertionException>(
+      Action(fun _ -> AltAssert.AreEqual(match2, 0.1))
     )
     |> ignore
 
     let match3 = { Actual = 5; Expected = 6 }
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ -> AltAssert.AreEqual(match3, "bang {0} {2}", 1, 2., 3, 4))
+    Assert.Throws<NUnit.Framework.AssertionException>(
+      Action(fun _ -> AltAssert.AreEqual(match3, "bang {0} {2}", 1, 2., 3, 4))
     )
     |> ignore
 
     let match4 =
       { Actual = 5.0; Expected = 6.0 }
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ -> AltAssert.AreEqual(match4, 0.1, "bang {0} {2}", 1, 2., 3, 4))
+    Assert.Throws<NUnit.Framework.AssertionException>(
+      Action(fun _ -> AltAssert.AreEqual(match4, 0.1, "bang {0} {2}", 1, 2., 3, 4))
     )
     |> ignore
 
@@ -118,15 +118,13 @@ module NUnit =
   let AreNotEqualShouldFail () =
     let match1 = { Actual = 5; Expected = 5 }
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ -> AltAssert.AreNotEqual match1)
-    )
+    Assert.Throws<NUnit.Framework.AssertionException>(Action(fun _ -> AltAssert.AreNotEqual match1))
     |> ignore
 
     let match3 = { Actual = 5; Expected = 5 }
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ -> AltAssert.AreNotEqual(match3, "bang {0} {2}", 1, 2., 3, 4))
+    Assert.Throws<NUnit.Framework.AssertionException>(
+      Action(fun _ -> AltAssert.AreNotEqual(match3, "bang {0} {2}", 1, 2., 3, 4))
     )
     |> ignore
 
@@ -147,14 +145,14 @@ module NUnit =
     let match1 =
       { Actual = B 5; Expected = B 5 }
 
-    Assert.Throws<Expecto.AssertException>(new Action(fun _ -> AltAssert.AreSame match1))
+    Assert.Throws<NUnit.Framework.AssertionException>(Action(fun _ -> AltAssert.AreSame match1))
     |> ignore
 
     let match3 =
       { Actual = A; Expected = C "6" }
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ -> AltAssert.AreSame(match3, "bang {0} {2}", 1, 2., 3, 4))
+    Assert.Throws<NUnit.Framework.AssertionException>(
+      Action(fun _ -> AltAssert.AreSame(match3, "bang {0} {2}", 1, 2., 3, 4))
     )
     |> ignore
 
@@ -176,15 +174,13 @@ module NUnit =
 
     let match1 = { Actual = x; Expected = x }
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ -> AltAssert.AreNotSame match1)
-    )
+    Assert.Throws<NUnit.Framework.AssertionException>(Action(fun _ -> AltAssert.AreNotSame match1))
     |> ignore
 
     let match3 = { Actual = A; Expected = A }
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ -> AltAssert.AreNotSame(match3, "bang {0} {2}", 1, 2., 3, 4))
+    Assert.Throws<NUnit.Framework.AssertionException>(
+      Action(fun _ -> AltAssert.AreNotSame(match3, "bang {0} {2}", 1, 2., 3, 4))
     )
     |> ignore
 
@@ -203,14 +199,14 @@ module NUnit =
   let GreaterShouldFail () =
     let match1 = { Actual = 5; Expected = 6 }
 
-    Assert.Throws<Expecto.AssertException>(new Action(fun _ -> AltAssert.Greater match1))
+    Assert.Throws<NUnit.Framework.AssertionException>(Action(fun _ -> AltAssert.Greater match1))
     |> ignore
 
     let match2 =
       { Actual = 5.0; Expected = 6.0 }
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ -> AltAssert.Greater(match2, "bang {0} {2}", 1, 2., 3, 4))
+    Assert.Throws<NUnit.Framework.AssertionException>(
+      Action(fun _ -> AltAssert.Greater(match2, "bang {0} {2}", 1, 2., 3, 4))
     )
     |> ignore
 
@@ -229,16 +225,16 @@ module NUnit =
   let GreaterOrEqualShouldFail () =
     let match1 = { Actual = 5; Expected = 6 }
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ -> AltAssert.GreaterOrEqual match1)
+    Assert.Throws<NUnit.Framework.AssertionException>(
+      Action(fun _ -> AltAssert.GreaterOrEqual match1)
     )
     |> ignore
 
     let match2 =
       { Actual = 5.0; Expected = 6.0 }
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ -> AltAssert.GreaterOrEqual(match2, "bang {0} {2}", 1, 2., 3, 4))
+    Assert.Throws<NUnit.Framework.AssertionException>(
+      Action(fun _ -> AltAssert.GreaterOrEqual(match2, "bang {0} {2}", 1, 2., 3, 4))
     )
     |> ignore
 
@@ -257,14 +253,14 @@ module NUnit =
   let LessShouldFail () =
     let match1 = { Actual = 5; Expected = 4 }
 
-    Assert.Throws<Expecto.AssertException>(new Action(fun _ -> AltAssert.Less match1))
+    Assert.Throws<NUnit.Framework.AssertionException>(Action(fun _ -> AltAssert.Less match1))
     |> ignore
 
     let match2 =
       { Actual = 5.0; Expected = 4.0 }
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ -> AltAssert.Less(match2, "bang {0} {2}", 1, 2., 3, 4))
+    Assert.Throws<NUnit.Framework.AssertionException>(
+      Action(fun _ -> AltAssert.Less(match2, "bang {0} {2}", 1, 2., 3, 4))
     )
     |> ignore
 
@@ -283,16 +279,14 @@ module NUnit =
   let LessOrEqualShouldFail () =
     let match1 = { Actual = 5; Expected = 4 }
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ -> AltAssert.LessOrEqual match1)
-    )
+    Assert.Throws<NUnit.Framework.AssertionException>(Action(fun _ -> AltAssert.LessOrEqual match1))
     |> ignore
 
     let match2 =
       { Actual = 5.0; Expected = 4.0 }
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ -> AltAssert.LessOrEqual(match2, "bang {0} {2}", 1, 2., 3, 4))
+    Assert.Throws<NUnit.Framework.AssertionException>(
+      Action(fun _ -> AltAssert.LessOrEqual(match2, "bang {0} {2}", 1, 2., 3, 4))
     )
     |> ignore
 
@@ -326,31 +320,29 @@ module NUnit =
     let match1 =
       (AssertionMatch.Create().WithActual d1).WithExpected d2
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ -> AltDirectoryAssert.AreEqual match1)
+    Assert.Throws<NUnit.Framework.AssertionException>(
+      Action(fun _ -> AltDirectoryAssert.AreEqual match1)
     )
     |> ignore
 
     let match2 = { Actual = d2; Expected = d1 }
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ ->
-        AltDirectoryAssert.AreEqual(match2, "bang {0} {2}", 1, 2., 3, 4))
+    Assert.Throws<NUnit.Framework.AssertionException>(
+      Action(fun _ -> AltDirectoryAssert.AreEqual(match2, "bang {0} {2}", 1, 2., 3, 4))
     )
     |> ignore
 
     let match3 = { Actual = d1; Expected = d1 }
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ -> AltDirectoryAssert.AreNotEqual match3)
+    Assert.Throws<NUnit.Framework.AssertionException>(
+      Action(fun _ -> AltDirectoryAssert.AreNotEqual match3)
     )
     |> ignore
 
     let match4 = { Actual = d2; Expected = d2 }
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ ->
-        AltDirectoryAssert.AreNotEqual(match4, "bang {0} {2}", 1, 2., 3, 4))
+    Assert.Throws<NUnit.Framework.AssertionException>(
+      Action(fun _ -> AltDirectoryAssert.AreNotEqual(match4, "bang {0} {2}", 1, 2., 3, 4))
     )
     |> ignore
 
@@ -373,27 +365,26 @@ module NUnit =
     let match1 =
       { Actual = "Hello"; Expected = "?" }
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ -> AltStringAssert.Contains match1)
+    Assert.Throws<NUnit.Framework.AssertionException>(
+      Action(fun _ -> AltStringAssert.Contains match1)
     )
     |> ignore
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ -> AltStringAssert.Contains(match1, "bang {0} {2}", 1, 2., 3, 4))
+    Assert.Throws<NUnit.Framework.AssertionException>(
+      Action(fun _ -> AltStringAssert.Contains(match1, "bang {0} {2}", 1, 2., 3, 4))
     )
     |> ignore
 
     let match2 =
       { Actual = "Hello"; Expected = "e" }
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ -> AltStringAssert.DoesNotContain match2)
+    Assert.Throws<NUnit.Framework.AssertionException>(
+      Action(fun _ -> AltStringAssert.DoesNotContain match2)
     )
     |> ignore
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ ->
-        AltStringAssert.DoesNotContain(match2, "bang {0} {2}", 1, 2., 3, 4))
+    Assert.Throws<NUnit.Framework.AssertionException>(
+      Action(fun _ -> AltStringAssert.DoesNotContain(match2, "bang {0} {2}", 1, 2., 3, 4))
     )
     |> ignore
 
@@ -405,13 +396,13 @@ module NUnit =
     AltStringAssert.DoesNotMatch match1
     AltStringAssert.DoesNotMatch(match1, "bang {0} {2}", 1, 2., 3, 4)
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ -> AltStringAssert.IsMatch match1)
+    Assert.Throws<NUnit.Framework.AssertionException>(
+      Action(fun _ -> AltStringAssert.IsMatch match1)
     )
     |> ignore
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ -> AltStringAssert.IsMatch(match1, "bang {0} {2}", 1, 2., 3, 4))
+    Assert.Throws<NUnit.Framework.AssertionException>(
+      Action(fun _ -> AltStringAssert.IsMatch(match1, "bang {0} {2}", 1, 2., 3, 4))
     )
     |> ignore
 
@@ -420,14 +411,13 @@ module NUnit =
     let match1 =
       { Actual = "Hello"; Expected = "l" }
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ -> AltStringAssert.DoesNotMatch match1)
+    Assert.Throws<NUnit.Framework.AssertionException>(
+      Action(fun _ -> AltStringAssert.DoesNotMatch match1)
     )
     |> ignore
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ ->
-        AltStringAssert.DoesNotMatch(match1, "bang {0} {2}", 1, 2., 3, 4))
+    Assert.Throws<NUnit.Framework.AssertionException>(
+      Action(fun _ -> AltStringAssert.DoesNotMatch(match1, "bang {0} {2}", 1, 2., 3, 4))
     )
     |> ignore
 
@@ -442,14 +432,13 @@ module NUnit =
     AltStringAssert.EndsWith match1
     AltStringAssert.EndsWith(match1, "bang {0} {2}", 1, 2., 3, 4)
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ -> AltStringAssert.DoesNotEndWith match1)
+    Assert.Throws<NUnit.Framework.AssertionException>(
+      Action(fun _ -> AltStringAssert.DoesNotEndWith match1)
     )
     |> ignore
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ ->
-        AltStringAssert.DoesNotEndWith(match1, "bang {0} {2}", 1, 2., 3, 4))
+    Assert.Throws<NUnit.Framework.AssertionException>(
+      Action(fun _ -> AltStringAssert.DoesNotEndWith(match1, "bang {0} {2}", 1, 2., 3, 4))
     )
     |> ignore
 
@@ -458,13 +447,13 @@ module NUnit =
     let match1 =
       { Actual = "Hello"; Expected = "H" }
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ -> AltStringAssert.EndsWith match1)
+    Assert.Throws<NUnit.Framework.AssertionException>(
+      Action(fun _ -> AltStringAssert.EndsWith match1)
     )
     |> ignore
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ -> AltStringAssert.EndsWith(match1, "bang {0} {2}", 1, 2., 3, 4))
+    Assert.Throws<NUnit.Framework.AssertionException>(
+      Action(fun _ -> AltStringAssert.EndsWith(match1, "bang {0} {2}", 1, 2., 3, 4))
     )
     |> ignore
 
@@ -479,13 +468,13 @@ module NUnit =
     AltStringAssert.StartsWith match1
     AltStringAssert.StartsWith(match1, "bang {0} {2}", 1, 2., 3, 4)
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ -> AltStringAssert.DoesNotStartWith match1)
+    Assert.Throws<NUnit.Framework.AssertionException>(
+      Action(fun _ -> AltStringAssert.DoesNotStartWith match1)
     )
     |> ignore
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ ->
+    Assert.Throws<NUnit.Framework.AssertionException>(
+      Action(fun _ ->
         AltStringAssert.DoesNotStartWith(match1, "bang {0} {2}", 1, 2., 3, 4))
     )
     |> ignore
@@ -495,13 +484,13 @@ module NUnit =
     let match1 =
       { Actual = "Hello"; Expected = "o" }
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ -> AltStringAssert.StartsWith match1)
+    Assert.Throws<NUnit.Framework.AssertionException>(
+      Action(fun _ -> AltStringAssert.StartsWith match1)
     )
     |> ignore
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ -> AltStringAssert.StartsWith(match1, "bang {0} {2}", 1, 2., 3, 4))
+    Assert.Throws<NUnit.Framework.AssertionException>(
+      Action(fun _ -> AltStringAssert.StartsWith(match1, "bang {0} {2}", 1, 2., 3, 4))
     )
     |> ignore
 
@@ -518,13 +507,13 @@ module NUnit =
     AltStringAssert.AreEqualIgnoringCase match1
     AltStringAssert.AreEqualIgnoringCase(match1, "bang {0} {2}", 1, 2., 3, 4)
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ -> AltStringAssert.AreNotEqualIgnoringCase match1)
+    Assert.Throws<NUnit.Framework.AssertionException>(
+      Action(fun _ -> AltStringAssert.AreNotEqualIgnoringCase match1)
     )
     |> ignore
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ ->
+    Assert.Throws<NUnit.Framework.AssertionException>(
+      Action(fun _ ->
         AltStringAssert.AreNotEqualIgnoringCase(match1, "bang {0} {2}", 1, 2., 3, 4))
     )
     |> ignore
@@ -537,13 +526,13 @@ module NUnit =
     let match1 =
       { Actual = item; Expected = later }
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ -> AltStringAssert.AreEqualIgnoringCase match1)
+    Assert.Throws<NUnit.Framework.AssertionException>(
+      Action(fun _ -> AltStringAssert.AreEqualIgnoringCase match1)
     )
     |> ignore
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ ->
+    Assert.Throws<NUnit.Framework.AssertionException>(
+      Action(fun _ ->
         AltStringAssert.AreEqualIgnoringCase(match1, "bang {0} {2}", 1, 2., 3, 4))
     )
     |> ignore
@@ -572,13 +561,13 @@ module NUnit =
     AltFileAssert.AreEqual match1
     AltFileAssert.AreEqual(match1, "bang {0} {2}", 1, 2., 3, 4)
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ -> AltFileAssert.AreNotEqual match1)
+    Assert.Throws<NUnit.Framework.AssertionException>(
+      Action(fun _ -> AltFileAssert.AreNotEqual match1)
     )
     |> ignore
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ -> AltFileAssert.AreNotEqual(match1, "bang {0} {2}", 1, 2., 3, 4))
+    Assert.Throws<NUnit.Framework.AssertionException>(
+      Action(fun _ -> AltFileAssert.AreNotEqual(match1, "bang {0} {2}", 1, 2., 3, 4))
     )
     |> ignore
 
@@ -588,13 +577,13 @@ module NUnit =
     AltFileAssert.AreEqual match2
     AltFileAssert.AreEqual(match2, "bang {0} {2}", 1, 2., 3, 4)
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ -> AltFileAssert.AreNotEqual match2)
+    Assert.Throws<NUnit.Framework.AssertionException>(
+      Action(fun _ -> AltFileAssert.AreNotEqual match2)
     )
     |> ignore
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ -> AltFileAssert.AreNotEqual(match2, "bang {0} {2}", 1, 2., 3, 4))
+    Assert.Throws<NUnit.Framework.AssertionException>(
+      Action(fun _ -> AltFileAssert.AreNotEqual(match2, "bang {0} {2}", 1, 2., 3, 4))
     )
     |> ignore
 
@@ -607,13 +596,13 @@ module NUnit =
     AltFileAssert.AreEqual match3
     AltFileAssert.AreEqual(match3, "bang {0} {2}", 1, 2., 3, 4)
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ -> AltFileAssert.AreNotEqual match3)
+    Assert.Throws<NUnit.Framework.AssertionException>(
+      Action(fun _ -> AltFileAssert.AreNotEqual match3)
     )
     |> ignore
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ -> AltFileAssert.AreNotEqual(match3, "bang {0} {2}", 1, 2., 3, 4))
+    Assert.Throws<NUnit.Framework.AssertionException>(
+      Action(fun _ -> AltFileAssert.AreNotEqual(match3, "bang {0} {2}", 1, 2., 3, 4))
     )
     |> ignore
 
@@ -634,13 +623,11 @@ module NUnit =
     AltFileAssert.AreNotEqual match1
     AltFileAssert.AreNotEqual(match1, "bang {0} {2}", 1, 2., 3, 4)
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ -> AltFileAssert.AreEqual match1)
-    )
+    Assert.Throws<NUnit.Framework.AssertionException>(Action(fun _ -> AltFileAssert.AreEqual match1))
     |> ignore
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ -> AltFileAssert.AreEqual(match1, "bang {0} {2}", 1, 2., 3, 4))
+    Assert.Throws<NUnit.Framework.AssertionException>(
+      Action(fun _ -> AltFileAssert.AreEqual(match1, "bang {0} {2}", 1, 2., 3, 4))
     )
     |> ignore
 
@@ -650,13 +637,11 @@ module NUnit =
     AltFileAssert.AreNotEqual match2
     AltFileAssert.AreNotEqual(match2, "bang {0} {2}", 1, 2., 3, 4)
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ -> AltFileAssert.AreEqual match2)
-    )
+    Assert.Throws<NUnit.Framework.AssertionException>(Action(fun _ -> AltFileAssert.AreEqual match2))
     |> ignore
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ -> AltFileAssert.AreEqual(match2, "bang {0} {2}", 1, 2., 3, 4))
+    Assert.Throws<NUnit.Framework.AssertionException>(
+      Action(fun _ -> AltFileAssert.AreEqual(match2, "bang {0} {2}", 1, 2., 3, 4))
     )
     |> ignore
 
@@ -669,13 +654,11 @@ module NUnit =
     AltFileAssert.AreNotEqual match3
     AltFileAssert.AreNotEqual(match3, "bang {0} {2}", 1, 2., 3, 4)
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ -> AltFileAssert.AreEqual match3)
-    )
+    Assert.Throws<NUnit.Framework.AssertionException>(Action(fun _ -> AltFileAssert.AreEqual match3))
     |> ignore
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ -> AltFileAssert.AreEqual(match3, "bang {0} {2}", 1, 2., 3, 4))
+    Assert.Throws<NUnit.Framework.AssertionException>(
+      Action(fun _ -> AltFileAssert.AreEqual(match3, "bang {0} {2}", 1, 2., 3, 4))
     )
     |> ignore
 
@@ -688,13 +671,13 @@ module NUnit =
     AltCollectionAssert.IsSubsetOf match1
     AltCollectionAssert.IsSubsetOf(match1, "bang {0} {2}", 1, 2., 3, 4)
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ -> AltCollectionAssert.IsNotSubsetOf match1)
+    Assert.Throws<NUnit.Framework.AssertionException>(
+      Action(fun _ -> AltCollectionAssert.IsNotSubsetOf match1)
     )
     |> ignore
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ ->
+    Assert.Throws<NUnit.Framework.AssertionException>(
+      Action(fun _ ->
         AltCollectionAssert.IsNotSubsetOf(match1, "bang {0} {2}", 1, 2., 3, 4))
     )
     |> ignore
@@ -706,13 +689,13 @@ module NUnit =
     AltCollectionAssert.IsSupersetOf match2
     AltCollectionAssert.IsSupersetOf(match2, "bang {0} {2}", 1, 2., 3, 4)
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ -> AltCollectionAssert.IsNotSupersetOf match2)
+    Assert.Throws<NUnit.Framework.AssertionException>(
+      Action(fun _ -> AltCollectionAssert.IsNotSupersetOf match2)
     )
     |> ignore
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ ->
+    Assert.Throws<NUnit.Framework.AssertionException>(
+      Action(fun _ ->
         AltCollectionAssert.IsNotSupersetOf(match2, "bang {0} {2}", 1, 2., 3, 4))
     )
     |> ignore
@@ -723,14 +706,13 @@ module NUnit =
       { Actual = [ B 5; B 1; B 2 ]
         Expected = [ B 1; B 5 ] }
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ -> AltCollectionAssert.IsSubsetOf match1)
+    Assert.Throws<NUnit.Framework.AssertionException>(
+      Action(fun _ -> AltCollectionAssert.IsSubsetOf match1)
     )
     |> ignore
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ ->
-        AltCollectionAssert.IsSubsetOf(match1, "bang {0} {2}", 1, 2., 3, 4))
+    Assert.Throws<NUnit.Framework.AssertionException>(
+      Action(fun _ -> AltCollectionAssert.IsSubsetOf(match1, "bang {0} {2}", 1, 2., 3, 4))
     )
     |> ignore
 
@@ -741,13 +723,13 @@ module NUnit =
       { Actual = [ B 1; B 5 ]
         Expected = [ B 5; B 1; B 2 ] }
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ -> AltCollectionAssert.IsSupersetOf match2)
+    Assert.Throws<NUnit.Framework.AssertionException>(
+      Action(fun _ -> AltCollectionAssert.IsSupersetOf match2)
     )
     |> ignore
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ ->
+    Assert.Throws<NUnit.Framework.AssertionException>(
+      Action(fun _ ->
         AltCollectionAssert.IsSupersetOf(match2, "bang {0} {2}", 1, 2., 3, 4))
     )
     |> ignore
@@ -769,24 +751,24 @@ module NUnit =
     AltCollectionAssert.AreEqual(match1, excomp)
     AltCollectionAssert.AreEqual(match1, excomp, "bang {0} {2}", 1, 2., 3, 4)
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ -> AltCollectionAssert.AreNotEqual match1)
+    Assert.Throws<NUnit.Framework.AssertionException>(
+      Action(fun _ -> AltCollectionAssert.AreNotEqual match1)
     )
     |> ignore
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ ->
+    Assert.Throws<NUnit.Framework.AssertionException>(
+      Action(fun _ ->
         AltCollectionAssert.AreNotEqual(match1, "bang {0} {2}", 1, 2., 3, 4))
     )
     |> ignore
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ -> AltCollectionAssert.AreNotEqual(match1, excomp))
+    Assert.Throws<NUnit.Framework.AssertionException>(
+      Action(fun _ -> AltCollectionAssert.AreNotEqual(match1, excomp))
     )
     |> ignore
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ ->
+    Assert.Throws<NUnit.Framework.AssertionException>(
+      Action(fun _ ->
         AltCollectionAssert.AreNotEqual(match1, excomp, "bang {0} {2}", 1, 2., 3, 4))
     )
     |> ignore
@@ -798,13 +780,13 @@ module NUnit =
     AltCollectionAssert.AreEquivalent match2
     AltCollectionAssert.AreEquivalent(match2, "bang {0} {2}", 1, 2., 3, 4)
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ -> AltCollectionAssert.AreNotEquivalent match2)
+    Assert.Throws<NUnit.Framework.AssertionException>(
+      Action(fun _ -> AltCollectionAssert.AreNotEquivalent match2)
     )
     |> ignore
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ ->
+    Assert.Throws<NUnit.Framework.AssertionException>(
+      Action(fun _ ->
         AltCollectionAssert.AreNotEquivalent(match2, "bang {0} {2}", 1, 2., 3, 4))
     )
     |> ignore
@@ -820,24 +802,23 @@ module NUnit =
     AltCollectionAssert.AreNotEqual(match1, excomp)
     AltCollectionAssert.AreNotEqual(match1, excomp, "bang {0} {2}", 1, 2., 3, 4)
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ -> AltCollectionAssert.AreEqual match1)
+    Assert.Throws<NUnit.Framework.AssertionException>(
+      Action(fun _ -> AltCollectionAssert.AreEqual match1)
     )
     |> ignore
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ ->
-        AltCollectionAssert.AreEqual(match1, "bang {0} {2}", 1, 2., 3, 4))
+    Assert.Throws<NUnit.Framework.AssertionException>(
+      Action(fun _ -> AltCollectionAssert.AreEqual(match1, "bang {0} {2}", 1, 2., 3, 4))
     )
     |> ignore
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ -> AltCollectionAssert.AreEqual(match1, excomp))
+    Assert.Throws<NUnit.Framework.AssertionException>(
+      Action(fun _ -> AltCollectionAssert.AreEqual(match1, excomp))
     )
     |> ignore
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ ->
+    Assert.Throws<NUnit.Framework.AssertionException>(
+      Action(fun _ ->
         AltCollectionAssert.AreEqual(match1, excomp, "bang {0} {2}", 1, 2., 3, 4))
     )
     |> ignore
@@ -849,13 +830,13 @@ module NUnit =
     AltCollectionAssert.AreNotEquivalent match2
     AltCollectionAssert.AreNotEquivalent(match2, "bang {0} {2}", 1, 2., 3, 4)
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ -> AltCollectionAssert.AreEquivalent match2)
+    Assert.Throws<NUnit.Framework.AssertionException>(
+      Action(fun _ -> AltCollectionAssert.AreEquivalent match2)
     )
     |> ignore
 
-    Assert.Throws<Expecto.AssertException>(
-      new Action(fun _ ->
+    Assert.Throws<NUnit.Framework.AssertionException>(
+      Action(fun _ ->
         AltCollectionAssert.AreEquivalent(match2, "bang {0} {2}", 1, 2., 3, 4))
     )
     |> ignore

@@ -32,22 +32,25 @@ module Xunit =
     let match1 =
       { Actual = "Hello"; Expected = "?" }
 
-    Assert.Throws<Xunit.Sdk.ContainsException>(new Action(fun _ -> AltAssert.Contains match1))
+    Assert.Throws<Xunit.Sdk.ContainsException>(Action(fun _ -> AltAssert.Contains match1))
     |> ignore
 
-    Assert.Throws<Xunit.Sdk.ContainsException>(new Action(fun _ ->
-      AltAssert.Contains(match1, StringComparison.Ordinal)))
+    Assert.Throws<Xunit.Sdk.ContainsException>(
+      Action(fun _ -> AltAssert.Contains(match1, StringComparison.Ordinal))
+    )
     |> ignore
 
     let match2 =
       { Actual = "Hello"; Expected = "e" }
 
-    Assert.Throws<Xunit.Sdk.DoesNotContainException>(new Action(fun _ ->
-      AltAssert.DoesNotContain match2))
+    Assert.Throws<Xunit.Sdk.DoesNotContainException>(
+      Action(fun _ -> AltAssert.DoesNotContain match2)
+    )
     |> ignore
 
-    Assert.Throws<Xunit.Sdk.DoesNotContainException>(new Action(fun _ ->
-      AltAssert.DoesNotContain(match2, StringComparison.Ordinal)))
+    Assert.Throws<Xunit.Sdk.DoesNotContainException>(
+      Action(fun _ -> AltAssert.DoesNotContain(match2, StringComparison.Ordinal))
+    )
     |> ignore
 
   [<Test>]
@@ -62,7 +65,9 @@ module Xunit =
     let match1 =
       { Actual = "Hello"; Expected = "l" }
 
-    Assert.Throws<Xunit.Sdk.DoesNotMatchException>(new Action(fun _ -> AltAssert.DoesNotMatch match1))
+    Assert.Throws<Xunit.Sdk.DoesNotMatchException>(
+      Action(fun _ -> AltAssert.DoesNotMatch match1)
+    )
     |> ignore
 
   [<Test>]
@@ -78,11 +83,12 @@ module Xunit =
     let match1 =
       { Actual = "Hello"; Expected = "H" }
 
-    Assert.Throws<Xunit.Sdk.EndsWithException>(new Action(fun _ -> AltAssert.EndsWith match1))
+    Assert.Throws<Xunit.Sdk.EndsWithException>(Action(fun _ -> AltAssert.EndsWith match1))
     |> ignore
 
-    Assert.Throws<Xunit.Sdk.EndsWithException>(new Action(fun _ ->
-      AltAssert.EndsWith(match1, StringComparison.Ordinal)))
+    Assert.Throws<Xunit.Sdk.EndsWithException>(
+      Action(fun _ -> AltAssert.EndsWith(match1, StringComparison.Ordinal))
+    )
     |> ignore
 
   let strcomp =
@@ -104,19 +110,22 @@ module Xunit =
       { Actual = [ "Hello"; "World" ]
         Expected = [ "hello"; "world" ] }
 
-    Assert.Throws<Xunit.Sdk.EqualException>(new Action(fun _ ->
-      AltAssert.Equal<String list, String> match1))
+    Assert.Throws<Xunit.Sdk.EqualException>(
+      Action(fun _ -> AltAssert.Equal<String list, String> match1)
+    )
     |> ignore
 
-    Assert.Throws<Xunit.Sdk.EqualException>(new Action(fun _ ->
-      AltAssert.Equal<String list, String>(match1, strcomp)))
+    Assert.Throws<Xunit.Sdk.EqualException>(
+      Action(fun _ -> AltAssert.Equal<String list, String>(match1, strcomp))
+    )
     |> ignore
 
     let func =
       Func<string, string, bool>(fun x y -> x.Equals y)
 
-    Assert.Throws<Xunit.Sdk.EqualException>(new Action(fun _ ->
-      AltAssert.Equal<String list, String>(match1, func)))
+    Assert.Throws<Xunit.Sdk.EqualException>(
+      Action(fun _ -> AltAssert.Equal<String list, String>(match1, func))
+    )
     |> ignore
 
   let exrefcomp =
@@ -145,18 +154,22 @@ module Xunit =
     let match1 =
       { Actual = A; Expected = C "hello" }
 
-    Assert.Throws<Xunit.Sdk.EqualException>(new Action(fun _ -> AltAssert.Equal<Example> match1))
+    Assert.Throws<Xunit.Sdk.EqualException>(
+      Action(fun _ -> AltAssert.Equal<Example> match1)
+    )
     |> ignore
 
-    Assert.Throws<Xunit.Sdk.EqualException>(new Action(fun _ ->
-      AltAssert.Equal<Example>(match1, exrefcomp)))
+    Assert.Throws<Xunit.Sdk.EqualException>(
+      Action(fun _ -> AltAssert.Equal<Example>(match1, exrefcomp))
+    )
     |> ignore
 
     let func =
       Func<_, _, bool>(fun x y -> Object.ReferenceEquals(x, y))
 
-    Assert.Throws<Xunit.Sdk.EqualException>(new Action(fun _ ->
-      AltAssert.Equal<Example>(match1, func)))
+    Assert.Throws<Xunit.Sdk.EqualException>(
+      Action(fun _ -> AltAssert.Equal<Example>(match1, func))
+    )
     |> ignore
 
   [<Test>]
@@ -183,26 +196,29 @@ module Xunit =
     let match1 =
       { Actual = 5.0; Expected = 6.0 }
 
-    Assert.Throws<Xunit.Sdk.EqualException>(new Action(fun _ -> AltAssert.Equal(match1, 2)))
+    Assert.Throws<Xunit.Sdk.EqualException>(Action(fun _ -> AltAssert.Equal(match1, 2)))
     |> ignore
 
-    Assert.Throws<Xunit.Sdk.EqualException>(new Action(fun _ ->
-      AltAssert.Equal(match1, 2, MidpointRounding.ToZero)))
+    Assert.Throws<Xunit.Sdk.EqualException>(
+      Action(fun _ -> AltAssert.Equal(match1, 2, MidpointRounding.ToZero))
+    )
     |> ignore
 
-    Assert.Throws<Xunit.Sdk.EqualException>(new Action(fun _ -> AltAssert.Equal(match1, 0.1)))
+    Assert.Throws<Xunit.Sdk.EqualException>(Action(fun _ -> AltAssert.Equal(match1, 0.1)))
     |> ignore
 
     let match2 =
       { Actual = 5.0M; Expected = 6.0M }
 
-    Assert.Throws<Xunit.Sdk.EqualException>(new Action(fun _ -> AltAssert.Equal(match2, 2)))
+    Assert.Throws<Xunit.Sdk.EqualException>(Action(fun _ -> AltAssert.Equal(match2, 2)))
     |> ignore
 
     let match3 =
       { Actual = 5.0f; Expected = 6.0f }
 
-    Assert.Throws<Xunit.Sdk.EqualException>(new Action(fun _ -> AltAssert.Equal(match3, 0.1f)))
+    Assert.Throws<Xunit.Sdk.EqualException>(
+      Action(fun _ -> AltAssert.Equal(match3, 0.1f))
+    )
     |> ignore
 
   [<Test>]
@@ -222,8 +238,9 @@ module Xunit =
     let match1 =
       { Actual = item; Expected = later }
 
-    Assert.Throws<Xunit.Sdk.EqualException>(new Action(fun _ ->
-      AltAssert.Equal(match1, TimeSpan(1, 0, 0))))
+    Assert.Throws<Xunit.Sdk.EqualException>(
+      Action(fun _ -> AltAssert.Equal(match1, TimeSpan(1, 0, 0)))
+    )
     |> ignore
 
   [<Test>]
@@ -244,11 +261,12 @@ module Xunit =
     let match1 =
       { Actual = item; Expected = later }
 
-    Assert.Throws<Xunit.Sdk.EqualException>(new Action(fun _ -> AltAssert.Equal match1))
+    Assert.Throws<Xunit.Sdk.EqualException>(Action(fun _ -> AltAssert.Equal match1))
     |> ignore
 
-    Assert.Throws<Xunit.Sdk.EqualException>(new Action(fun _ ->
-      AltAssert.Equal(match1, false, false, false)))
+    Assert.Throws<Xunit.Sdk.EqualException>(
+      Action(fun _ -> AltAssert.Equal(match1, false, false, false))
+    )
     |> ignore
 
   [<Test>]
@@ -264,8 +282,9 @@ module Xunit =
       { Actual = A :> obj
         Expected = C "ulater" }
 
-    Assert.Throws<Xunit.Sdk.EquivalentException>(new Action(fun _ ->
-      AltAssert.Equivalent(match1, false)))
+    Assert.Throws<Xunit.Sdk.EquivalentException>(
+      Action(fun _ -> AltAssert.Equivalent(match1, false))
+    )
     |> ignore
 
   [<Test>]
@@ -280,7 +299,7 @@ module Xunit =
     let match1 =
       { Actual = "Hello"; Expected = "x" }
 
-    Assert.Throws<Xunit.Sdk.MatchesException>(new Action(fun _ -> AltAssert.Matches match1))
+    Assert.Throws<Xunit.Sdk.MatchesException>(Action(fun _ -> AltAssert.Matches match1))
     |> ignore
 
   [<Test>]
@@ -299,19 +318,22 @@ module Xunit =
       { Actual = [ "Hello"; "World" ]
         Expected = [ "Hello"; "World" ] }
 
-    Assert.Throws<Xunit.Sdk.NotEqualException>(new Action(fun _ ->
-      AltAssert.NotEqual<String list, String> match1))
+    Assert.Throws<Xunit.Sdk.NotEqualException>(
+      Action(fun _ -> AltAssert.NotEqual<String list, String> match1)
+    )
     |> ignore
 
-    Assert.Throws<Xunit.Sdk.NotEqualException>(new Action(fun _ ->
-      AltAssert.NotEqual<String list, String>(match1, strcomp)))
+    Assert.Throws<Xunit.Sdk.NotEqualException>(
+      Action(fun _ -> AltAssert.NotEqual<String list, String>(match1, strcomp))
+    )
     |> ignore
 
     let func =
       Func<string, string, bool>(fun x y -> x.Equals y)
 
-    Assert.Throws<Xunit.Sdk.NotEqualException>(new Action(fun _ ->
-      AltAssert.NotEqual<String list, String>(match1, func)))
+    Assert.Throws<Xunit.Sdk.NotEqualException>(
+      Action(fun _ -> AltAssert.NotEqual<String list, String>(match1, func))
+    )
     |> ignore
 
   [<Test>]
@@ -329,19 +351,22 @@ module Xunit =
     let match1 =
       (AssertionMatch.Create().WithActual item).WithExpected item
 
-    Assert.Throws<Xunit.Sdk.NotEqualException>(new Action(fun _ ->
-      AltAssert.NotEqual<Example> match1))
+    Assert.Throws<Xunit.Sdk.NotEqualException>(
+      Action(fun _ -> AltAssert.NotEqual<Example> match1)
+    )
     |> ignore
 
-    Assert.Throws<Xunit.Sdk.NotEqualException>(new Action(fun _ ->
-      AltAssert.NotEqual<Example>(match1, exrefcomp)))
+    Assert.Throws<Xunit.Sdk.NotEqualException>(
+      Action(fun _ -> AltAssert.NotEqual<Example>(match1, exrefcomp))
+    )
     |> ignore
 
     let func =
       Func<_, _, bool>(fun x y -> Object.ReferenceEquals(x, y))
 
-    Assert.Throws<Xunit.Sdk.NotEqualException>(new Action(fun _ ->
-      AltAssert.NotEqual<Example>(match1, func)))
+    Assert.Throws<Xunit.Sdk.NotEqualException>(
+      Action(fun _ -> AltAssert.NotEqual<Example>(match1, func))
+    )
     |> ignore
 
   [<Test>]
@@ -361,12 +386,16 @@ module Xunit =
     let match1 =
       { Actual = 5.0; Expected = 5.0 }
 
-    Assert.Throws<Xunit.Sdk.NotEqualException>(new Action(fun _ -> AltAssert.NotEqual(match1, 2)))
+    Assert.Throws<Xunit.Sdk.NotEqualException>(
+      Action(fun _ -> AltAssert.NotEqual(match1, 2))
+    )
     |> ignore
 
     let func = Func<double, double, bool> (=)
 
-    Assert.Throws<Xunit.Sdk.NotEqualException>(new Action(fun _ -> AltAssert.NotEqual(match1, func)))
+    Assert.Throws<Xunit.Sdk.NotEqualException>(
+      Action(fun _ -> AltAssert.NotEqual(match1, func))
+    )
     |> ignore
 
     let doublecomp =
@@ -380,14 +409,17 @@ module Xunit =
 
     AltAssert.Equal(hashmatch)
 
-    Assert.Throws<Xunit.Sdk.NotEqualException>(new Action(fun _ ->
-      AltAssert.NotEqual(match1, doublecomp)))
+    Assert.Throws<Xunit.Sdk.NotEqualException>(
+      Action(fun _ -> AltAssert.NotEqual(match1, doublecomp))
+    )
     |> ignore
 
     let match2 =
       { Actual = 5.0M; Expected = 5.0M }
 
-    Assert.Throws<Xunit.Sdk.NotEqualException>(new Action(fun _ -> AltAssert.NotEqual(match2, 2)))
+    Assert.Throws<Xunit.Sdk.NotEqualException>(
+      Action(fun _ -> AltAssert.NotEqual(match2, 2))
+    )
     |> ignore
 
   [<Test>]
@@ -404,7 +436,7 @@ module Xunit =
     let match1 =
       (AssertionMatch.Create().WithActual item).WithExpected item
 
-    Assert.Throws<Xunit.Sdk.NotSameException>(new Action(fun _ -> AltAssert.NotSame match1))
+    Assert.Throws<Xunit.Sdk.NotSameException>(Action(fun _ -> AltAssert.NotSame match1))
     |> ignore
 
   [<Test>]
@@ -420,8 +452,9 @@ module Xunit =
     let match1 =
       (AssertionMatch.Create().WithActual item).WithExpected item
 
-    Assert.Throws<Xunit.Sdk.NotStrictEqualException>(new Action(fun _ ->
-      AltAssert.NotStrictEqual match1))
+    Assert.Throws<Xunit.Sdk.NotStrictEqualException>(
+      Action(fun _ -> AltAssert.NotStrictEqual match1)
+    )
     |> ignore
 
   [<Test>]
@@ -446,21 +479,24 @@ module Xunit =
       { Actual = HashSet [ 1; 2 ]
         Expected = HashSet [ 1 ] }
 
-    Assert.Throws<Xunit.Sdk.ProperSubsetException>(new Action(fun _ -> AltAssert.ProperSubset match1))
+    Assert.Throws<Xunit.Sdk.ProperSubsetException>(
+      Action(fun _ -> AltAssert.ProperSubset match1)
+    )
     |> ignore
 
-    Assert.Throws<Xunit.Sdk.SubsetException>(new Action(fun _ -> AltAssert.Subset match1))
+    Assert.Throws<Xunit.Sdk.SubsetException>(Action(fun _ -> AltAssert.Subset match1))
     |> ignore
 
     let match2 =
       { Actual = HashSet [ 1 ]
         Expected = HashSet [ 1; 2 ] }
 
-    Assert.Throws<Xunit.Sdk.ProperSupersetException>(new Action(fun _ ->
-      AltAssert.ProperSuperset match2))
+    Assert.Throws<Xunit.Sdk.ProperSupersetException>(
+      Action(fun _ -> AltAssert.ProperSuperset match2)
+    )
     |> ignore
 
-    Assert.Throws<Xunit.Sdk.SupersetException>(new Action(fun _ -> AltAssert.Superset match2))
+    Assert.Throws<Xunit.Sdk.SupersetException>(Action(fun _ -> AltAssert.Superset match2))
     |> ignore
 
   [<Test>]
@@ -477,7 +513,7 @@ module Xunit =
     let match1 =
       { Actual = B 1; Expected = B 1 }
 
-    Assert.Throws<Xunit.Sdk.SameException>(new Action(fun _ -> AltAssert.Same match1))
+    Assert.Throws<Xunit.Sdk.SameException>(Action(fun _ -> AltAssert.Same match1))
     |> ignore
 
   [<Test>]
@@ -493,7 +529,9 @@ module Xunit =
   let StrictEqualItemsShouldFail () =
     let match1 = { Actual = B 1; Expected = A }
 
-    Assert.Throws<Xunit.Sdk.StrictEqualException>(new Action(fun _ -> AltAssert.StrictEqual match1))
+    Assert.Throws<Xunit.Sdk.StrictEqualException>(
+      Action(fun _ -> AltAssert.StrictEqual match1)
+    )
     |> ignore
 
   [<Test>]
@@ -509,9 +547,12 @@ module Xunit =
     let match1 =
       { Actual = "Hello"; Expected = "e" }
 
-    Assert.Throws<Xunit.Sdk.StartsWithException>(new Action(fun _ -> AltAssert.StartsWith match1))
+    Assert.Throws<Xunit.Sdk.StartsWithException>(
+      Action(fun _ -> AltAssert.StartsWith match1)
+    )
     |> ignore
 
-    Assert.Throws<Xunit.Sdk.StartsWithException>(new Action(fun _ ->
-      AltAssert.StartsWith(match1, StringComparison.Ordinal)))
+    Assert.Throws<Xunit.Sdk.StartsWithException>(
+      Action(fun _ -> AltAssert.StartsWith(match1, StringComparison.Ordinal))
+    )
     |> ignore
