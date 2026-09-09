@@ -2,7 +2,7 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <PackageVersion Include="altcover" Version="9.0.1" />
-    <PackageVersion Include="AltCover.Fake" Version="9.0.102" />
+    <PackageVersion Include="AltCover.Fake" Version="9.0.145" />
     <PackageVersion Include="Expecto" Version="10.2.3" />
     <PackageVersion Include="BlackFox.CommandLine" Version="1.0.0" />
     <PackageVersion Include="BlackFox.VsWhere" Version="1.1.0" />
